@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.ordered.report.fragment.ProductListFragment">
+
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:text="Total No.of cortons: 5"/>
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/product_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        android:layout_above="@+id/footer_bar"></android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:id="@+id/footer_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:weightSum="3">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Cancel"
+            android:onClick="backClicked"
+            android:layout_marginLeft="5dp"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/add"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Add"
+            android:layout_marginLeft="5dp"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:text="Done"
+            android:onClick="backClicked"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
+
+</RelativeLayout>
