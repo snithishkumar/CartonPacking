@@ -9,6 +9,7 @@ import java.util.List;
 
 public enum OrderType {
     ORDERED(1, "ORDERED"), PACKING(2, "PACKING"), DELIVERED(3, "DELIVERED");
+
     private int orderId;
     private String orderName;
 

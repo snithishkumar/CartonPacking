@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.json.models.OrderDetailsJson;
+import com.ordered.report.json.models.ResponseData;
 import com.ordered.report.models.OrderEntity;
 
 import java.lang.reflect.Type;
@@ -77,13 +78,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void downloadDataFromServer(){
         try{
-            Call<String> orderDetailsCall = syncServiceApi.getDownloadedSyncItems(-1);
-           Response<String> orderDetailsResponse = orderDetailsCall.execute();
+            Call<ResponseData> orderDetailsCall = syncServiceApi.getDownloadedSyncItems(-1);
+           Response<ResponseData> orderDetailsResponse = orderDetailsCall.execute();
           if(orderDetailsResponse != null && orderDetailsResponse.isSuccessful()){
-              String orderDetailsData = orderDetailsResponse.body();
+              ResponseData orderDetailsData = orderDetailsResponse.body();
               Type listType = new TypeToken<ArrayList<OrderDetailsJson>>() {
               }.getType();
-              List<OrderDetailsJson> orderDetailsJsonsList =  gson.fromJson(orderDetailsData, listType);
+
+              List<OrderDetailsJson> orderDetailsJsonsList =  gson.fromJson(gson.toJson(orderDetailsData.getData()), listType);
               for(OrderDetailsJson orderDetailsJson : orderDetailsJsonsList){
                   processOrderDetails(orderDetailsJson);
               }
@@ -99,7 +101,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void processOrderDetails(OrderDetailsJson orderDetailsJson){
         OrderEntity orderEntity =  cartonbookDao.getCartonBookEntityByGuid(orderDetailsJson.getOrderGuid());
         if(orderEntity == null){
-            //orderEntity = new OrderEntity(orderDetailsJson);
+            orderEntity = new OrderEntity(orderDetailsJson);
+            orderEntity.setOrderedItems(gson.toJson(orderDetailsJson.getOrderedItems()));
             cartonbookDao.savCartonbookEntity(orderEntity);
         }
     }
@@ -118,17 +121,20 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 orderDetailsJson.setProductDetails(orderDetailsJsonsList);
                 orderDetailsJsonList.add(orderDetailsJson);
             }
-            Call<String> orderSyncedDetails =  syncServiceApi.uploadData(orderDetailsJsonList);
-           Response<String> response = orderSyncedDetails.execute();
-           if(response != null && response.isSuccessful()){
-              String dataRespond = response.body();
-             JsonArray orderGuids =  (JsonArray)jsonParser.parse(dataRespond);
-             int size = orderGuids.size();
-             for(int i = 0 ; i < size; i++){
-                String orderGuid =  orderGuids.get(i).getAsString();
-                 cartonbookDao.updateSyncStatus(orderGuid);
-             }
-           }
+            if(orderDetailsJsonList.size() > 0){
+                Call<String> orderSyncedDetails =  syncServiceApi.uploadData(orderDetailsJsonList);
+                Response<String> response = orderSyncedDetails.execute();
+                if(response != null && response.isSuccessful()){
+                    String dataRespond = response.body();
+                    JsonArray orderGuids =  (JsonArray)jsonParser.parse(dataRespond);
+                    int size = orderGuids.size();
+                    for(int i = 0 ; i < size; i++){
+                        String orderGuid =  orderGuids.get(i).getAsString();
+                        cartonbookDao.updateSyncStatus(orderGuid);
+                    }
+                }
+            }
+
 
         }catch (Exception e){
             e.printStackTrace();

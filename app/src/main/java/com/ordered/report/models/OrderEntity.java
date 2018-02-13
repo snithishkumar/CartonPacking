@@ -3,8 +3,10 @@ package com.ordered.report.models;
 import com.google.gson.Gson;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.enumeration.PaymentStatus;
+import com.ordered.report.json.models.OrderDetailsJson;
 
 /**
  * Created by Admin on 1/1/2018.
@@ -58,6 +60,19 @@ public class OrderEntity {
 
     }
 
+
+    public OrderEntity(OrderDetailsJson orderDetailsJson){
+        this.orderId = orderDetailsJson.getOrderId();
+        this.orderGuid = orderDetailsJson.getOrderGuid();
+        this.clientName = null;
+         this.orderStatus = OrderType.valueOf(orderDetailsJson.getOrderStatus().name());
+        this.paymentStatus = orderDetailsJson.getPaymentStatus();
+        this.orderedDate = orderDetailsJson.getOrderedDate();
+        this.serverTime = orderDetailsJson.getServerTime();
+        this.isSync = true;
+
+
+    }
 
 
 
