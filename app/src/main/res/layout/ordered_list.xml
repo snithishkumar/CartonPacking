@@ -12,61 +12,68 @@
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="@android:color/white">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Not Paid"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:textColor="@android:color/holo_red_light"/>
-    <ImageView
-        android:id="@+id/song_cover"
-        android:layout_width="30dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_height="30dp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/musicicon" />
 
-        <LinearLayout
-            android:id="@+id/content_layout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/song_cover"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/order_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/hello" />
+            android:layout_height="100dp"
+            android:background="@android:color/white">
 
             <TextView
-                android:id="@+id/client_name_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:text="@string/adele"
-                android:textSize="@dimen/_10sdp" />
-        </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="13/12/2017"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/content_layout"
-        android:layout_marginRight="10dp"
-        android:textColor="@android:color/black"/>
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Not Paid"
+                android:textColor="@android:color/holo_red_light" />
 
-</RelativeLayout>
+            <ImageView
+                android:id="@+id/song_cover"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/musicicon" />
+
+            <LinearLayout
+                android:id="@+id/content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/song_cover"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/order_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hello"
+                    android:layout_marginTop="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/client_name_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/adele"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_10sdp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/content_layout"
+                android:layout_marginRight="10dp"
+                android:text="13/12/2017"
+                android:textColor="@android:color/black" />
+
+        </RelativeLayout>
         <!--<LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_70sdp"

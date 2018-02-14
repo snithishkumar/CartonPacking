@@ -17,6 +17,7 @@ import com.ordered.report.fragment.AddProductFragment;
 import com.ordered.report.fragment.HomeFragment;
 import com.ordered.report.fragment.ProductListFragment;
 import com.ordered.report.fragment.SubitemsFragment;
+import com.ordered.report.utils.Constants;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -63,8 +64,12 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showProductList(){
+    public void showProductList(int cartonNo,String order){
         ProductListFragment productListFragment = new ProductListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.NO_OF_COTTON, cartonNo);
+        bundle.putString(Constants.ORDER, order);
+        productListFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,productListFragment).addToBackStack(null).commit();
     }
     public void showSubProductList(){

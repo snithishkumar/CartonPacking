@@ -3,8 +3,10 @@ package com.ordered.report.models;
 import com.google.gson.Gson;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.enumeration.PaymentStatus;
+import com.ordered.report.json.models.OrderDetailsJson;
 
 /**
  * Created by Admin on 1/1/2018.
@@ -32,7 +34,7 @@ public class OrderEntity {
     @DatabaseField(columnName = "clientName")
     private String clientName;
     @DatabaseField(columnName = "OrderStatus", dataType = DataType.ENUM_INTEGER)
-    private OrderType orderStatus;
+    private OrderStatus orderStatus;
     @DatabaseField(columnName = "PaymentStatus", dataType = DataType.ENUM_INTEGER)
     private PaymentStatus paymentStatus;
     @DatabaseField(columnName = "OrderedDate")
@@ -44,21 +46,26 @@ public class OrderEntity {
     @DatabaseField(columnName = "IsSync")
     private boolean isSync;
 
-    @DatabaseField(columnName = "OrderedItems",dataType = DataType.LONG_STRING)
+    @DatabaseField(columnName = "OrderedItems", dataType = DataType.LONG_STRING)
     private String orderedItems;
 
 
-    @DatabaseField(columnName = "OrderedDetails",dataType = DataType.LONG_STRING)
+    @DatabaseField(columnName = "OrderedDetails", dataType = DataType.LONG_STRING)
     private String orderedDetails;
 
-
-
-
-    public OrderEntity(){
-
+    public OrderEntity() {
     }
 
-
+    public OrderEntity(OrderDetailsJson orderDetailsJson) {
+        this.clientName = orderDetailsJson.getClientName();
+        this.orderId = orderDetailsJson.getOrderId();
+        this.orderGuid = orderDetailsJson.getOrderGuid();
+        this.orderStatus = orderDetailsJson.getOrderStatus();
+        this.paymentStatus = orderDetailsJson.getPaymentStatus();
+        this.orderedDate = orderDetailsJson.getOrderedDate();
+        this.lastModifiedDate = orderDetailsJson.getLastModifiedDate();
+        this.serverTime = orderDetailsJson.getServerTime();
+    }
 
 
     public String getOrderedItems() {
@@ -101,11 +108,11 @@ public class OrderEntity {
         this.clientName = clientName;
     }
 
-    public OrderType getOrderType() {
+    public OrderStatus getOrderType() {
         return orderStatus;
     }
 
-    public void setOrderType(OrderType orderStatus) {
+    public void setOrderType(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
@@ -142,7 +149,6 @@ public class OrderEntity {
     }
 
 
-
     public boolean isSync() {
         return isSync;
     }
@@ -151,11 +157,11 @@ public class OrderEntity {
         isSync = sync;
     }
 
-    public OrderType getOrderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(OrderType orderStatus) {
+    public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 

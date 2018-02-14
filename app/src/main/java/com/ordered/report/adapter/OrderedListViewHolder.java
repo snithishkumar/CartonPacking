@@ -31,9 +31,9 @@ public class OrderedListViewHolder extends RecyclerView.ViewHolder {
     public OrderedListViewHolder(View itemView) {
         super(itemView);
         view = itemView;
-        orderTitle = (TextView) itemView.findViewById(R.id.order_title);
+        orderTitle = (TextView) itemView.findViewById(R.id.orderid_view);
         clientName = (TextView) itemView.findViewById(R.id.client_name_view);
-        orderImage = (ImageView) itemView.findViewById(R.id.song_cover);
+        orderImage = (ImageView) itemView.findViewById(R.id.order_image);
        // createdDate = (TextView) itemView.findViewById(R.id.dateModifiedTextView);
      //   paymentStatus = (Button) itemView.findViewById(R.id.payment_type_view);
     }

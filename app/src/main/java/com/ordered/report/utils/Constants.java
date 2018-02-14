@@ -9,4 +9,7 @@ public class Constants {
     public static final int INVALID_USERNAME = 401;
     public static final int NO_INTERNET = 303;
     public static final int INTERNAL_SERVER_ERROR=500;
+    public static final String NO_OF_COTTON="Cotton";
+    public static final String ORDER="ORDER";
+
 }

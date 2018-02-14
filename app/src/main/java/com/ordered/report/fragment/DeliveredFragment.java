@@ -11,15 +11,15 @@ import android.view.ViewGroup;
 
 import com.ordered.report.R;
 import com.ordered.report.adapter.OrderedListAdapter;
-import com.ordered.report.enumeration.OrderType;
+import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
-import com.ordered.report.services.CartonbookService;
+import com.ordered.report.services.OrderedService;
 
 import java.util.List;
 
 public class DeliveredFragment extends Fragment {
     private List<OrderEntity> cartonbookEntities = null;
-    private CartonbookService cartonbookService = null;
+    private OrderedService orderedService = null;
     RecyclerView recyclerView = null;
 
     public DeliveredFragment() {
@@ -36,7 +36,7 @@ public class DeliveredFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cartonbookService = new CartonbookService(getActivity());
+        orderedService = new OrderedService(getActivity());
         getActivity().setTitle("ORDER");
         if (getArguments() != null) {
         }
@@ -52,7 +52,7 @@ public class DeliveredFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        OrderedListAdapter mAdapter = new OrderedListAdapter(getActivity(), getOrderedCartonBookList());
+        OrderedListAdapter mAdapter = new OrderedListAdapter(getActivity(), getOrderedCartonBookList(),OrderStatus.DELIVERED);
         recyclerView.setAdapter(mAdapter);
         return view;
     }
@@ -69,7 +69,7 @@ public class DeliveredFragment extends Fragment {
     }
 
     public List<OrderEntity> getOrderedCartonBookList() {
-        cartonbookEntities = cartonbookService.getCartonBookEntityByType(OrderType.DELIVERED);
+        cartonbookEntities = orderedService.getCartonBookEntityByType(OrderStatus.DELIVERED);
         return cartonbookEntities;
     }
 }

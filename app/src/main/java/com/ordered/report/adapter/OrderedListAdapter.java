@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
-import com.ordered.report.enumeration.OrderType;
+import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.utils.Utils;
 
@@ -23,47 +23,52 @@ import java.util.List;
 public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHolder> {
 
     private Context context;
-    private List<OrderEntity> cartonbookEntities;
+    private List<OrderEntity> orderEntities;
     private HomeActivity homeActivity;
+    private OrderStatus orderStatus;
 
-    public OrderedListAdapter(Context context, List<OrderEntity> cartonbookEntities) {
+    public OrderedListAdapter(Context context, List<OrderEntity> orderEntities, OrderStatus orderStatus) {
         this.context = context;
         homeActivity = (HomeActivity) context;
-        this.cartonbookEntities = cartonbookEntities;
+        this.orderEntities = orderEntities;
+        this.orderStatus = orderStatus;
     }
 
     @Override
     public OrderedListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.ordered_list, parent, false);
+        View view = null;
+        if (orderStatus.toString().equals(OrderStatus.ORDERED.toString())) {
+            view = LayoutInflater.from(context).inflate(R.layout.ordered_row, parent, false);
+        }
         return new OrderedListViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(OrderedListViewHolder holder, int position) {
-        final OrderEntity orderEntity = cartonbookEntities.get(position);
+        final OrderEntity orderEntity = orderEntities.get(position);
         holder.orderTitle.setText(orderEntity.getOrderId());
-        holder.clientName.setText("ClientName :"+ orderEntity.getClientName());
-        if(orderEntity.getOrderType() == OrderType.ORDERED) {
+        // holder.clientName.setText("ClientName :" + orderEntity.getClientName());
+        if (orderEntity.getOrderType() == OrderStatus.ORDERED) {
             holder.orderImage.setImageResource(R.mipmap.ordered_icon);
-        }else if(orderEntity.getOrderType() == OrderType.PACKING){
+        } else if (orderEntity.getOrderType() == OrderStatus.PACKING) {
             holder.orderImage.setImageResource(R.mipmap.packing_icon);
-        }else{
+        } else {
             holder.orderImage.setImageResource(R.mipmap.delivered_icon);
         }
         String date = null;
         if (orderEntity.getOrderedDate() != 0) {
             date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
-         //   holder.createdDate.setText(date);
+            //   holder.createdDate.setText(date);
         }
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(orderEntity.getOrderType() == OrderType.ORDERED) {
-                    showAlertDialog();
-                }else if(orderEntity.getOrderType() == OrderType.PACKING){
-                    homeActivity.showProductList();
-                }else{
+                if (orderEntity.getOrderType() == OrderStatus.ORDERED) {
+                    showAlertDialog(orderEntity.getOrderGuid());
+                } else if (orderEntity.getOrderType() == OrderStatus.PACKING) {
+                    // homeActivity.showProductList();
+                } else {
                     // generate report here
                 }
             }
@@ -72,28 +77,38 @@ public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHold
 
     @Override
     public int getItemCount() {
-        return cartonbookEntities.size();
+        return orderEntities.size();
     }
 
-    private void showAlertDialog(){
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setMessage("Enter total number of carton");
+    private void showAlertDialog(final String order) {
+        //test
+        LayoutInflater li = LayoutInflater.from(context);
+        View promptsView = li.inflate(R.layout.prompts, null);
 
-        final EditText input = new EditText(context);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-        alertDialog.setView(input);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
 
-        alertDialog.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        homeActivity.showProductList();
-                    }
-                });
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
 
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                homeActivity.showProductList(Integer.parseInt(userInput.getText().toString()),order);
+                            }
+                        });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
         alertDialog.show();
+        //end
+
     }
 }

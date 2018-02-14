@@ -11,15 +11,15 @@ import android.view.ViewGroup;
 
 import com.ordered.report.R;
 import com.ordered.report.adapter.OrderedListAdapter;
-import com.ordered.report.enumeration.OrderType;
+import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
-import com.ordered.report.services.CartonbookService;
+import com.ordered.report.services.OrderedService;
 
 import java.util.List;
 
 public class PackingFragment extends Fragment {
     private List<OrderEntity> cartonbookEntities = null;
-    private CartonbookService cartonbookService = null;
+    private OrderedService orderedService = null;
     RecyclerView recyclerView = null;
 
     public PackingFragment() {
@@ -28,21 +28,21 @@ public class PackingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
-        cartonbookService = new CartonbookService(getActivity());
+        orderedService = new OrderedService(getActivity());
         getActivity().setTitle("ORDER");
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        OrderedListAdapter mAdapter = new OrderedListAdapter(getActivity(), getOrderedCartonBookList());
+        OrderedListAdapter mAdapter = new OrderedListAdapter(getActivity(), getOrderedCartonBookList(),OrderStatus.ORDERED);
         recyclerView.setAdapter(mAdapter);
         return view;
     }
 
 
     public List<OrderEntity> getOrderedCartonBookList() {
-        cartonbookEntities = cartonbookService.getCartonBookEntityByType(OrderType.PACKING);
+        cartonbookEntities = orderedService.getCartonBookEntityByType(OrderStatus.PACKING);
         return cartonbookEntities;
     }
 }
