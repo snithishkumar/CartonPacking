@@ -87,8 +87,8 @@ public class ProductListFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  homeActivity.showAddProductList();
-                createProductEntity();
+                homeActivity.showAddProductList();
+               // createProductEntity();
             }
         });
         return view;

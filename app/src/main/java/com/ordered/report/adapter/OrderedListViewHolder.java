@@ -15,26 +15,23 @@ public class OrderedListViewHolder extends RecyclerView.ViewHolder {
     public TextView orderTitle;
     public TextView clientName;
     public TextView createdDate;
+    public TextView createdBy;
+    public TextView orderItemsCount;
     public ImageView orderImage;
-    public Button paymentStatus;
     public View view;
 
-    public OrderedListViewHolder(View itemView, TextView orderTitle, TextView clientName, ImageView orderImage, TextView orderDate, Button paymentStatus) {
-        super(itemView);
-        this.orderTitle = orderTitle;
-        this.clientName = clientName;
-        this.createdDate = orderDate;
-        this.orderImage = orderImage;
-        this.paymentStatus = paymentStatus;
-    }
+
 
     public OrderedListViewHolder(View itemView) {
         super(itemView);
         view = itemView;
-        orderTitle = (TextView) itemView.findViewById(R.id.orderid_view);
-        clientName = (TextView) itemView.findViewById(R.id.client_name_view);
+        orderTitle = (TextView) itemView.findViewById(R.id.ordered_list_order_id);
+        clientName = (TextView) itemView.findViewById(R.id.ordered_list_client_name);
+        createdDate = (TextView) itemView.findViewById(R.id.ordered_list_order_date);
+        createdBy = (TextView) itemView.findViewById(R.id.ordered_list_created_by);
+        orderItemsCount = (TextView) itemView.findViewById(R.id.ordered_list_ordered_items);
         orderImage = (ImageView) itemView.findViewById(R.id.order_image);
-       // createdDate = (TextView) itemView.findViewById(R.id.dateModifiedTextView);
-     //   paymentStatus = (Button) itemView.findViewById(R.id.payment_type_view);
+
+
     }
 }

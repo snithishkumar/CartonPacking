@@ -4,73 +4,209 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     tools:context="com.ordered.report.fragment.AddProductFragment">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@+id/done"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Product Name:"
-        android:layout_margin="10dp"
-        android:textColor="@android:color/black"/>
-    <AutoCompleteTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Product group:"
-        android:layout_margin="10dp"
-        android:textColor="@android:color/black"/>
-    <AutoCompleteTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp"
-        android:weightSum="2">
+        android:layout_above="@+id/done"
+        android:orientation="vertical">
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1.5"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quantity:"
+            android:text="Product Name:"
             android:layout_margin="10dp"
             android:textColor="@android:color/black"/>
-        <EditText
-            android:layout_width="0dp"
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:layout_weight="0.5"/>
-    </LinearLayout>
+            android:id="@+id/product_name"
+            android:layout_margin="10dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp"
-        android:weightSum="2">
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1.5"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Size:"
             android:layout_margin="10dp"
             android:textColor="@android:color/black"/>
-        <EditText
-            android:layout_width="0dp"
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:layout_weight="0.5"/>
+            android:id="@+id/product_group"
+            android:text="Product group:"
+            android:layout_margin="10dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
+            android:weightSum="2">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/oneSize"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:imeOptions="actionSend"
+                    android:maxLength="10"
+                    android:hint="One Size"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/xs"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:imeOptions="actionSend"
+                    android:maxLength="10"
+                    android:hint="xs"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
+            android:weightSum="2">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/small"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:imeOptions="actionSend"
+                    android:maxLength="10"
+                    android:hint="s"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medium"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:imeOptions="actionSend"
+                    android:maxLength="10"
+                    android:hint="m"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
+            android:weightSum="2">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/l"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:imeOptions="actionSend"
+                    android:maxLength="10"
+                    android:hint="l"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/xl"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:imeOptions="actionSend"
+                    android:maxLength="10"
+                    android:hint="xl"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
+            android:weightSum="2">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/xxl"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:imeOptions="actionSend"
+                    android:maxLength="10"
+                    android:hint="xxl"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/xxxl"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:imeOptions="actionSend"
+                    android:maxLength="10"
+                    android:hint="xxxl"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+        </LinearLayout>
+
+
+
+
     </LinearLayout>
 
-</LinearLayout>
+
+
+
+
     <Button
         android:id="@+id/done"
         android:layout_width="match_parent"
@@ -80,5 +216,6 @@
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:text="Done"/>
+
 
 </RelativeLayout>

@@ -20,13 +20,13 @@ import java.util.List;
  * Created by Admin on 1/1/2018.
  */
 
-public class orderDao {
+public class CartonbookDao {
     DatabaseHelper databaseHelper = null;
     Dao<OrderEntity, String> cartonbookDao = null;
     Dao<CartonItemEntity, String> cartonItemDao = null;
     Dao<ProductEntity, String> productDao = null;
 
-    public orderDao(Context context) throws Exception {
+    public CartonbookDao(Context context) throws Exception {
         this.databaseHelper = DatabaseHelper.getInstance(context);
         initDaos();
     }
@@ -85,7 +85,7 @@ public class orderDao {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public OrderEntity getCartonBookEntityByGuid(String cartonbookGuid) {

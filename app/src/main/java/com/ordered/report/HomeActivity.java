@@ -17,7 +17,11 @@ import com.ordered.report.fragment.AddProductFragment;
 import com.ordered.report.fragment.HomeFragment;
 import com.ordered.report.fragment.ProductListFragment;
 import com.ordered.report.fragment.SubitemsFragment;
+import com.ordered.report.json.models.ProductDetailsJson;
 import com.ordered.report.utils.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -90,4 +94,10 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+
+    private List<ProductDetailsJson> productDetailsJsons = new ArrayList<>();
+
+    public List<ProductDetailsJson> getProductDetailsJsons() {
+        return productDetailsJsons;
+    }
 }

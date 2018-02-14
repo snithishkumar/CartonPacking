@@ -9,58 +9,76 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
+import com.ordered.report.json.models.ProductDetailsJson;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddProductFragment#newInstance} factory method to
+ * Use the {@link } factory method to
  * create an instance of this fragment.
  */
 public class AddProductFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private HomeActivity homeActivity;
     private Context context;
+
+
+
+    private EditText vProductName;
+    private EditText vProductGroup;
+    private EditText vOneSize;
+    private EditText vXS;
+    private EditText vS;
+    private EditText vM;
+    private EditText vL;
+    private EditText vXL;
+    private EditText vXXL;
+    private EditText vXXXL;
 
 
     public AddProductFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddProductFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddProductFragment newInstance(String param1, String param2) {
-        AddProductFragment fragment = new AddProductFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         homeActivity = (HomeActivity) context;
+    }
+
+    private void initView(View view){
+        vProductName = view.findViewById(R.id.product_name);
+        vProductGroup = view.findViewById(R.id.product_group);
+        vOneSize = view.findViewById(R.id.oneSize);
+        vXS = view.findViewById(R.id.xs);
+        vS = view.findViewById(R.id.small);
+        vM = view.findViewById(R.id.medium);
+        vL = view.findViewById(R.id.l);
+        vXL = view.findViewById(R.id.xl);
+        vXXL = view.findViewById(R.id.xxl);
+        vXXXL = view.findViewById(R.id.xxxl);
+
+    }
+
+
+    private void createOrder(){
+        ProductDetailsJson productDetailsJson = new ProductDetailsJson();
+        productDetailsJson.setL(vL.getText().toString());
+        productDetailsJson.setM(vM.getText().toString());
+        productDetailsJson.setOneSize(vOneSize.getText().toString());
+        productDetailsJson.setProductGroup(vProductGroup.getText().toString());
+        productDetailsJson.setProductName(vProductName.getText().toString());
+        productDetailsJson.setXl(vXL.getText().toString());
+        productDetailsJson.setXs( vXS.getText().toString());
+        productDetailsJson.setXxl( vXXL.getText().toString());
+        productDetailsJson.setXxxl(vXXXL.getText().toString());
+        productDetailsJson.setS(vS.getText().toString());
+        homeActivity.getProductDetailsJsons().add(productDetailsJson);
     }
 
     @Override
@@ -72,9 +90,11 @@ public class AddProductFragment extends Fragment {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                createOrder();
                 homeActivity.backClicked(view);
             }
         });
+        initView(view);
         return view;
     }
 

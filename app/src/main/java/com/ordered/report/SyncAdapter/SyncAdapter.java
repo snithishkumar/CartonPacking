@@ -12,30 +12,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.ordered.report.dao.orderDao;
-import com.ordered.report.json.models.OrderCreationDetailsJson;
-import com.ordered.report.json.models.OrderDetailsJson;
-import com.ordered.report.json.models.ResponseData;
-import com.ordered.report.models.OrderEntity;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import android.accounts.Account;
-import android.content.AbstractThreadedSyncAdapter;
-import android.content.ContentProviderClient;
-import android.content.Context;
-import android.content.SyncResult;
-import android.os.Bundle;
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.json.models.OrderDetailsJson;
