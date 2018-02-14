@@ -7,8 +7,9 @@ package com.ordered.report.SyncAdapter;
 public class ServiceUrls {
 
 
-    protected static final String CHECK_AUTHENTICATION = "/mobile/login.html";
-    protected static final String DOWNLOAD_URL = "/mobile/getOrderList.html";
+    protected static final String CHECK_AUTHENTICATION = "mobile/login.html";
+    protected static final String GET_ORDER_LIST = "mobile/getOrderList.html";
+    protected static final String UPDATE_ORDER_DETAILS = "mobile/updateOrderDetails.html";
 
 
 }

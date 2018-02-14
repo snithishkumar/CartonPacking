@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -16,7 +17,7 @@ import retrofit2.Retrofit;
 public enum ServiceAPI {
     INSTANCE;
 
-    private  final String SERVER_URL = "http://192.168.0.193:9090/server/";
+    private  final String SERVER_URL = "http://192.168.0.100:8182/globalimbx/";
 
     private SyncServiceApi syncServiceApi = null;
 
@@ -27,7 +28,7 @@ public enum ServiceAPI {
         httpClient.connectTimeout(5, TimeUnit.MINUTES);
 
         OkHttpClient okHttpClient = httpClient.build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).client(okHttpClient).callbackExecutor(executor).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(SERVER_URL).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
         syncServiceApi = retrofit.create(SyncServiceApi.class);
     }
 

@@ -67,7 +67,6 @@ public class OrderEntity {
         this.serverTime = orderDetailsJson.getServerTime();
     }
 
-
     public String getOrderedItems() {
         return orderedItems;
     }

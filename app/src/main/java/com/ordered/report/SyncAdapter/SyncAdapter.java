@@ -15,6 +15,31 @@ import com.google.gson.reflect.TypeToken;
 import com.ordered.report.dao.orderDao;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.json.models.OrderDetailsJson;
+import com.ordered.report.json.models.ResponseData;
+import com.ordered.report.models.OrderEntity;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import android.accounts.Account;
+import android.content.AbstractThreadedSyncAdapter;
+import android.content.ContentProviderClient;
+import android.content.Context;
+import android.content.SyncResult;
+import android.os.Bundle;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import com.ordered.report.dao.CartonbookDao;
+import com.ordered.report.json.models.OrderCreationDetailsJson;
+import com.ordered.report.json.models.OrderDetailsJson;
+import com.ordered.report.json.models.ResponseData;
 import com.ordered.report.models.OrderEntity;
 
 import java.lang.reflect.Type;
@@ -33,8 +58,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private final String LOG_TAG = SyncAdapter.class.getSimpleName();
     private Context context;
     private Gson gson = null;
-    private SyncServiceApi syncServiceApi;
-    private orderDao orderDao = null;
+    private  SyncServiceApi syncServiceApi;
+    private CartonbookDao cartonbookDao = null;
     private JsonParser jsonParser = null;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
@@ -51,7 +76,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     private void init(Context context) {
         try {
-            orderDao = new orderDao(context);
+            cartonbookDao = new CartonbookDao(context);
             gson = new Gson();
             syncServiceApi = ServiceAPI.INSTANCE.getSyncServiceApi();
             jsonParser = new JsonParser();
@@ -75,68 +100,67 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
 
-    private void downloadDataFromServer() {
-        try {
-            Call<String> orderDetailsCall = syncServiceApi.getDownloadedSyncItems(-1);
-            Response<String> orderDetailsResponse = orderDetailsCall.execute();
-            if (orderDetailsResponse != null && orderDetailsResponse.isSuccessful()) {
-                String orderDetailsData = orderDetailsResponse.body();
+    private void downloadDataFromServer(){
+        try{
+            Call<ResponseData> orderDetailsCall = syncServiceApi.getDownloadedSyncItems(-1);
+            Response<ResponseData> orderDetailsResponse = orderDetailsCall.execute();
+            if(orderDetailsResponse != null && orderDetailsResponse.isSuccessful()){
+                ResponseData orderDetailsData = orderDetailsResponse.body();
                 Type listType = new TypeToken<ArrayList<OrderDetailsJson>>() {
                 }.getType();
-                List<OrderDetailsJson> orderDetailsJsonsList = gson.fromJson(orderDetailsData, listType);
-                for (OrderDetailsJson orderDetailsJson : orderDetailsJsonsList) {
+
+                List<OrderDetailsJson> orderDetailsJsonsList =  gson.fromJson(gson.toJson(orderDetailsData.getData()), listType);
+                for(OrderDetailsJson orderDetailsJson : orderDetailsJsonsList){
                     processOrderDetails(orderDetailsJson);
                 }
             }
 
 
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
-            String orderDetailsData = "[{\"orderId\":\"wer123 delivered\",\"orderGuid\":\"234234-werewr-234234d\",\"clientName\":\"test\",\"orderStatus\":\"PACKING\",\"paymentStatus\":\"NOT_PAIED\",\"orderedDate\":324234234,\"lastModifiedDate\":4353453453,\"serverTime\":3453234324234,\"orderDetails\":[{\"name\":\"Shirt\",\"size\":\"M\",\"quantity\":100,\"category\":\"Male\",\"rate\":100,\"totalCost\":34.56,\"cartonNumber\":\"1\"}]},{\"orderId\":\"wer123 delivered\",\"orderGuid\":\"234234-werewr-234234d1\",\"clientName\":\"test\",\"orderStatus\":\"DELIVERED\",\"paymentStatus\":\"NOT_PAIED\",\"orderedDate\":324234234,\"lastModifiedDate\":4353453453,\"serverTime\":3453234324234,\"orderDetails\":[{\"name\":\"Shirt\",\"size\":\"M\",\"quantity\":100,\"category\":\"Male\",\"rate\":100,\"totalCost\":34.56,\"cartonNumber\":\"1\"}]},{\"orderId\":\"wer123 delivered\",\"orderGuid\":\"234234-werewr-234234d2\",\"clientName\":\"test\",\"orderStatus\":\"ORDERED\",\"paymentStatus\":\"NOT_PAIED\",\"orderedDate\":324234234,\"lastModifiedDate\":4353453453,\"serverTime\":3453234324234,\"orderDetails\":[{\"name\":\"Shirt\",\"size\":\"M\",\"quantity\":100,\"category\":\"Male\",\"rate\":100,\"totalCost\":34.56,\"cartonNumber\":\"1\"}]}]";
-            Type listType = new TypeToken<ArrayList<OrderDetailsJson>>() {
-            }.getType();
-            List<OrderDetailsJson> orderDetailsJsonsList = gson.fromJson(orderDetailsData, listType);
-            for (OrderDetailsJson orderDetailsJson : orderDetailsJsonsList) {
-                processOrderDetails(orderDetailsJson);
-            }        }
-    }
-
-
-    private void processOrderDetails(OrderDetailsJson orderDetailsJson) {
-        OrderEntity orderEntity = orderDao.getCartonBookEntityByGuid(orderDetailsJson.getOrderGuid());
-        if (orderEntity == null) {
-            orderEntity = new OrderEntity(orderDetailsJson);
-            orderDao.savCartonbookEntity(orderEntity);
         }
     }
 
 
-    private void uploadDataToServer() {
-        try {
-            List<OrderEntity> orderEntityList = orderDao.getUnSyncedOrderDetails();
+    private void processOrderDetails(OrderDetailsJson orderDetailsJson){
+        OrderEntity orderEntity =  cartonbookDao.getCartonBookEntityByGuid(orderDetailsJson.getOrderGuid());
+        if(orderEntity == null){
+            orderEntity = new OrderEntity(orderDetailsJson);
+            orderEntity.setOrderedItems(gson.toJson(orderDetailsJson.getOrderedItems()));
+            cartonbookDao.savCartonbookEntity(orderEntity);
+        }
+    }
+
+
+    private void uploadDataToServer(){
+        try{
+            List<OrderEntity> orderEntityList =   cartonbookDao.getUnSyncedOrderDetails();
             List<OrderDetailsJson> orderDetailsJsonList = new ArrayList<>();
-            for (OrderEntity orderEntity : orderEntityList) {
+            for(OrderEntity orderEntity : orderEntityList){
                 OrderDetailsJson orderDetailsJson = new OrderDetailsJson(orderEntity);
                 String orderDetailsDetails = orderEntity.getOrderedDetails();
                 Type listType = new TypeToken<ArrayList<OrderCreationDetailsJson>>() {
                 }.getType();
-                List<OrderCreationDetailsJson> orderDetailsJsonsList = gson.fromJson(orderDetailsDetails, listType);
+                List<OrderCreationDetailsJson> orderDetailsJsonsList =  gson.fromJson(orderDetailsDetails, listType);
                 orderDetailsJson.setProductDetails(orderDetailsJsonsList);
                 orderDetailsJsonList.add(orderDetailsJson);
             }
-            Call<String> orderSyncedDetails = syncServiceApi.uploadData(orderDetailsJsonList);
-            Response<String> response = orderSyncedDetails.execute();
-            if (response != null && response.isSuccessful()) {
-                String dataRespond = response.body();
-                JsonArray orderGuids = (JsonArray) jsonParser.parse(dataRespond);
-                int size = orderGuids.size();
-                for (int i = 0; i < size; i++) {
-                    String orderGuid = orderGuids.get(i).getAsString();
-                    orderDao.updateSyncStatus(orderGuid);
+            if(orderDetailsJsonList.size() > 0){
+                Call<String> orderSyncedDetails =  syncServiceApi.uploadData(orderDetailsJsonList);
+                Response<String> response = orderSyncedDetails.execute();
+                if(response != null && response.isSuccessful()){
+                    String dataRespond = response.body();
+                    JsonArray orderGuids =  (JsonArray)jsonParser.parse(dataRespond);
+                    int size = orderGuids.size();
+                    for(int i = 0 ; i < size; i++){
+                        String orderGuid =  orderGuids.get(i).getAsString();
+                        cartonbookDao.updateSyncStatus(orderGuid);
+                    }
                 }
             }
 
-        } catch (Exception e) {
+
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
