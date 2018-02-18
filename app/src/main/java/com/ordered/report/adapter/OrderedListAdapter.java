@@ -67,7 +67,7 @@ public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHold
                 if (orderEntity.getOrderType() == OrderStatus.ORDERED) {
                     showAlertDialog(orderEntity.getOrderGuid());
                 } else if (orderEntity.getOrderType() == OrderStatus.PACKING) {
-                    // homeActivity.showProductList();
+                     homeActivity.showPackingProductDetailsList(orderEntity.getOrderGuid());
                 } else {
                     // generate report here
                 }

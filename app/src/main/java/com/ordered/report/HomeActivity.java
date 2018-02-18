@@ -16,6 +16,8 @@ import android.view.View;
 import com.ordered.report.fragment.AddProductFragment;
 import com.ordered.report.fragment.HomeFragment;
 import com.ordered.report.fragment.OrderedFragment;
+import com.ordered.report.fragment.PackingFragment;
+import com.ordered.report.fragment.PackingProductDetailsListFragment;
 import com.ordered.report.fragment.ProductDetailsListFragment;
 import com.ordered.report.fragment.ProductListFragment;
 import com.ordered.report.json.models.ProductDetailsJson;
@@ -75,6 +77,13 @@ public class HomeActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,orderedFragment).addToBackStack(null).commit();
     }
 
+
+
+    public void showPackingListFragment(){
+        PackingFragment packingFragment = new PackingFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,packingFragment).addToBackStack(null).commit();
+    }
+
     public void showProductList(int cartonNo,String order){
         ProductDetailsListFragment productDetailsListFragment = new ProductDetailsListFragment();
         Bundle bundle = new Bundle();
@@ -82,6 +91,17 @@ public class HomeActivity extends AppCompatActivity {
         bundle.putString(Constants.ORDER, order);
         productDetailsListFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper, productDetailsListFragment).addToBackStack(null).commit();
+    }
+
+
+
+    public void showPackingProductDetailsList(String orderGuid){
+        PackingProductDetailsListFragment packingProductDetails = new PackingProductDetailsListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.ORDER, orderGuid);
+        packingProductDetails.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper, packingProductDetails).addToBackStack(null).commit();
+
     }
     public void showSubProductList(){
         ProductListFragment productListFragment = new ProductListFragment();
