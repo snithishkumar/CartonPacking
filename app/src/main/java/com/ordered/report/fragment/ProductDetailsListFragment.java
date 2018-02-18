@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
 import com.ordered.report.adapter.OrderDetailsListAdapter;
+import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductEntity;
 import com.ordered.report.services.OrderedService;
@@ -92,7 +93,52 @@ public class ProductDetailsListFragment extends Fragment {
                // createProductEntity();
             }
         });
+
+        Button orderDetailsDone = (Button) view.findViewById(R.id.order_details_done);
+        orderDetailsDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if( homeActivity.getProductDetailsJsons().size() > 0){
+                    updateOrderDetails();
+                    homeActivity.getProductDetailsJsons().clear();
+                    homeActivity.showOrderedFragment();
+                }else{
+                    showAlert();
+                }
+
+            }
+        });
+
+        Button orderDetailsCancel = (Button) view.findViewById(R.id.order_details_cancel);
+        orderDetailsCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeActivity.getProductDetailsJsons().clear();
+                homeActivity.showOrderedFragment();
+            }
+        });
         return view;
+
+    }
+
+    private void showAlert(){
+        AlertDialog alertDialog = new AlertDialog.Builder(
+                getActivity()).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Error");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Noting to Save.");
+//            alertDialog.setIcon(R.drawable.tick);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Write your code here to execute after dialog closed
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     @Override
@@ -106,6 +152,15 @@ public class ProductDetailsListFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.context = activity;
+    }
+
+
+    private void updateOrderDetails(){
+        orderEntity.setOrderedDetails( gson.toJson(homeActivity.getProductDetailsJsons()));
+        orderEntity.setLastModifiedDate(System.currentTimeMillis());
+        orderEntity.setSync(false);
+        orderEntity.setOrderStatus(OrderStatus.PACKING);
+        orderedService.updateOrderUpdates(orderEntity);
     }
 
    /* public void createProductEntity() {

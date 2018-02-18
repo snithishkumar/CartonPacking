@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.ordered.report.fragment.AddProductFragment;
 import com.ordered.report.fragment.HomeFragment;
+import com.ordered.report.fragment.OrderedFragment;
 import com.ordered.report.fragment.ProductDetailsListFragment;
 import com.ordered.report.fragment.ProductListFragment;
 import com.ordered.report.json.models.ProductDetailsJson;
@@ -66,6 +67,12 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void showOrderedFragment(){
+        OrderedFragment orderedFragment = new OrderedFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,orderedFragment).addToBackStack(null).commit();
     }
 
     public void showProductList(int cartonNo,String order){

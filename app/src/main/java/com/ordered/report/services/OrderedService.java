@@ -21,14 +21,14 @@ public class OrderedService {
     private Context context = null;
     private SyncServiceApi syncServiceApi = null;
     public final String LOG_TAG = LoginService.class.getSimpleName();
-    private CartonbookDao CartonbookDao = null;
+    private CartonbookDao cartonbookDao = null;
     private LoginEvent loginEvent = null;
     public static final String AUTHORITY = "com.ordered.report.SyncAdapter";
 
     public OrderedService(Context context) {
         try {
             this.context = context;
-            CartonbookDao = new CartonbookDao(context);
+            cartonbookDao = new CartonbookDao(context);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,7 +36,7 @@ public class OrderedService {
 
     public List<OrderEntity> getCartonBookEntityList(String userName) {
         try {
-            return CartonbookDao.getAllCartonbokEntityList(userName);
+            return cartonbookDao.getAllCartonbokEntityList(userName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,31 +44,36 @@ public class OrderedService {
     }
 
     public OrderEntity getOrderEntityByGuid(String orderGuid) {
-        OrderEntity orderEntity = CartonbookDao.getCartonBookEntityByGuid(orderGuid);
+        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
         return orderEntity;
     }
 
     public void createProductEntity(ProductEntity productEntity) {
         try {
-            CartonbookDao.saveProductEntity(productEntity);
+            cartonbookDao.saveProductEntity(productEntity);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public List<ProductEntity> getProductEntityList(OrderEntity orderEntity) {
-        List<ProductEntity> productEntities = CartonbookDao.getProductEntityList(orderEntity);
+        List<ProductEntity> productEntities = cartonbookDao.getProductEntityList(orderEntity);
         return productEntities;
     }
 
     public List<OrderEntity> getCartonBookEntityByType(OrderStatus orderType) {
         if (orderType.toString().equals(OrderStatus.ORDERED.toString())) {
-            return CartonbookDao.getCartonBookByOrderType(orderType);
+            return cartonbookDao.getCartonBookByOrderType(orderType);
         } else if (orderType.toString().equals(OrderStatus.PACKING.toString())) {
-            return CartonbookDao.getCartonBookByOrderType(orderType);
+            return cartonbookDao.getCartonBookByOrderType(orderType);
         } else if (orderType.toString().equals(OrderType.DELIVERED.toString())) {
-            return CartonbookDao.getCartonBookByOrderType(orderType);
+            return cartonbookDao.getCartonBookByOrderType(orderType);
         }
         return new ArrayList<>();
+    }
+
+
+    public void updateOrderUpdates(OrderEntity orderEntity){
+        cartonbookDao.updateCortonbookEntity(orderEntity);
     }
 }
