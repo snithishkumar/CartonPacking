@@ -48,6 +48,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public int getItemCount() {
         return productEntities.size();
     }
+
     public  class HomeImageViewHolder extends RecyclerView.ViewHolder {
         protected TextView addmore,subItemsCount,productTitle;
         public HomeImageViewHolder(View v) {

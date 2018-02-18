@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ordered.report.HomeActivity;
@@ -37,6 +38,7 @@ public class AddProductFragment extends Fragment {
     private EditText vXL;
     private EditText vXXL;
     private EditText vXXXL;
+    private Spinner spinner;
 
 
     public AddProductFragment() {
@@ -62,7 +64,7 @@ public class AddProductFragment extends Fragment {
         vXL = view.findViewById(R.id.xl);
         vXXL = view.findViewById(R.id.xxl);
         vXXXL = view.findViewById(R.id.xxxl);
-
+        //spinner = view.findViewById(R.id.planets_spinner);
     }
 
 
@@ -77,7 +79,10 @@ public class AddProductFragment extends Fragment {
         productDetailsJson.setXs( vXS.getText().toString());
         productDetailsJson.setXxl( vXXL.getText().toString());
         productDetailsJson.setXxxl(vXXXL.getText().toString());
+        productDetailsJson.setCartonNumber(1);
         productDetailsJson.setS(vS.getText().toString());
+        productDetailsJson.setCreatedDateTime(System.currentTimeMillis());
+        productDetailsJson.setLastModifiedDateTime(productDetailsJson.getCreatedDateTime());
         homeActivity.getProductDetailsJsons().add(productDetailsJson);
     }
 

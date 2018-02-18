@@ -15,8 +15,8 @@ import android.view.View;
 
 import com.ordered.report.fragment.AddProductFragment;
 import com.ordered.report.fragment.HomeFragment;
+import com.ordered.report.fragment.ProductDetailsListFragment;
 import com.ordered.report.fragment.ProductListFragment;
-import com.ordered.report.fragment.SubitemsFragment;
 import com.ordered.report.json.models.ProductDetailsJson;
 import com.ordered.report.utils.Constants;
 
@@ -69,16 +69,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showProductList(int cartonNo,String order){
-        ProductListFragment productListFragment = new ProductListFragment();
+        ProductDetailsListFragment productDetailsListFragment = new ProductDetailsListFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.NO_OF_COTTON, cartonNo);
         bundle.putString(Constants.ORDER, order);
-        productListFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,productListFragment).addToBackStack(null).commit();
+        productDetailsListFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper, productDetailsListFragment).addToBackStack(null).commit();
     }
     public void showSubProductList(){
-        SubitemsFragment subitemsFragment = new SubitemsFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,subitemsFragment).addToBackStack(null).commit();
+        ProductListFragment productListFragment = new ProductListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper, productListFragment).addToBackStack(null).commit();
     }
     public void showAddProductList(){
         AddProductFragment addProductFragment = new AddProductFragment();

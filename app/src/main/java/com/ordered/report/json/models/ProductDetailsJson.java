@@ -18,6 +18,34 @@ public class ProductDetailsJson {
     private String xl;
     private String xxl;
     private String xxxl;
+    private int cartonNumber;
+    private long createdDateTime;
+    private long lastModifiedDateTime;
+
+
+    public long getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(long createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public long getLastModifiedDateTime() {
+        return lastModifiedDateTime;
+    }
+
+    public void setLastModifiedDateTime(long lastModifiedDateTime) {
+        this.lastModifiedDateTime = lastModifiedDateTime;
+    }
+
+    public int getCartonNumber() {
+        return cartonNumber;
+    }
+
+    public void setCartonNumber(int cartonNumber) {
+        this.cartonNumber = cartonNumber;
+    }
 
     public String getS() {
         return s;
