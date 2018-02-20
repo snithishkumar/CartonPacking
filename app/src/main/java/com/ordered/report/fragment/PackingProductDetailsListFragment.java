@@ -54,6 +54,7 @@ public class PackingProductDetailsListFragment extends Fragment {
                 gson = new Gson();
                 if (orderGuid != null && !orderGuid.isEmpty()) {
                     orderEntity = orderedService.getOrderEntityByGuid(orderGuid);
+                    totalCotton = Integer.valueOf(orderEntity.getCartonCounts());
                 }
             }
         } catch (Exception e) {

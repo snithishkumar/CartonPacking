@@ -160,6 +160,7 @@ public class ProductDetailsListFragment extends Fragment {
         orderEntity.setLastModifiedDate(System.currentTimeMillis());
         orderEntity.setSync(false);
         orderEntity.setOrderStatus(OrderStatus.PACKING);
+        orderEntity.setCartonCounts(String.valueOf(totalCotton));
         orderedService.updateOrderUpdates(orderEntity);
     }
 

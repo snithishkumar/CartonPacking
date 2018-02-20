@@ -23,6 +23,8 @@ public class OrderDetailsJson {
     private boolean isDeleted;
     private List<OrderCreationDetailsJson> orderedItems = new ArrayList<>();
     private List<OrderCreationDetailsJson> productDetails = new ArrayList<>();
+    private String cartonCounts;
+    private String createdBy;
 
     public OrderDetailsJson(){
 
@@ -37,6 +39,24 @@ this.clientName = orderEntity.getClientName();
         this.orderedDate = orderEntity.getOrderedDate();
         this.lastModifiedDate= orderEntity.getLastModifiedDate();
         this.serverTime = orderEntity.getServerTime();
+        this.cartonCounts = orderEntity.getCartonCounts();
+        this.createdBy = orderEntity.getCreatedBy();
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCartonCounts() {
+        return cartonCounts;
+    }
+
+    public void setCartonCounts(String cartonCounts) {
+        this.cartonCounts = cartonCounts;
     }
 
     public String getOrderId() {

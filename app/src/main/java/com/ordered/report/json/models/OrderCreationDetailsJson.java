@@ -20,6 +20,15 @@ public class OrderCreationDetailsJson {
     private String xl;
     private String xxl;
     private String xxxl;
+    private String cartonNumber;
+
+    public String getCartonNumber() {
+        return cartonNumber;
+    }
+
+    public void setCartonNumber(String cartonNumber) {
+        this.cartonNumber = cartonNumber;
+    }
 
     public String getProductGroupGuid() {
         return productGroupGuid;
@@ -159,6 +168,7 @@ public class OrderCreationDetailsJson {
                 ", xl='" + xl + '\'' +
                 ", xxl='" + xxl + '\'' +
                 ", xxxl='" + xxxl + '\'' +
+                ", cartonNumber='" + cartonNumber + '\'' +
                 '}';
     }
 }

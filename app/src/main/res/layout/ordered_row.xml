@@ -45,7 +45,7 @@
                     android:id="@+id/ordered_list_order_id"
                     android:textSize="18sp"
                     android:layout_marginTop="5dp"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/holo_red_dark" />
 
                 <TextView
                     android:text="Client Name"
@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ordered_list_created_by"
                 android:paddingTop="15dp"
+                android:textSize="14sp"
                 android:textColor="@android:color/black"
                 android:layout_alignBaseline="@+id/gl"
                 android:layout_alignBottom="@+id/gl"
@@ -83,7 +84,8 @@
                 android:layout_alignTop="@+id/order_image"
                 android:paddingTop="1dp"
                 android:layout_marginEnd="15dp"
-                android:text="Order Date:"
+                android:textSize="14sp"
+                android:text="18/02/2018"
                 android:textColor="@android:color/black" />
 
 
@@ -95,7 +97,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_toEndOf="@+id/gl"
                 android:paddingTop="1dp"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:text="10"
                 android:textColor="@android:color/black" />

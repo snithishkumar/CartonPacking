@@ -11,12 +11,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.utils.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +51,12 @@ public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHold
     public void onBindViewHolder(OrderedListViewHolder holder, int position) {
         final OrderEntity orderEntity = orderEntities.get(position);
         holder.orderTitle.setText(orderEntity.getOrderId());
-        // holder.clientName.setText("ClientName :" + orderEntity.getClientName());
+         holder.clientName.setText(orderEntity.getClientName());
+        holder.createdBy.setText(orderEntity.getCreatedBy());
+        int orderCount = getOrderItemsCount(orderEntity);
+        holder.orderItemsCount.setText(String.valueOf(orderCount));
+
+        holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
         if (orderEntity.getOrderType() == OrderStatus.ORDERED) {
             holder.orderImage.setImageResource(R.mipmap.ordered_icon);
         } else if (orderEntity.getOrderType() == OrderStatus.PACKING) {
@@ -73,6 +82,23 @@ public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHold
                 }
             }
         });
+    }
+
+
+
+    private int getOrderItemsCount(OrderEntity orderEntity){
+       String orderedItems =  orderEntity.getOrderedItems();
+        JsonParser jsonParser = new JsonParser();
+        JsonArray jsonArray = (JsonArray)jsonParser.parse(orderedItems);
+       return  jsonArray.size();
+    }
+
+
+    private String formatDate(long dateTime){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        Date date = new Date(dateTime);
+        String val = simpleDateFormat.format(date);
+        return val;
     }
 
     @Override

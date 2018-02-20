@@ -53,6 +53,12 @@ public class OrderEntity {
     @DatabaseField(columnName = "OrderedDetails", dataType = DataType.LONG_STRING)
     private String orderedDetails;
 
+    @DatabaseField(columnName = "CartonCounts")
+    private String cartonCounts;
+
+    @DatabaseField(columnName = "CreatedBy")
+    private String createdBy;
+
     public OrderEntity() {
     }
 
@@ -65,6 +71,24 @@ public class OrderEntity {
         this.orderedDate = orderDetailsJson.getOrderedDate();
         this.lastModifiedDate = orderDetailsJson.getLastModifiedDate();
         this.serverTime = orderDetailsJson.getServerTime();
+        this.cartonCounts = orderDetailsJson.getCartonCounts();
+        this.createdBy = orderDetailsJson.getCreatedBy();
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCartonCounts() {
+        return cartonCounts;
+    }
+
+    public void setCartonCounts(String cartonCounts) {
+        this.cartonCounts = cartonCounts;
     }
 
     public String getOrderedItems() {
