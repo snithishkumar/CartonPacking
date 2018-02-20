@@ -1,5 +1,6 @@
 package com.ordered.report;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -73,8 +74,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void showOrderedFragment(){
-        OrderedFragment orderedFragment = new OrderedFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,orderedFragment).addToBackStack(null).commit();
+        finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
 

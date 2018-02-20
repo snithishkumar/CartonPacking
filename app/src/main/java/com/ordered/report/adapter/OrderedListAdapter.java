@@ -126,7 +126,10 @@ public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHold
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                homeActivity.showProductList(Integer.parseInt(userInput.getText().toString()),order);
+                                if(userInput.getText().toString() != null && !userInput.getText().toString().isEmpty()){
+                                    homeActivity.showProductList(Integer.parseInt(userInput.getText().toString()),order);
+                                }
+
                             }
                         });
         // create alert dialog
