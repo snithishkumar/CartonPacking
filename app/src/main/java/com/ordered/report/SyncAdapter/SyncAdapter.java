@@ -102,7 +102,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         OrderEntity orderEntity =  cartonbookDao.getCartonBookEntityByGuid(orderDetailsJson.getOrderGuid());
         if(orderEntity == null){
             orderEntity = new OrderEntity(orderDetailsJson);
+            orderEntity.setSync(true);
             orderEntity.setOrderedItems(gson.toJson(orderDetailsJson.getOrderedItems()));
+            if(orderDetailsJson.getProductDetails() != null && orderDetailsJson.getProductDetails().size() > 0){
+                orderEntity.setOrderedDetails(gson.toJson(orderDetailsJson.getProductDetails()));
+            }
             cartonbookDao.savCartonbookEntity(orderEntity);
         }
     }

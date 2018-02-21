@@ -41,9 +41,9 @@ public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHold
     @Override
     public OrderedListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
-        if (orderStatus.toString().equals(OrderStatus.ORDERED.toString())) {
+       // if (orderStatus.toString().equals(OrderStatus.ORDERED.toString())) {
             view = LayoutInflater.from(context).inflate(R.layout.ordered_row, parent, false);
-        }
+       // }
         return new OrderedListViewHolder(view);
     }
 
