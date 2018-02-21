@@ -27,7 +27,7 @@ public interface SyncServiceApi {
     @POST(ServiceUrls.GET_ORDER_LIST)
     Call<ResponseData> getDownloadedSyncItems(@Field("lastSyncTime") long lastSyncTime);
 
-    @GET(ServiceUrls.UPDATE_ORDER_DETAILS)
-    Call<String> uploadData(@Body List<OrderDetailsJson> orderDetailsJsonList);
+    @POST(ServiceUrls.UPDATE_ORDER_DETAILS)
+    Call<String> uploadData(@Body String orderDetailsJsonList);
 
 }

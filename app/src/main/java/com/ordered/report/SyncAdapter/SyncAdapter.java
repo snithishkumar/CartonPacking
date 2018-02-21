@@ -122,7 +122,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 orderDetailsJsonList.add(orderDetailsJson);
             }
             if(orderDetailsJsonList.size() > 0){
-                Call<String> orderSyncedDetails =  syncServiceApi.uploadData(orderDetailsJsonList);
+                Call<String> orderSyncedDetails =  syncServiceApi.uploadData(gson.toJson(orderDetailsJsonList));
                 Response<String> response = orderSyncedDetails.execute();
                 if(response != null && response.isSuccessful()){
                     String dataRespond = response.body();
