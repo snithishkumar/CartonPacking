@@ -1,5 +1,6 @@
 package com.ordered.report.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,5 +26,14 @@ public class UtilService {
         return UUID.randomUUID().toString();
     }
 
+    public static String reportFormat(long milliSec) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        return sdf.format(milliSec);
+    }
+
+    public static String formatDateTime(long dateInMilliSecs) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM / dd / yyyy");
+        return simpleDateFormat.format(dateInMilliSecs);
+    }
 
 }

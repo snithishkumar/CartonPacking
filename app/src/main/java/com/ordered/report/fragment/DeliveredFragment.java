@@ -1,10 +1,13 @@
 package com.ordered.report.fragment;
 
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,12 @@ public class DeliveredFragment extends Fragment {
     private List<OrderEntity> cartonbookEntities = null;
     private OrderedService orderedService = null;
     RecyclerView recyclerView = null;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    private ProgressDialog progressDialog = null;
 
     public DeliveredFragment() {
         // Required empty public constructor
@@ -72,4 +81,6 @@ public class DeliveredFragment extends Fragment {
         cartonbookEntities = orderedService.getCartonBookEntityByType(OrderStatus.DELIVERED);
         return cartonbookEntities;
     }
+        //generatePdf
+
 }
