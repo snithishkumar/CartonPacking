@@ -34,13 +34,7 @@ public class OrderCreationDetailsJson {
         this.cartonNumber = cartonNumber;
     }
 
-    public String getProductGroupGuid() {
-        return productGroupGuid;
-    }
 
-    public void setProductGroupGuid(String productGroupGuid) {
-        this.productGroupGuid = productGroupGuid;
-    }
 
     public String getProductGroup() {
         return productGroup;
@@ -170,6 +164,7 @@ public class OrderCreationDetailsJson {
 
     public void setLastModifiedDateTime(long lastModifiedDateTime) {
         this.lastModifiedDateTime = lastModifiedDateTime;
+    }
     public int getQuantity() {
         return quantity;
     }
