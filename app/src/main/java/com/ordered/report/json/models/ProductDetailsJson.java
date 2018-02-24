@@ -1,5 +1,7 @@
 package com.ordered.report.json.models;
 
+import com.ordered.report.models.ProductDetailsEntity;
+
 /**
  * Created by Nithish on 24/02/18.
  */
@@ -23,6 +25,31 @@ public class ProductDetailsJson {
     private String cartonNumber;
     private long createdDateTime;
     private long lastModifiedDateTime;
+
+    public ProductDetailsJson(){
+
+    }
+
+    public ProductDetailsJson(ProductDetailsEntity productDetailsEntity){
+       this.productGuid = productDetailsEntity.getProductGuid();
+       this.productCategory = productDetailsEntity.getProductCategory();
+       this.productStyle = productDetailsEntity.getProductName();
+       this.colorStyle = productDetailsEntity.getColorStyle();
+       this.orderItemGuid = productDetailsEntity.getOrderItemGuid();
+       this.oneSize = productDetailsEntity.getOneSize();
+       this.xs = productDetailsEntity.getXs();
+       this.s = productDetailsEntity.getS();
+       this.m = productDetailsEntity.getM();
+       this.l = productDetailsEntity.getL();
+       this.xl = productDetailsEntity.getXl();
+       this.xxl = productDetailsEntity.getXxl();
+       this.xxxl = productDetailsEntity.getXxxl();
+       this.cartonNumber = productDetailsEntity.getCartonNumber().getCartonNumber();
+       this.createdDateTime= productDetailsEntity.getCreatedDateTime();
+       this.lastModifiedDateTime = productDetailsEntity.getLastModifiedDateTime();
+      //  this.productGroup = productDetailsEntity.getpr
+
+    }
 
     public String getProductGroup() {
         return productGroup;
