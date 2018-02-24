@@ -14,6 +14,7 @@ import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.view.adapter.DeliveredListAdapter;
+import com.ordered.report.view.adapter.PackingListAdapter;
 
 import java.util.List;
 
@@ -29,20 +30,20 @@ public class PackingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
         orderedService = new OrderedService(getActivity());
-        getActivity().setTitle("ORDER");
+        getActivity().setTitle("PACKING");
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        DeliveredListAdapter mAdapter = new DeliveredListAdapter(getActivity(), getOrderedCartonBookList(),OrderStatus.ORDERED);
+        PackingListAdapter mAdapter = new PackingListAdapter(getActivity(), getOrderedCartonBookList());
         recyclerView.setAdapter(mAdapter);
         return view;
     }
 
 
     public List<OrderEntity> getOrderedCartonBookList() {
-        cartonbookEntities = orderedService.getCartonBookEntityByType(OrderStatus.PACKING);
+        cartonbookEntities = orderedService.getPackingOrdersList();
         return cartonbookEntities;
     }
 }

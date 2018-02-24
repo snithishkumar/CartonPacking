@@ -234,6 +234,17 @@ public class CartonbookDao {
     }
 
 
+    public List<OrderEntity> getPackingOrders(){
+        try {
+            return orderDao.queryBuilder().where().eq(OrderEntity.ORDER_STATUS, OrderStatus.PACKING).query();
+            //return orderDao.queryBuilder().query();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
 
 
 }

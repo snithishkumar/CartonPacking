@@ -77,6 +77,11 @@ public class OrderedService {
         return cartonbookDao.getOrders();
     }
 
+
+    public List<OrderEntity> getPackingOrdersList(){
+        return cartonbookDao.getPackingOrders();
+    }
+
     public List<OrderEntity> getCartonBookEntityByType(OrderStatus orderType) {
         if (orderType.toString().equals(OrderStatus.ORDERED.toString())) {
             return cartonbookDao.getCartonBookByOrderType(orderType);
