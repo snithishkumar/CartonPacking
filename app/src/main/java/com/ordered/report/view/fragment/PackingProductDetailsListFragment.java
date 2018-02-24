@@ -1,4 +1,4 @@
-package com.ordered.report.fragment;
+package com.ordered.report.view.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,13 +15,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
-import com.ordered.report.adapter.OrderDetailsListAdapter;
-import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.view.activity.HomeActivity;
+import com.ordered.report.view.adapter.OrderDetailsListAdapter;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ public class PackingProductDetailsListFragment extends Fragment {
 
         getProductDetails();
 
-        mAdapter = new OrderDetailsListAdapter(getActivity(), new ArrayList<OrderDetailsListViewModel>(),totalCotton);
+        mAdapter = new OrderDetailsListAdapter(getActivity(), new ArrayList<OrderDetailsListViewModel>(),totalCotton+"");
         recyclerView.setAdapter(mAdapter);
         Button addButton = (Button) view.findViewById(R.id.packing_order_details_add);
         addButton.setOnClickListener(new View.OnClickListener() {

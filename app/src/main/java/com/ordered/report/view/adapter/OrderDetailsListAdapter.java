@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ordered.report.view.activity.HomeActivity;
 import com.ordered.report.R;
+import com.ordered.report.view.activity.OrderDetailsActivity;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.text.SimpleDateFormat;
@@ -27,14 +27,14 @@ public class OrderDetailsListAdapter extends RecyclerView.Adapter<OrderDetailsLi
 
     private Context context = null;
     private List<OrderDetailsListViewModel>  orderCreationDetails = new ArrayList<>();
-    private HomeActivity homeActivity;
+    private OrderDetailsActivity orderDetailsActivity;
     private OrderDetailsClickListeners orderDetailsClickListeners;
-    private int totalCartonCount;
-    public OrderDetailsListAdapter(Context context, List<OrderDetailsListViewModel> orderDetailsListViewModels,int totalCartonCount) {
+    private String totalCartonCount;
+    public OrderDetailsListAdapter(Context context, List<OrderDetailsListViewModel> orderDetailsListViewModels,String totalCartonCount) {
         this.orderCreationDetails = orderDetailsListViewModels;
         this.context = context;
-        homeActivity = (HomeActivity) context;
-        orderDetailsClickListeners = homeActivity;
+        orderDetailsActivity = (OrderDetailsActivity) context;
+        orderDetailsClickListeners = orderDetailsActivity;
         this.totalCartonCount = totalCartonCount;
     }
 
@@ -54,24 +54,25 @@ public class OrderDetailsListAdapter extends RecyclerView.Adapter<OrderDetailsLi
         setVal( holder.cartonNumber,productDetailsJson.getCartonNumber()+"");
         holder.productName.setText(productDetailsJson.getOrderItemName());
         holder.productGroupName.setText(productDetailsJson.getOrderItemGroup());
-        setVal( holder.oneSize,productDetailsJson.getOrderItemOneSize());
-        setVal( holder.xs,productDetailsJson.getOrderItemXS());
-        setVal( holder.small,productDetailsJson.getOrderItemS());
-        setVal( holder.medium,productDetailsJson.getOrderItemM());
-        setVal( holder.xl,productDetailsJson.getOrderItemXl());
-        setVal( holder.xxl,productDetailsJson.getOrderItemXxl());
-        setVal( holder.xxxl,productDetailsJson.getOrderItemXxxl());
+        setVal( holder.oneSize,productDetailsJson.getProductOneSize());
+        setVal( holder.xs,productDetailsJson.getProductXS());
+        setVal( holder.small,productDetailsJson.getProductS());
+        setVal( holder.medium,productDetailsJson.getProductM());
+        setVal( holder.large,productDetailsJson.getProductL());
+        setVal( holder.xl,productDetailsJson.getProductXl());
+        setVal( holder.xxl,productDetailsJson.getProductXxl());
+        setVal( holder.xxxl,productDetailsJson.getProductXxxl());
         formDateTime(productDetailsJson.getOrderItemCreatedDateTime(),holder.createDateTime);
         formDateTime(productDetailsJson.getOrderItemCreatedDateTime(),holder.lastModifiedDateTime);
 
-        setProductVal(holder.orderedOneSize,"OneSize",productDetailsJson.getProductOneSize());
-        setProductVal(holder.orderedXS,"XS",productDetailsJson.getProductXS());
-        setProductVal(holder.orderedSmall,"S",productDetailsJson.getProductS());
-        setProductVal(holder.orderedMedium,"M",productDetailsJson.getProductM());
-        setProductVal(holder.orderedLarge,"L",productDetailsJson.getProductL());
-        setProductVal(holder.orderedXl,"XL",productDetailsJson.getProductXl());
-        setProductVal(holder.orderedXxl,"XXL",productDetailsJson.getProductXxl());
-        setProductVal(holder.orderedXxxl,"XXXL",productDetailsJson.getProductXxl());
+        setProductVal(holder.orderedOneSize,"OneSize",productDetailsJson.getOrderItemOneSize());
+        setProductVal(holder.orderedXS,"XS",productDetailsJson.getOrderItemXS());
+        setProductVal(holder.orderedSmall,"S",productDetailsJson.getOrderItemS());
+        setProductVal(holder.orderedMedium,"M",productDetailsJson.getOrderItemM());
+        setProductVal(holder.orderedLarge,"L",productDetailsJson.getOrderItemL());
+        setProductVal(holder.orderedXl,"XL",productDetailsJson.getOrderItemXl());
+        setProductVal(holder.orderedXxl,"XXL",productDetailsJson.getOrderItemXxl());
+        setProductVal(holder.orderedXxxl,"XXXL",productDetailsJson.getOrderItemXxxl());
 
 
 
@@ -154,7 +155,7 @@ public class OrderDetailsListAdapter extends RecyclerView.Adapter<OrderDetailsLi
             del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    homeActivity.getOrderDetailsListViewModels().remove(getAdapterPosition());
+                    orderDetailsActivity.getOrderDetailsListViewModels().remove(getAdapterPosition());
                     notifyDataSetChanged();
                 }
             });
@@ -172,8 +173,7 @@ public class OrderDetailsListAdapter extends RecyclerView.Adapter<OrderDetailsLi
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    OrderDetailsListViewModel orderDetailsListViewModel =  orderCreationDetails.get(getAdapterPosition());
-                    orderDetailsClickListeners.orderDetailsListOnClick(orderDetailsListViewModel,totalCartonCount);
+                    orderDetailsClickListeners.orderDetailsListOnClick(getAdapterPosition());
                 }
             });
 
@@ -183,7 +183,7 @@ public class OrderDetailsListAdapter extends RecyclerView.Adapter<OrderDetailsLi
 
 
     public interface OrderDetailsClickListeners{
-        void orderDetailsListOnClick(OrderDetailsListViewModel productDetailsJson,int totalCartonCount);
+        void orderDetailsListOnClick(int position);
     }
 
 

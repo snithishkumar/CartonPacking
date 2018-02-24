@@ -10,7 +10,6 @@ import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.json.models.LoginEvent;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
-import com.ordered.report.json.models.OrderSizeDetails;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
@@ -69,6 +68,11 @@ public class OrderedService {
     public List<ProductDetailsEntity> getProductEntityList(OrderEntity orderEntity) {
         List<ProductDetailsEntity> productEntities = cartonbookDao.getProductEntityList(orderEntity);
         return productEntities;
+    }
+
+
+    public List<OrderEntity> getOrdersList(){
+        return cartonbookDao.getOrders();
     }
 
     public List<OrderEntity> getCartonBookEntityByType(OrderStatus orderType) {

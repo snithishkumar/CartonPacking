@@ -1,11 +1,9 @@
 package com.ordered.report.models;
 
-import com.google.gson.Gson;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.ordered.report.enumeration.OrderStatus;
-import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.enumeration.PaymentStatus;
 import com.ordered.report.json.models.OrderDetailsJson;
 

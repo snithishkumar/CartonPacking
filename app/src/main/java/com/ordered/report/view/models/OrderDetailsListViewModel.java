@@ -1,7 +1,6 @@
 package com.ordered.report.view.models;
 
 import com.ordered.report.json.models.OrderCreationDetailsJson;
-import com.ordered.report.json.models.OrderDetailsJson;
 
 /**
  * Created by Nithish on 24/02/18.

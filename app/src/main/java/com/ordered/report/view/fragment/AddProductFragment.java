@@ -1,4 +1,4 @@
-package com.ordered.report.fragment;
+package com.ordered.report.view.fragment;
 
 
 import android.app.Activity;
@@ -14,14 +14,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.view.activity.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;

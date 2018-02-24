@@ -12,10 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ordered.report.R;
-import com.ordered.report.view.adapter.OrderedListAdapter;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
+import com.ordered.report.view.adapter.DeliveredListAdapter;
+import com.ordered.report.view.adapter.OrderListAdapter;
 
 import java.util.List;
 
@@ -37,14 +38,14 @@ public class OrderedFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        OrderedListAdapter mAdapter = new OrderedListAdapter(getActivity(), getOrderedCartonBookList(),OrderStatus.ORDERED);
+        OrderListAdapter mAdapter = new OrderListAdapter(getActivity(), getOrderedCartonBookList());
         recyclerView.setAdapter(mAdapter);
         return view;
     }
 
 
     public List<OrderEntity> getOrderedCartonBookList() {
-        cartonbookEntities = orderedService.getCartonBookEntityByType(OrderStatus.ORDERED);
+        cartonbookEntities = orderedService.getOrdersList();
         return cartonbookEntities;
     }
 

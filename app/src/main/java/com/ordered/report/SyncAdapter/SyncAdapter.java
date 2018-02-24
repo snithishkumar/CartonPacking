@@ -9,12 +9,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.json.models.CartonDetailsJson;
-import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.json.models.OrderDetailsJson;
 import com.ordered.report.json.models.ProductDetailsJson;
 import com.ordered.report.json.models.ResponseData;

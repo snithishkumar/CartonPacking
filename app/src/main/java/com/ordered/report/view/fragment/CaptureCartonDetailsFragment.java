@@ -1,4 +1,4 @@
-package com.ordered.report.fragment;
+package com.ordered.report.view.fragment;
 
 
 import android.app.Activity;
@@ -10,22 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
-import com.ordered.report.json.models.OrderCreationDetailsJson;
-import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.view.activity.OrderDetailsActivity;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,9 +29,9 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class CaptureCartonDetailsFragment extends Fragment {
-    private HomeActivity homeActivity;
+    private OrderDetailsActivity orderDetailsActivity;
     private Context context;
-
+    private ShowFragment showFragment;
 
     private TextView vProductName;
     private TextView vProductGroup;
@@ -50,8 +46,9 @@ public class CaptureCartonDetailsFragment extends Fragment {
     private Spinner spinner;
 
     private OrderDetailsListViewModel orderDetailsListViewModel;
-    private int noOfCartons;
+    private int pos;
     private String cartonNumber;
+    private int noOfCartons;
 
     public CaptureCartonDetailsFragment() {
         // Required empty public constructor
@@ -61,10 +58,10 @@ public class CaptureCartonDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        homeActivity = (HomeActivity) context;
-
+        orderDetailsActivity = (OrderDetailsActivity) context;
+        showFragment = orderDetailsActivity;
         if (getArguments() != null) {
-            noOfCartons = getArguments().getInt(Constants.NO_OF_COTTON);
+            pos = getArguments().getInt(Constants.ORDER_DETAILS_POS);
         }
     }
 
@@ -81,10 +78,12 @@ public class CaptureCartonDetailsFragment extends Fragment {
         vXL = view.findViewById(R.id.capture_xl);
         vXXL = view.findViewById(R.id.capture_xxl);
         vXXXL = view.findViewById(R.id.capture_xxxl);
-        setCartonDropDown(view);
-        orderDetailsListViewModel = homeActivity.getOrderDetailsListViewModel();
+
+        orderDetailsListViewModel = orderDetailsActivity.getOrderDetailsListViewModels().get(pos);
         vProductName.setText(orderDetailsListViewModel.getOrderItemName());
         vProductGroup.setText(orderDetailsListViewModel.getOrderItemGroup());
+        noOfCartons = Integer.valueOf(orderDetailsActivity.getTotalNoOfCartons());
+        setCartonDropDown(view);
     }
 
 
@@ -96,7 +95,7 @@ public class CaptureCartonDetailsFragment extends Fragment {
             cartonNumberList.add(i + "");
         }
 // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(homeActivity, android.R.layout.simple_spinner_item, cartonNumberList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(orderDetailsActivity, android.R.layout.simple_spinner_item, cartonNumberList);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
@@ -139,7 +138,8 @@ public class CaptureCartonDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 createOrder();
-                homeActivity.backClicked(view);
+                showFragment.viewFragment(1);
+                return;
             }
         });
         initView(view);
@@ -157,4 +157,10 @@ public class CaptureCartonDetailsFragment extends Fragment {
         super.onAttach(activity);
         this.context = activity;
     }
+
+
+    public interface ShowFragment{
+        void viewFragment(int options);
+    }
+
 }

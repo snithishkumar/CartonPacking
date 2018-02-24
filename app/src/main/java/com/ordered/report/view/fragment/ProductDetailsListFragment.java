@@ -1,4 +1,4 @@
-package com.ordered.report.fragment;
+package com.ordered.report.view.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,31 +15,24 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
-import com.ordered.report.adapter.OrderDetailsListAdapter;
-import com.ordered.report.enumeration.OrderStatus;
-import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.view.activity.HomeActivity;
+import com.ordered.report.view.activity.OrderDetailsActivity;
+import com.ordered.report.view.adapter.OrderDetailsListAdapter;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.List;
 
 public class ProductDetailsListFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private HomeActivity homeActivity;
+    private OrderDetailsActivity orderDetailsActivity;
     private Context context;
-    private int totalCotton = 0;
+    private String totalCotton ;
     private TextView no_of_cotton;
-    private OrderedService orderedService = null;
-    private OrderEntity orderEntity = null;
-    private String orderGuid;
-    private Gson gson = null;
-    List<ProductDetailsEntity> productEntities;
+
     OrderDetailsListAdapter mAdapter;
 
     public ProductDetailsListFragment() {
@@ -50,19 +43,12 @@ public class ProductDetailsListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            homeActivity = (HomeActivity) context;
-            orderedService = new OrderedService(getActivity());
-            if (getArguments() != null) {
-                totalCotton = getArguments().getInt(Constants.NO_OF_COTTON);
-                orderGuid = getArguments().getString(Constants.ORDER);
-                gson = new Gson();
-                if (orderGuid != null && !orderGuid.isEmpty()) {
-                    orderEntity = orderedService.getOrderEntityByGuid(orderGuid);
-                    productEntities = orderedService.getProductEntityList(orderEntity);
-                }
+            orderDetailsActivity = (OrderDetailsActivity) context;
+            if(orderDetailsActivity.getOrderDetailsListViewModels().size() == 0){
+                List<OrderDetailsListViewModel>  orderDetailsListViewModels =  orderDetailsActivity.getOrderedService().getOrderDetailsListViewModels(orderDetailsActivity.getOrderGuid());
+                orderDetailsActivity.getOrderDetailsListViewModels().addAll(orderDetailsListViewModels);
             }
-            List<OrderDetailsListViewModel>  orderDetailsListViewModels =  homeActivity.getOrderedService().getOrderDetailsListViewModels(orderEntity.getOrderGuid());
-            homeActivity.getOrderDetailsListViewModels().addAll(orderDetailsListViewModels);
+            totalCotton = orderDetailsActivity.getTotalNoOfCartons();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,7 +60,7 @@ public class ProductDetailsListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_details_list, container, false);
         no_of_cotton = (TextView) view.findViewById(R.id.total_carton_no);
-        no_of_cotton.setText("" + totalCotton);
+        no_of_cotton.setText(totalCotton);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.product_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -82,16 +68,9 @@ public class ProductDetailsListFragment extends Fragment {
 
 
 
-        mAdapter = new OrderDetailsListAdapter(getActivity(), homeActivity.getOrderDetailsListViewModels(),totalCotton);
+        mAdapter = new OrderDetailsListAdapter(getActivity(), orderDetailsActivity.getOrderDetailsListViewModels(),orderDetailsActivity.getTotalNoOfCartons());
         recyclerView.setAdapter(mAdapter);
-        Button addButton = (Button) view.findViewById(R.id.add);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeActivity.showAddProductList(orderGuid,totalCotton);
-               // createProductEntity();
-            }
-        });
+
 
         Button orderDetailsDone = (Button) view.findViewById(R.id.order_details_done);
         orderDetailsDone.setOnClickListener(new View.OnClickListener() {
@@ -149,37 +128,5 @@ public class ProductDetailsListFragment extends Fragment {
 
 
 
-   /* public void createProductEntity() {
-        productEntities = orderedService.getProductEntityList(orderEntity);
-        if(productEntities.size()<totalCotton) {
-            ProductDetailsEntity productEntity = new ProductDetailsEntity();
-            productEntity.setItemGuid(UtilService.getUUID());
-            productEntity.setCreatedBy("Admin");
-            productEntity.setCreatedTime(UtilService.getCurrentTimeMilli());
-            productEntity.setProductName("Package");
-            productEntity.setOrderEntity(orderEntity);
-            orderedService.createProductEntity(productEntity);
-            productEntities = orderedService.getProductEntityList(orderEntity);
-            mAdapter.refresh(productEntities);
-        }else {
-            AlertDialog alertDialog = new AlertDialog.Builder(
-                    getActivity()).create();
 
-            // Setting Dialog Title
-            alertDialog.setTitle("Warning");
-
-            // Setting Dialog Message
-            alertDialog.setMessage("Exceed");
-//            alertDialog.setIcon(R.drawable.tick);
-            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // Write your code here to execute after dialog closed
-                }
-            });
-
-            // Showing Alert Message
-            alertDialog.show();
-        }
-        Log.e("test", "test");
-    }*/
 }

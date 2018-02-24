@@ -2,7 +2,6 @@ package com.ordered.report.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.json.models.ProductDetailsJson;
 
 /**

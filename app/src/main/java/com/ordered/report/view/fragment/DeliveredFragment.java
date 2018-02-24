@@ -1,4 +1,4 @@
-package com.ordered.report.fragment;
+package com.ordered.report.view.fragment;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -7,16 +7,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ordered.report.R;
-import com.ordered.report.adapter.OrderedListAdapter;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
+import com.ordered.report.view.adapter.DeliveredListAdapter;
 
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class DeliveredFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        OrderedListAdapter mAdapter = new OrderedListAdapter(getActivity(), getOrderedCartonBookList(),OrderStatus.DELIVERED);
+        DeliveredListAdapter mAdapter = new DeliveredListAdapter(getActivity(), getOrderedCartonBookList(),OrderStatus.DELIVERED);
         recyclerView.setAdapter(mAdapter);
         return view;
     }

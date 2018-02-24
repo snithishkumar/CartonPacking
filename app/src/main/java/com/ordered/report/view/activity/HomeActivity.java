@@ -19,12 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.ordered.report.R;
-import com.ordered.report.view.adapter.OrderDetailsListAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -35,6 +34,16 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
+import com.ordered.report.R;
+import com.ordered.report.json.models.CartonInvoiceSummary;
+import com.ordered.report.json.models.OrderCreationDetailsJson;
+import com.ordered.report.models.OrderEntity;
+import com.ordered.report.services.OrderedService;
+import com.ordered.report.utils.Constants;
+import com.ordered.report.utils.NumberToWord;
+import com.ordered.report.utils.UtilService;
+import com.ordered.report.view.adapter.OrderDetailsListAdapter;
+import com.ordered.report.view.adapter.OrderListAdapter;
 import com.ordered.report.view.fragment.AddProductFragment;
 import com.ordered.report.view.fragment.CaptureCartonDetailsFragment;
 import com.ordered.report.view.fragment.HomeFragment;
@@ -42,11 +51,6 @@ import com.ordered.report.view.fragment.PackingFragment;
 import com.ordered.report.view.fragment.PackingProductDetailsListFragment;
 import com.ordered.report.view.fragment.ProductDetailsListFragment;
 import com.ordered.report.view.fragment.ProductListFragment;
-import com.ordered.report.services.OrderedService;
-import com.ordered.report.json.models.CartonInvoiceSummary;
-import com.ordered.report.json.models.OrderCreationDetailsJson;
-import com.ordered.report.models.OrderEntity;
-import com.ordered.report.utils.Constants;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.io.File;
@@ -59,11 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.itextpdf.text.Document;
-import com.ordered.report.utils.NumberToWord;
-import com.ordered.report.utils.UtilService;
-
-public class HomeActivity extends AppCompatActivity implements OrderDetailsListAdapter.OrderDetailsClickListeners{
+public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -126,19 +126,22 @@ public class HomeActivity extends AppCompatActivity implements OrderDetailsListA
     }
 
 
-    public  void showCaptureCartonDetailsFragment(int cartonNo){
-        CaptureCartonDetailsFragment captureCartonDetailsFragment = new CaptureCartonDetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(Constants.NO_OF_COTTON, cartonNo);
-        captureCartonDetailsFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,captureCartonDetailsFragment).addToBackStack(null).commit();
-    }
+
 
 
 
     public void showPackingListFragment() {
         PackingFragment packingFragment = new PackingFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper, packingFragment).addToBackStack(null).commit();
+    }
+
+
+    public void showOrderDetailsList(String totalNoOfCartons,String orderGuid){
+        Intent intent = new Intent(this, OrderDetailsActivity.class);
+        intent.putExtra("orderGuid",orderGuid);
+        intent.putExtra("totalNoOfCartons",totalNoOfCartons);
+        startActivity(intent);
+
     }
 
     public void showProductList(int cartonNo, String order) {
@@ -205,11 +208,7 @@ public class HomeActivity extends AppCompatActivity implements OrderDetailsListA
         this.orderDetailsListViewModel = orderDetailsListViewModel;
     }
 
-    @Override
-    public void orderDetailsListOnClick(OrderDetailsListViewModel productDetailsJson, int totalCartonCount) {
-        setOrderDetailsListViewModel(productDetailsJson);
-        showCaptureCartonDetailsFragment(totalCartonCount);
-    }
+
 
     public void showProgress() {
         Log.e("LoginActivity", "showProgress");

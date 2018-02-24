@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ordered.report.R;
-import com.ordered.report.view.adapter.OrderedListAdapter;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
+import com.ordered.report.view.adapter.DeliveredListAdapter;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class PackingFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        OrderedListAdapter mAdapter = new OrderedListAdapter(getActivity(), getOrderedCartonBookList(),OrderStatus.ORDERED);
+        DeliveredListAdapter mAdapter = new DeliveredListAdapter(getActivity(), getOrderedCartonBookList(),OrderStatus.ORDERED);
         recyclerView.setAdapter(mAdapter);
         return view;
     }

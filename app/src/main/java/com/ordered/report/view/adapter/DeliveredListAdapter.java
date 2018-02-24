@@ -11,20 +11,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import com.ordered.report.view.activity.HomeActivity;
 import com.ordered.report.R;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
-import com.ordered.report.view.fragment.DeliveredFragment;
 import com.ordered.report.json.models.CartonInvoiceSummary;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.utils.Utils;
+import com.ordered.report.view.activity.HomeActivity;
+import com.ordered.report.view.fragment.DeliveredFragment;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHolder> {
+public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListViewHolder> {
 
     private Context context;
     private List<OrderEntity> orderEntities;
@@ -41,7 +40,7 @@ public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHold
     private boolean isPopupShow = false;
     private DeliveredFragment deliveredFragment = null;
 
-    public OrderedListAdapter(Context context, List<OrderEntity> orderEntities, OrderStatus orderStatus) {
+    public DeliveredListAdapter(Context context, List<OrderEntity> orderEntities, OrderStatus orderStatus) {
         this.context = context;
         homeActivity = (HomeActivity) context;
         this.orderEntities = orderEntities;
@@ -49,18 +48,18 @@ public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHold
     }
 
     @Override
-    public OrderedListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DeliveredListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
 
        // if (orderStatus.toString().equals(OrderStatus.ORDERED.toString())) {
             view = LayoutInflater.from(context).inflate(R.layout.adapter_order_list, parent, false);
        // }
 
-        return new OrderedListViewHolder(view);
+        return new DeliveredListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(OrderedListViewHolder holder, int position) {
+    public void onBindViewHolder(DeliveredListViewHolder holder, int position) {
         final OrderEntity orderEntity = orderEntities.get(position);
         if (orderEntity.getOrderType().toString().equals(OrderType.DELIVERED.toString())) {
             holder.report.setVisibility(View.VISIBLE);

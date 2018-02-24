@@ -12,4 +12,6 @@ public class Constants {
     public static final String NO_OF_COTTON="Cotton";
     public static final String ORDER="ORDER";
 
+    public static final String ORDER_DETAILS_POS="ORDERPOS";
+
 }

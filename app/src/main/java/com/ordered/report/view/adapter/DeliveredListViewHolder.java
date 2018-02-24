@@ -1,16 +1,15 @@
-package com.ordered.report.adapter;
+package com.ordered.report.view.adapter;
 
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ordered.report.R;
 
 
-public class OrderedListViewHolder extends RecyclerView.ViewHolder {
+public class DeliveredListViewHolder extends RecyclerView.ViewHolder {
 
     public TextView orderTitle;
     public TextView clientName;
@@ -23,7 +22,7 @@ public class OrderedListViewHolder extends RecyclerView.ViewHolder {
 
 
 
-    public OrderedListViewHolder(View itemView) {
+    public DeliveredListViewHolder(View itemView) {
         super(itemView);
         view = itemView;
         orderTitle = (TextView) itemView.findViewById(R.id.ordered_list_order_id);

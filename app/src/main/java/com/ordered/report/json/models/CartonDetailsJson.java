@@ -1,6 +1,5 @@
 package com.ordered.report.json.models;
 
-import com.j256.ormlite.field.DatabaseField;
 import com.ordered.report.models.CartonDetailsEntity;
 
 import java.util.ArrayList;

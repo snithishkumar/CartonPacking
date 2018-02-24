@@ -3,9 +3,6 @@ package com.ordered.report.models;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Admin on 1/2/2018.
  */

@@ -1,10 +1,7 @@
 package com.ordered.report.SyncAdapter;
 
 
-import com.ordered.report.json.models.OrderDetailsJson;
 import com.ordered.report.json.models.ResponseData;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
