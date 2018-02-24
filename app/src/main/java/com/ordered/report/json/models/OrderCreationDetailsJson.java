@@ -21,6 +21,26 @@ public class OrderCreationDetailsJson {
     private String xxxl;
     private long createdDateTime;
     private long lastModifiedDateTime;
+    private String cartonNumber;
+    private int quantity = 10;
+    private long rate = 2;
+    private long amount = 150;
+
+    public String getCartonNumber() {
+        return cartonNumber;
+    }
+
+    public void setCartonNumber(String cartonNumber) {
+        this.cartonNumber = cartonNumber;
+    }
+
+    public String getProductGroupGuid() {
+        return productGroupGuid;
+    }
+
+    public void setProductGroupGuid(String productGroupGuid) {
+        this.productGroupGuid = productGroupGuid;
+    }
 
     public String getProductGroup() {
         return productGroup;
@@ -150,6 +170,28 @@ public class OrderCreationDetailsJson {
 
     public void setLastModifiedDateTime(long lastModifiedDateTime) {
         this.lastModifiedDateTime = lastModifiedDateTime;
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public long getRate() {
+        return rate;
+    }
+
+    public void setRate(long rate) {
+        this.rate = rate;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
     }
 
     @Override
