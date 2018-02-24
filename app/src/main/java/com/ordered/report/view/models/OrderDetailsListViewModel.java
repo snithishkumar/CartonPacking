@@ -11,6 +11,8 @@ public class OrderDetailsListViewModel {
     private String orderGuid;
     private String orderItemName;
     private String orderItemGroup;
+    private String orderItemGuid;
+    private String orderItemCategory;
     private String orderItemColor;
     private String cartonNumber;
 
@@ -36,6 +38,8 @@ public class OrderDetailsListViewModel {
     private String productXxxl = "0";
     private long productCreatedDateTime;
 
+    private boolean isEdited = false;
+
 
     public void loadOrderItemsDetails(OrderCreationDetailsJson orderDetailsJson) {
         this.orderItemName = orderDetailsJson.getProductStyle();
@@ -51,8 +55,25 @@ public class OrderDetailsListViewModel {
         this.orderItemXxxl = orderDetailsJson.getXxxl();
         this.orderItemCreatedDateTime = orderDetailsJson.getCreatedDateTime();
         this.orderItemLastModifiedDateTime = orderDetailsJson.getLastModifiedDateTime();
+        this.orderItemGuid = orderDetailsJson.getOrderItemGuid();
+        this.orderItemCategory = orderDetailsJson.getProductCategory();
     }
 
+    public String getOrderItemGuid() {
+        return orderItemGuid;
+    }
+
+    public void setOrderItemGuid(String orderItemGuid) {
+        this.orderItemGuid = orderItemGuid;
+    }
+
+    public String getOrderItemCategory() {
+        return orderItemCategory;
+    }
+
+    public void setOrderItemCategory(String orderItemCategory) {
+        this.orderItemCategory = orderItemCategory;
+    }
 
     public String getOrderGuid() {
         return orderGuid;
@@ -244,6 +265,14 @@ public class OrderDetailsListViewModel {
 
     public void setProductCreatedDateTime(long productCreatedDateTime) {
         this.productCreatedDateTime = productCreatedDateTime;
+    }
+
+    public boolean isEdited() {
+        return isEdited;
+    }
+
+    public void setEdited(boolean edited) {
+        isEdited = edited;
     }
 
     @Override

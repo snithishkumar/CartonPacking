@@ -10,6 +10,7 @@ import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.json.models.LoginEvent;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
+import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Admin on 1/1/2018.
@@ -122,6 +124,44 @@ public class OrderedService {
             orderDetailsListViewModels.add(orderDetailsListViewModel);
         }
         return orderDetailsListViewModels;
+    }
+
+
+    public boolean saveProductDetails(String orderGuid,List<OrderDetailsListViewModel> orderDetailsListViewModels,String totalNoOfCartons){
+        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+        boolean isEdited = false;
+        Map<String,CartonDetailsEntity> cartonDetailsEntityMap = new HashMap<>();
+        for(OrderDetailsListViewModel orderDetailsListViewModel : orderDetailsListViewModels){
+           if(orderDetailsListViewModel.isEdited()){
+               String cartonNumber =  orderDetailsListViewModel.getCartonNumber();
+               CartonDetailsEntity cartonDetailsEntity =  cartonDetailsEntityMap.get(cartonNumber);
+               if(cartonDetailsEntity == null){
+                   cartonDetailsEntity = new CartonDetailsEntity();
+                   cartonDetailsEntity.setOrderEntity(orderEntity);
+                   cartonDetailsEntity.setCartonGuid(UUID.randomUUID().toString());
+                   cartonDetailsEntity.setCartonNumber(cartonNumber);
+                   cartonDetailsEntity.setCreatedDateTime(System.currentTimeMillis());
+                   cartonbookDao.createCartonDetailsEntity(cartonDetailsEntity);
+                   cartonDetailsEntityMap.put(cartonNumber,cartonDetailsEntity);
+               }
+               ProductDetailsEntity productDetailsEntity = new ProductDetailsEntity(orderDetailsListViewModel);
+               productDetailsEntity.setCartonNumber(cartonDetailsEntity);
+               productDetailsEntity.setOrderEntity(orderEntity);
+               cartonbookDao.createProductDetailsEntity(productDetailsEntity);
+               isEdited = true;
+           }
+
+
+        }
+        if(isEdited){
+            orderEntity.setSync(false);
+            orderEntity.setCartonCounts(totalNoOfCartons);
+            orderEntity.setLastModifiedDate(System.currentTimeMillis());
+            orderEntity.setOrderStatus(OrderStatus.PACKING);
+            cartonbookDao.updateCortonbookEntity(orderEntity);
+        }
+        return isEdited;
+
     }
 
 

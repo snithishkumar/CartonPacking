@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,24 +73,35 @@ public class ProductDetailsListFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
 
-        Button orderDetailsDone = (Button) view.findViewById(R.id.order_details_done);
+        Button orderDetailsDone = view.findViewById(R.id.order_details_done);
         orderDetailsDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+               boolean isSaved =  orderDetailsActivity.getOrderedService().saveProductDetails(orderDetailsActivity.getOrderGuid(),orderDetailsActivity.getOrderDetailsListViewModels(),orderDetailsActivity.getTotalNoOfCartons());
+               if(!isSaved){
+                   showAlert();
+               }else{
+                   backToHome();
+               }
             }
         });
 
-        Button orderDetailsCancel = (Button) view.findViewById(R.id.order_details_cancel);
+        Button orderDetailsCancel = view.findViewById(R.id.order_details_cancel);
         orderDetailsCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                backToHome();
             }
         });
         return view;
 
+    }
+
+
+    private void backToHome(){
+        Intent intent = new Intent(orderDetailsActivity, HomeActivity.class);
+        startActivity(intent);
+        orderDetailsActivity.finish();
     }
 
     private void showAlert(){

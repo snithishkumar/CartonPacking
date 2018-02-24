@@ -126,6 +126,7 @@ public class CaptureCartonDetailsFragment extends Fragment {
         orderDetailsListViewModel.setProductXxxl(vXXXL.getText().toString());
         orderDetailsListViewModel.setProductS(vS.getText().toString());
         orderDetailsListViewModel.setProductCreatedDateTime(System.currentTimeMillis());
+        orderDetailsListViewModel.setEdited(true);
     }
 
     @Override

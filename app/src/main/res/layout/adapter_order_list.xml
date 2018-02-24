@@ -9,7 +9,7 @@
     android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
     card_view:cardCornerRadius="4dp"
-    tools:context=".HomeActivity">
+    tools:context=".view.activity.HomeActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

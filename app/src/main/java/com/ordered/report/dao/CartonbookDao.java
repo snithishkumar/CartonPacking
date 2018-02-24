@@ -169,6 +169,16 @@ public class CartonbookDao {
     }
 
 
+    public List<CartonDetailsEntity> getCartonDetailsList(OrderEntity orderEntity){
+        try{
+            return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.ORDER_ENTITY,orderEntity).query();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+       return new ArrayList<>();
+    }
+
+
     public CartonDetailsEntity getCartonDetailsEntity(String cartonGuid){
         try{
            return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.CARTON_GUID,cartonGuid).queryForFirst();
@@ -186,6 +196,17 @@ public class CartonbookDao {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public List<ProductDetailsEntity> getProductDetailsEntityList(OrderEntity orderEntity,CartonDetailsEntity cartonDetailsEntity){
+        try{
+            QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
+            queryBuilder.where().eq(ProductDetailsEntity.CARTON_NUMBER, cartonDetailsEntity).and().eq(ProductDetailsEntity.ORDER_ENTITY,orderEntity);
+            return queryBuilder.query();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
 

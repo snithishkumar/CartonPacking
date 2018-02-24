@@ -83,14 +83,14 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListView
             date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
             //   holder.createdDate.setText(date);
         }
-        holder.report.setOnClickListener(new View.OnClickListener() {
+       /* holder.report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isPopupShow = true;
                 showPopup(v,orderEntity);
 
             }
-        });
+        });*/
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

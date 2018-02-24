@@ -3,6 +3,9 @@ package com.ordered.report.models;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.ordered.report.json.models.ProductDetailsJson;
+import com.ordered.report.view.models.OrderDetailsListViewModel;
+
+import java.util.UUID;
 
 /**
  * Created by Admin on 2/14/2018.
@@ -11,6 +14,8 @@ import com.ordered.report.json.models.ProductDetailsJson;
 public class ProductDetailsEntity {
 
     public static final String PRODUCT_GUID = "productGuid";
+    public static final String ORDER_ENTITY = "orderEntity";
+    public static final String CARTON_NUMBER = "cartonNumber";
 
     @DatabaseField(columnName = "ProductId", generatedId = true)
     private int productId;
@@ -76,6 +81,25 @@ public class ProductDetailsEntity {
        this.xxxl = productDetailsJson.getXxxl();
        this.createdDateTime = productDetailsJson.getCreatedDateTime();
        this.lastModifiedDateTime = productDetailsJson.getLastModifiedDateTime();
+    }
+
+
+    public ProductDetailsEntity(OrderDetailsListViewModel orderDetailsListViewModel){
+        this.productGuid = UUID.randomUUID().toString();
+        this.productName = orderDetailsListViewModel.getOrderItemName();
+        this.orderItemGuid = orderDetailsListViewModel.getOrderItemGuid();
+        this.productCategory = orderDetailsListViewModel.getOrderItemCategory();
+        this.colorStyle = orderDetailsListViewModel.getOrderItemColor();
+        this.oneSize = orderDetailsListViewModel.getProductOneSize();
+        this.xs = orderDetailsListViewModel.getProductXS();
+        this.s = orderDetailsListViewModel.getProductS();
+        this.m = orderDetailsListViewModel.getProductM();
+        this.l = orderDetailsListViewModel.getProductL();
+        this.xl = orderDetailsListViewModel.getProductXl();
+        this.xxl = orderDetailsListViewModel.getProductXxl();
+        this.xxxl = orderDetailsListViewModel.getProductXxxl();
+        this.createdDateTime = System.currentTimeMillis();
+        this.lastModifiedDateTime = createdDateTime;
     }
 
 
