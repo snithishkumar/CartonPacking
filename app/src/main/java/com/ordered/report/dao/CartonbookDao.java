@@ -7,10 +7,11 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.ordered.report.db.DatabaseHelper;
 import com.ordered.report.enumeration.OrderStatus;
-import com.ordered.report.enumeration.OrderType;
+import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.CartonItemEntity;
 import com.ordered.report.models.OrderEntity;
-import com.ordered.report.models.ProductEntity;
+import com.ordered.report.models.ProductDetailsEntity;
+import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ import java.util.List;
 public class CartonbookDao {
     DatabaseHelper databaseHelper = null;
     Dao<OrderEntity, String> cartonbookDao = null;
-    Dao<CartonItemEntity, String> cartonItemDao = null;
-    Dao<ProductEntity, String> productDao = null;
+    Dao<CartonDetailsEntity, String> cartonItemDao = null;
+    Dao<ProductDetailsEntity, String> productDao = null;
 
     public CartonbookDao(Context context) throws Exception {
         this.databaseHelper = DatabaseHelper.getInstance(context);
@@ -34,8 +35,8 @@ public class CartonbookDao {
     private void initDaos() throws Exception {
         try {
             cartonbookDao = getCartonbookDao();
-            cartonItemDao = databaseHelper.getDao(CartonItemEntity.class);
-            productDao = databaseHelper.getDao(ProductEntity.class);
+            cartonItemDao = databaseHelper.getDao(CartonDetailsEntity.class);
+            productDao = databaseHelper.getDao(ProductDetailsEntity.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,17 +72,17 @@ public class CartonbookDao {
         }
     }
 
-    public void saveProductEntity(ProductEntity productEntity) {
+    public void saveProductEntity(ProductDetailsEntity productDetailsEntity) {
         try {
-            productDao.create(productEntity);
+            productDao.create(productDetailsEntity);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public List<ProductEntity> getProductEntityList(OrderEntity orderEntity) {
+    public List<ProductDetailsEntity> getProductEntityList(OrderEntity orderEntity) {
         try {
-            return productDao.queryBuilder().where().eq(ProductEntity.PRODICT_ID,orderEntity).query();
+           // return productDao.queryBuilder().where().eq(ProductDetailsEntity.PRODICT_ID,orderEntity).query();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,14 +98,7 @@ public class CartonbookDao {
         return null;
     }
 
-    public List<OrderEntity> getCartonBookEntityByGuid() {
-        try {
-            return cartonbookDao.queryBuilder().query();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
-    }
+
 
 
     public List<OrderEntity> getUnSyncedOrderDetails() {
@@ -126,31 +120,10 @@ public class CartonbookDao {
         return new ArrayList<>();
     }
 
-    public void updateCortonbookItemEntity(CartonItemEntity cartonItemEntity) {
-        try {
-            cartonItemDao.update(cartonItemEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 
-    public void saveCartonItemEntity(CartonItemEntity cartonItemEntity) {
-        try {
-            cartonItemDao.create(cartonItemEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public CartonItemEntity getCartonItemEntityByGuid(String cartonItemGuid) {
-        try {
-            return cartonItemDao.queryBuilder().where().eq(CartonItemEntity.CARTON_TEM_GUID, cartonItemGuid).queryForFirst();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 
     public OrderEntity getMaxSyncCartonBook() {
         try {
@@ -177,5 +150,60 @@ public class CartonbookDao {
             e.printStackTrace();
         }
     }
+
+
+
+    public void createCartonDetailsEntity(CartonDetailsEntity cartonDetailsEntity){
+        try{
+            cartonItemDao.create(cartonDetailsEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void updateCartonDetailsEntity(CartonDetailsEntity cartonDetailsEntity){
+        try{
+            cartonItemDao.update(cartonDetailsEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public CartonDetailsEntity getCartonDetailsEntity(String cartonGuid){
+        try{
+           return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.CARTON_GUID,cartonGuid).queryForFirst();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    public void createProductDetailsEntity(ProductDetailsEntity productDetailsEntity){
+        try{
+            productDao.create(productDetailsEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public ProductDetailsEntity getProductDetails(String productDetailsGuid){
+        try {
+            QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
+            queryBuilder.where().eq(ProductDetailsEntity.PRODUCT_GUID, productDetailsGuid);
+            return queryBuilder.queryForFirst();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
 
 }

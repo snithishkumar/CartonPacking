@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
-import com.ordered.report.models.ProductEntity;
+import com.ordered.report.models.ProductDetailsEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,9 @@ import java.util.List;
  */
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.HomeImageViewHolder> {
     private Context context = null;
-    private List<ProductEntity> productEntities = new ArrayList<>();
+    private List<ProductDetailsEntity> productEntities = new ArrayList<>();
     private HomeActivity homeActivity;
-    public ProductListAdapter(Context context, List<ProductEntity> productEntities) {
+    public ProductListAdapter(Context context, List<ProductDetailsEntity> productEntities) {
         this.productEntities = productEntities;
         this.context = context;
         homeActivity = (HomeActivity) context;
@@ -39,8 +39,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(final HomeImageViewHolder holder, int position) {
-        final ProductEntity productEntity = productEntities.get(position);
-        holder.productTitle.setText(productEntity.getProductName());
+        final ProductDetailsEntity productDetailsEntity = productEntities.get(position);
+        holder.productTitle.setText(productDetailsEntity.getProductName());
     }
 
 
@@ -60,7 +60,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             addmore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    homeActivity.showAddProductList();
+                    homeActivity.showAddProductList(null,0);
                 }
             });
 
@@ -73,7 +73,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
 
     }
-    public void refresh(List<ProductEntity> productEntities){
+    public void refresh(List<ProductDetailsEntity> productEntities){
         this.productEntities=productEntities;
         notifyDataSetChanged();
     }

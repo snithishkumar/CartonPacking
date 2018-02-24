@@ -14,25 +14,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.ordered.report.adapter.OrderDetailsListAdapter;
 import com.ordered.report.fragment.AddProductFragment;
+import com.ordered.report.fragment.CaptureCartonDetailsFragment;
 import com.ordered.report.fragment.HomeFragment;
-import com.ordered.report.fragment.OrderedFragment;
 import com.ordered.report.fragment.PackingFragment;
 import com.ordered.report.fragment.PackingProductDetailsListFragment;
 import com.ordered.report.fragment.ProductDetailsListFragment;
 import com.ordered.report.fragment.ProductListFragment;
-import com.ordered.report.json.models.ProductDetailsJson;
+import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements OrderDetailsListAdapter.OrderDetailsClickListeners{
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
     private FragmentManager fragmentManager;
     private Fragment fragment = null;
+
+    private OrderedService orderedService;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -44,6 +48,8 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        orderedService = new OrderedService(this);
 
         fragmentManager = getSupportFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -80,6 +86,15 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public  void showCaptureCartonDetailsFragment(int cartonNo){
+        CaptureCartonDetailsFragment captureCartonDetailsFragment = new CaptureCartonDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.NO_OF_COTTON, cartonNo);
+        captureCartonDetailsFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,captureCartonDetailsFragment).addToBackStack(null).commit();
+    }
+
+
 
     public void showPackingListFragment(){
         PackingFragment packingFragment = new PackingFragment();
@@ -109,8 +124,12 @@ public class HomeActivity extends AppCompatActivity {
         ProductListFragment productListFragment = new ProductListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper, productListFragment).addToBackStack(null).commit();
     }
-    public void showAddProductList(){
+    public void showAddProductList(String orderGuid,int totalCotton){
         AddProductFragment addProductFragment = new AddProductFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.ORDER, orderGuid);
+        bundle.putInt(Constants.NO_OF_COTTON, totalCotton);
+        addProductFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container_wrapper,addProductFragment).addToBackStack(null).commit();
     }
 
@@ -123,10 +142,28 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    public OrderedService getOrderedService() {
+        return orderedService;
+    }
 
-    private List<ProductDetailsJson> productDetailsJsons = new ArrayList<>();
+    private List<OrderDetailsListViewModel> orderDetailsListViewModels = new ArrayList<>();
+    private OrderDetailsListViewModel orderDetailsListViewModel;
 
-    public List<ProductDetailsJson> getProductDetailsJsons() {
-        return productDetailsJsons;
+    public List<OrderDetailsListViewModel> getOrderDetailsListViewModels() {
+        return orderDetailsListViewModels;
+    }
+
+    public OrderDetailsListViewModel getOrderDetailsListViewModel(){
+        return orderDetailsListViewModel;
+    }
+
+    public void setOrderDetailsListViewModel(OrderDetailsListViewModel orderDetailsListViewModel){
+        this.orderDetailsListViewModel = orderDetailsListViewModel;
+    }
+
+    @Override
+    public void orderDetailsListOnClick(OrderDetailsListViewModel productDetailsJson, int totalCartonCount) {
+        setOrderDetailsListViewModel(productDetailsJson);
+        showCaptureCartonDetailsFragment(totalCartonCount);
     }
 }

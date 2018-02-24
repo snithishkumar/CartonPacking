@@ -2,16 +2,24 @@ package com.ordered.report.services;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ordered.report.SyncAdapter.SyncServiceApi;
 import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.json.models.LoginEvent;
+import com.ordered.report.json.models.OrderCreationDetailsJson;
+import com.ordered.report.json.models.OrderSizeDetails;
 import com.ordered.report.models.OrderEntity;
-import com.ordered.report.models.ProductEntity;
+import com.ordered.report.models.ProductDetailsEntity;
+import com.ordered.report.view.models.OrderDetailsListViewModel;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Admin on 1/1/2018.
@@ -24,11 +32,13 @@ public class OrderedService {
     private CartonbookDao cartonbookDao = null;
     private LoginEvent loginEvent = null;
     public static final String AUTHORITY = "com.ordered.report.SyncAdapter";
+    private Gson gson;
 
     public OrderedService(Context context) {
         try {
             this.context = context;
             cartonbookDao = new CartonbookDao(context);
+            gson = new Gson();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,16 +58,16 @@ public class OrderedService {
         return orderEntity;
     }
 
-    public void createProductEntity(ProductEntity productEntity) {
+    public void createProductEntity(ProductDetailsEntity productDetailsEntity) {
         try {
-            cartonbookDao.saveProductEntity(productEntity);
+            cartonbookDao.saveProductEntity(productDetailsEntity);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public List<ProductEntity> getProductEntityList(OrderEntity orderEntity) {
-        List<ProductEntity> productEntities = cartonbookDao.getProductEntityList(orderEntity);
+    public List<ProductDetailsEntity> getProductEntityList(OrderEntity orderEntity) {
+        List<ProductDetailsEntity> productEntities = cartonbookDao.getProductEntityList(orderEntity);
         return productEntities;
     }
 
@@ -70,6 +80,44 @@ public class OrderedService {
             return cartonbookDao.getCartonBookByOrderType(orderType);
         }
         return new ArrayList<>();
+    }
+
+
+
+
+
+    public Map<String,List> getOrderItems(String orderGuid){
+        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+       String orderedItems = orderEntity.getOrderedItems();
+        Type listType = new TypeToken<ArrayList<OrderCreationDetailsJson>>() {
+        }.getType();
+        ArrayList<OrderCreationDetailsJson>  orderDetailsJsonArrayList =  gson.fromJson(orderedItems,listType);
+        List<String> productName = new ArrayList<>();
+        List<String> productGroup = new ArrayList<>();
+        for(OrderCreationDetailsJson orderCreationDetailsJson : orderDetailsJsonArrayList){
+            productName.add(orderCreationDetailsJson.getProductStyle());
+            productGroup.add(orderCreationDetailsJson.getProductGroup());
+        }
+        Map<String,List> orderDetails = new HashMap<>();
+        orderDetails.put("productName",productName);
+        orderDetails.put("productGroup",productGroup);
+        return orderDetails;
+    }
+
+
+    public List<OrderDetailsListViewModel> getOrderDetailsListViewModels(String orderGuid) {
+        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+        String orderedItems = orderEntity.getOrderedItems();
+        Type listType = new TypeToken<ArrayList<OrderCreationDetailsJson>>() {
+        }.getType();
+        List<OrderCreationDetailsJson> orderDetailsJsonArrayList = gson.fromJson(orderedItems, listType);
+        List<OrderDetailsListViewModel> orderDetailsListViewModels = new ArrayList<>();
+        for (OrderCreationDetailsJson orderCreationDetailsJson : orderDetailsJsonArrayList) {
+            OrderDetailsListViewModel orderDetailsListViewModel = new OrderDetailsListViewModel();
+            orderDetailsListViewModel.loadOrderItemsDetails(orderCreationDetailsJson);
+            orderDetailsListViewModels.add(orderDetailsListViewModel);
+        }
+        return orderDetailsListViewModels;
     }
 
 

@@ -8,9 +8,10 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.CartonItemEntity;
 import com.ordered.report.models.OrderEntity;
-import com.ordered.report.models.ProductEntity;
+import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.models.UsersEntity;
 
 import java.sql.SQLException;
@@ -41,8 +42,8 @@ public class DatabaseHelper<T, T1> extends OrmLiteSqliteOpenHelper {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
             TableUtils.createTable(connectionSource, UsersEntity.class);
             TableUtils.createTable(connectionSource, OrderEntity.class);
-            TableUtils.createTable(connectionSource, CartonItemEntity.class);
-            TableUtils.createTable(connectionSource, ProductEntity.class);
+            TableUtils.createTable(connectionSource, CartonDetailsEntity.class);
+            TableUtils.createTable(connectionSource, ProductDetailsEntity.class);
 
 
         } catch (SQLException e) {
@@ -64,7 +65,7 @@ public class DatabaseHelper<T, T1> extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, UsersEntity.class);
             TableUtils.createTable(connectionSource, OrderEntity.class);
             TableUtils.createTable(connectionSource, CartonItemEntity.class);
-            TableUtils.createTable(connectionSource, ProductEntity.class);
+            TableUtils.createTable(connectionSource, ProductDetailsEntity.class);
 
 
         } catch (Exception e) {

@@ -15,18 +15,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
 import com.ordered.report.adapter.OrderDetailsListAdapter;
 import com.ordered.report.enumeration.OrderStatus;
-import com.ordered.report.json.models.ProductDetailsJson;
 import com.ordered.report.models.OrderEntity;
-import com.ordered.report.models.ProductEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.view.models.OrderDetailsListViewModel;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class PackingProductDetailsListFragment extends Fragment {
     private HomeActivity homeActivity;
@@ -78,13 +76,13 @@ public class PackingProductDetailsListFragment extends Fragment {
 
         getProductDetails();
 
-        mAdapter = new OrderDetailsListAdapter(getActivity(), homeActivity.getProductDetailsJsons());
+        mAdapter = new OrderDetailsListAdapter(getActivity(), new ArrayList<OrderDetailsListViewModel>(),totalCotton);
         recyclerView.setAdapter(mAdapter);
         Button addButton = (Button) view.findViewById(R.id.packing_order_details_add);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivity.showAddProductList();
+                homeActivity.showAddProductList(null,0);
                // createProductEntity();
             }
         });
@@ -93,13 +91,13 @@ public class PackingProductDetailsListFragment extends Fragment {
         orderDetailsDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if( homeActivity.getProductDetailsJsons().size() > 0){
+               /* if( homeActivity.getProductDetailsJsons().size() > 0){
                     updateOrderDetails();
                     homeActivity.getProductDetailsJsons().clear();
                     homeActivity.showPackingListFragment();
                 }else{
                     showAlert();
-                }
+                }*/
 
             }
         });
@@ -108,7 +106,7 @@ public class PackingProductDetailsListFragment extends Fragment {
         orderDetailsCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivity.getProductDetailsJsons().clear();
+                //homeActivity.getProductDetailsJsons().clear();
                 homeActivity.showOrderedFragment();
             }
         });
@@ -150,27 +148,18 @@ public class PackingProductDetailsListFragment extends Fragment {
     }
 
 
-    private void updateOrderDetails(){
-        orderEntity.setOrderedDetails( gson.toJson(homeActivity.getProductDetailsJsons()));
-        orderEntity.setLastModifiedDate(System.currentTimeMillis());
-        orderEntity.setSync(false);
-        orderEntity.setOrderStatus(OrderStatus.PACKING);
-        orderedService.updateOrderUpdates(orderEntity);
-    }
+
 
 
     private void getProductDetails(){
 
-       String orderDetails = orderEntity.getOrderedDetails();
-        List<ProductDetailsJson> productDetailsJsons = gson.fromJson(orderDetails,new TypeToken<List<ProductDetailsJson>>() {
-        }.getType());
-        homeActivity.getProductDetailsJsons().addAll(productDetailsJsons);
+
     }
 
    /* public void createProductEntity() {
         productEntities = orderedService.getProductEntityList(orderEntity);
         if(productEntities.size()<totalCotton) {
-            ProductEntity productEntity = new ProductEntity();
+            ProductDetailsEntity productEntity = new ProductDetailsEntity();
             productEntity.setItemGuid(UtilService.getUUID());
             productEntity.setCreatedBy("Admin");
             productEntity.setCreatedTime(UtilService.getCurrentTimeMilli());

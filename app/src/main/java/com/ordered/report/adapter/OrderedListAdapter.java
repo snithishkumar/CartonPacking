@@ -4,14 +4,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.ordered.report.HomeActivity;
@@ -42,7 +39,7 @@ public class OrderedListAdapter extends RecyclerView.Adapter<OrderedListViewHold
     public OrderedListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
        // if (orderStatus.toString().equals(OrderStatus.ORDERED.toString())) {
-            view = LayoutInflater.from(context).inflate(R.layout.ordered_row, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.adapter_order_list, parent, false);
        // }
         return new OrderedListViewHolder(view);
     }

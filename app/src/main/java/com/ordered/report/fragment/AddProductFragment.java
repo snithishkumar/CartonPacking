@@ -8,14 +8,24 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
-import com.ordered.report.json.models.ProductDetailsJson;
+import com.ordered.report.json.models.OrderCreationDetailsJson;
+import com.ordered.report.services.OrderedService;
+import com.ordered.report.utils.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,10 +36,10 @@ public class AddProductFragment extends Fragment {
     private HomeActivity homeActivity;
     private Context context;
 
+    private OrderedService orderedService;
 
-
-    private EditText vProductName;
-    private EditText vProductGroup;
+    private AutoCompleteTextView vProductName;
+    private AutoCompleteTextView vProductGroup;
     private EditText vOneSize;
     private EditText vXS;
     private EditText vS;
@@ -40,6 +50,9 @@ public class AddProductFragment extends Fragment {
     private EditText vXXXL;
     private Spinner spinner;
 
+    private String orderGuid;
+    private int noOfCartons;
+private String cartonNumber;
 
     public AddProductFragment() {
         // Required empty public constructor
@@ -51,6 +64,12 @@ public class AddProductFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         homeActivity = (HomeActivity) context;
+        orderedService = homeActivity.getOrderedService();
+
+        if (getArguments() != null) {
+            orderGuid = getArguments().getString(Constants.ORDER);
+            noOfCartons = getArguments().getInt(Constants.NO_OF_COTTON);
+        }
     }
 
     private void initView(View view){
@@ -64,26 +83,63 @@ public class AddProductFragment extends Fragment {
         vXL = view.findViewById(R.id.xl);
         vXXL = view.findViewById(R.id.xxl);
         vXXXL = view.findViewById(R.id.xxxl);
-        //spinner = view.findViewById(R.id.planets_spinner);
+        setCartonDropDown(view);
+        Map<String,List> orderItems = orderedService.getOrderItems(orderGuid);
+
+        ArrayAdapter<List> orderItemsAdapter = new ArrayAdapter<List>(homeActivity, android.R.layout.select_dialog_item, orderItems.get("productName"));
+        vProductName.setAdapter(orderItemsAdapter);
+        vProductName.setThreshold(1);
+        ArrayAdapter<List> productGroupAdapter = new ArrayAdapter<List>(homeActivity, android.R.layout.select_dialog_item, orderItems.get("productGroup"));
+
+        vProductGroup.setAdapter(productGroupAdapter);
+        vProductGroup.setThreshold(1);
+
+    }
+
+
+    private void setCartonDropDown(View view){
+        Spinner spinner = (Spinner) view.findViewById(R.id.add_order_carton_number);
+
+        List<String> cartonNumberList = new ArrayList<>();
+        for(int i = 1 ; i <= noOfCartons; i++){
+            cartonNumberList.add(i+"");
+        }
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(homeActivity,android.R.layout.simple_spinner_item,cartonNumberList);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                cartonNumber = (String)adapterView.getItemAtPosition(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
 
     private void createOrder(){
-        ProductDetailsJson productDetailsJson = new ProductDetailsJson();
+        OrderCreationDetailsJson productDetailsJson = new OrderCreationDetailsJson();
         productDetailsJson.setL(vL.getText().toString());
         productDetailsJson.setM(vM.getText().toString());
         productDetailsJson.setOneSize(vOneSize.getText().toString());
         productDetailsJson.setProductGroup(vProductGroup.getText().toString());
-        productDetailsJson.setProductName(vProductName.getText().toString());
+        productDetailsJson.setProductStyle(vProductName.getText().toString());
         productDetailsJson.setXl(vXL.getText().toString());
         productDetailsJson.setXs( vXS.getText().toString());
         productDetailsJson.setXxl( vXXL.getText().toString());
         productDetailsJson.setXxxl(vXXXL.getText().toString());
-        productDetailsJson.setCartonNumber(1);
+       // productDetailsJson.setCartonNumber(1+"");
         productDetailsJson.setS(vS.getText().toString());
         productDetailsJson.setCreatedDateTime(System.currentTimeMillis());
         productDetailsJson.setLastModifiedDateTime(productDetailsJson.getCreatedDateTime());
-        homeActivity.getProductDetailsJsons().add(productDetailsJson);
+       // homeActivity.getProductDetailsJsons().add(productDetailsJson);
     }
 
     @Override

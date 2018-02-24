@@ -5,38 +5,22 @@ package com.ordered.report.json.models;
  */
 
 public class OrderCreationDetailsJson {
-    private String productGroupGuid;
     private String productGroup;
-    private String productCategoryGuid;
     private String productCategory;
-    private String productStyleGuid;
     private String productStyle;
-    private String colorStyleGuid;
+    private String productStyleGuid;
+    private String orderItemGuid;
     private String colorStyle;
     private String oneSize;
     private String xs;
+    private String s;
     private String m;
     private String l;
     private String xl;
     private String xxl;
     private String xxxl;
-    private String cartonNumber;
-
-    public String getCartonNumber() {
-        return cartonNumber;
-    }
-
-    public void setCartonNumber(String cartonNumber) {
-        this.cartonNumber = cartonNumber;
-    }
-
-    public String getProductGroupGuid() {
-        return productGroupGuid;
-    }
-
-    public void setProductGroupGuid(String productGroupGuid) {
-        this.productGroupGuid = productGroupGuid;
-    }
+    private long createdDateTime;
+    private long lastModifiedDateTime;
 
     public String getProductGroup() {
         return productGroup;
@@ -44,14 +28,6 @@ public class OrderCreationDetailsJson {
 
     public void setProductGroup(String productGroup) {
         this.productGroup = productGroup;
-    }
-
-    public String getProductCategoryGuid() {
-        return productCategoryGuid;
-    }
-
-    public void setProductCategoryGuid(String productCategoryGuid) {
-        this.productCategoryGuid = productCategoryGuid;
     }
 
     public String getProductCategory() {
@@ -62,14 +38,6 @@ public class OrderCreationDetailsJson {
         this.productCategory = productCategory;
     }
 
-    public String getProductStyleGuid() {
-        return productStyleGuid;
-    }
-
-    public void setProductStyleGuid(String productStyleGuid) {
-        this.productStyleGuid = productStyleGuid;
-    }
-
     public String getProductStyle() {
         return productStyle;
     }
@@ -78,12 +46,20 @@ public class OrderCreationDetailsJson {
         this.productStyle = productStyle;
     }
 
-    public String getColorStyleGuid() {
-        return colorStyleGuid;
+    public String getProductStyleGuid() {
+        return productStyleGuid;
     }
 
-    public void setColorStyleGuid(String colorStyleGuid) {
-        this.colorStyleGuid = colorStyleGuid;
+    public void setProductStyleGuid(String productStyleGuid) {
+        this.productStyleGuid = productStyleGuid;
+    }
+
+    public String getOrderItemGuid() {
+        return orderItemGuid;
+    }
+
+    public void setOrderItemGuid(String orderItemGuid) {
+        this.orderItemGuid = orderItemGuid;
     }
 
     public String getColorStyle() {
@@ -108,6 +84,14 @@ public class OrderCreationDetailsJson {
 
     public void setXs(String xs) {
         this.xs = xs;
+    }
+
+    public String getS() {
+        return s;
+    }
+
+    public void setS(String s) {
+        this.s = s;
     }
 
     public String getM() {
@@ -150,25 +134,43 @@ public class OrderCreationDetailsJson {
         this.xxxl = xxxl;
     }
 
+
+
+    public long getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(long createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public long getLastModifiedDateTime() {
+        return lastModifiedDateTime;
+    }
+
+    public void setLastModifiedDateTime(long lastModifiedDateTime) {
+        this.lastModifiedDateTime = lastModifiedDateTime;
+    }
+
     @Override
     public String toString() {
         return "OrderCreationDetailsJson{" +
-                "productGroupGuid='" + productGroupGuid + '\'' +
-                ", productGroup='" + productGroup + '\'' +
-                ", productCategoryGuid='" + productCategoryGuid + '\'' +
+                "productGroup='" + productGroup + '\'' +
                 ", productCategory='" + productCategory + '\'' +
-                ", productStyleGuid='" + productStyleGuid + '\'' +
                 ", productStyle='" + productStyle + '\'' +
-                ", colorStyleGuid='" + colorStyleGuid + '\'' +
+                ", productStyleGuid='" + productStyleGuid + '\'' +
+                ", orderItemGuid='" + orderItemGuid + '\'' +
                 ", colorStyle='" + colorStyle + '\'' +
                 ", oneSize='" + oneSize + '\'' +
                 ", xs='" + xs + '\'' +
+                ", s='" + s + '\'' +
                 ", m='" + m + '\'' +
                 ", l='" + l + '\'' +
                 ", xl='" + xl + '\'' +
                 ", xxl='" + xxl + '\'' +
                 ", xxxl='" + xxxl + '\'' +
-                ", cartonNumber='" + cartonNumber + '\'' +
+                ", createdDateTime=" + createdDateTime +
+                ", lastModifiedDateTime=" + lastModifiedDateTime +
                 '}';
     }
 }

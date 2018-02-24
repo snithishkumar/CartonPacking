@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +19,12 @@ import com.ordered.report.HomeActivity;
 import com.ordered.report.R;
 import com.ordered.report.adapter.OrderDetailsListAdapter;
 import com.ordered.report.enumeration.OrderStatus;
+import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.models.OrderEntity;
-import com.ordered.report.models.ProductEntity;
+import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
-import com.ordered.report.utils.UtilService;
+import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class ProductDetailsListFragment extends Fragment {
     private OrderEntity orderEntity = null;
     private String orderGuid;
     private Gson gson = null;
-    List<ProductEntity> productEntities;
+    List<ProductDetailsEntity> productEntities;
     OrderDetailsListAdapter mAdapter;
 
     public ProductDetailsListFragment() {
@@ -61,6 +61,8 @@ public class ProductDetailsListFragment extends Fragment {
                     productEntities = orderedService.getProductEntityList(orderEntity);
                 }
             }
+            List<OrderDetailsListViewModel>  orderDetailsListViewModels =  homeActivity.getOrderedService().getOrderDetailsListViewModels(orderEntity.getOrderGuid());
+            homeActivity.getOrderDetailsListViewModels().addAll(orderDetailsListViewModels);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,18 +80,15 @@ public class ProductDetailsListFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        ProductEntity productEntity = new ProductEntity();
-        productEntities.add(productEntity);
-        productEntities.add(productEntity);
-        productEntities.add(productEntity);
 
-        mAdapter = new OrderDetailsListAdapter(getActivity(), homeActivity.getProductDetailsJsons());
+
+        mAdapter = new OrderDetailsListAdapter(getActivity(), homeActivity.getOrderDetailsListViewModels(),totalCotton);
         recyclerView.setAdapter(mAdapter);
         Button addButton = (Button) view.findViewById(R.id.add);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivity.showAddProductList();
+                homeActivity.showAddProductList(orderGuid,totalCotton);
                // createProductEntity();
             }
         });
@@ -98,13 +97,7 @@ public class ProductDetailsListFragment extends Fragment {
         orderDetailsDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if( homeActivity.getProductDetailsJsons().size() > 0){
-                    updateOrderDetails();
-                    homeActivity.getProductDetailsJsons().clear();
-                    homeActivity.showOrderedFragment();
-                }else{
-                    showAlert();
-                }
+
 
             }
         });
@@ -113,8 +106,7 @@ public class ProductDetailsListFragment extends Fragment {
         orderDetailsCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homeActivity.getProductDetailsJsons().clear();
-                homeActivity.showOrderedFragment();
+
             }
         });
         return view;
@@ -155,19 +147,12 @@ public class ProductDetailsListFragment extends Fragment {
     }
 
 
-    private void updateOrderDetails(){
-        orderEntity.setOrderedDetails( gson.toJson(homeActivity.getProductDetailsJsons()));
-        orderEntity.setLastModifiedDate(System.currentTimeMillis());
-        orderEntity.setSync(false);
-        orderEntity.setOrderStatus(OrderStatus.PACKING);
-        orderEntity.setCartonCounts(String.valueOf(totalCotton));
-        orderedService.updateOrderUpdates(orderEntity);
-    }
+
 
    /* public void createProductEntity() {
         productEntities = orderedService.getProductEntityList(orderEntity);
         if(productEntities.size()<totalCotton) {
-            ProductEntity productEntity = new ProductEntity();
+            ProductDetailsEntity productEntity = new ProductDetailsEntity();
             productEntity.setItemGuid(UtilService.getUUID());
             productEntity.setCreatedBy("Admin");
             productEntity.setCreatedTime(UtilService.getCurrentTimeMilli());

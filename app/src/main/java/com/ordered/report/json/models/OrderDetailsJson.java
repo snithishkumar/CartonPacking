@@ -22,7 +22,7 @@ public class OrderDetailsJson {
     private long serverTime;
     private boolean isDeleted;
     private List<OrderCreationDetailsJson> orderedItems = new ArrayList<>();
-    private List<OrderCreationDetailsJson> productDetails = new ArrayList<>();
+    private List<CartonDetailsJson> productDetails = new ArrayList<>();
     private String cartonCounts;
     private String createdBy;
 
@@ -139,11 +139,11 @@ this.clientName = orderEntity.getClientName();
         this.orderedItems = orderedItems;
     }
 
-    public List<OrderCreationDetailsJson> getProductDetails() {
+    public List<CartonDetailsJson> getProductDetails() {
         return productDetails;
     }
 
-    public void setProductDetails(List<OrderCreationDetailsJson> productDetails) {
+    public void setProductDetails(List<CartonDetailsJson> productDetails) {
         this.productDetails = productDetails;
     }
 

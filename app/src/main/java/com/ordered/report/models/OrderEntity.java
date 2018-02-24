@@ -3,6 +3,7 @@ package com.ordered.report.models;
 import com.google.gson.Gson;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.enumeration.PaymentStatus;
@@ -11,7 +12,7 @@ import com.ordered.report.json.models.OrderDetailsJson;
 /**
  * Created by Admin on 1/1/2018.
  */
-
+@DatabaseTable(tableName = "OrderDetails")
 public class OrderEntity {
     public static final String ID = "ID";
     public static final String ORDER_ID = "OrderId";
@@ -50,8 +51,7 @@ public class OrderEntity {
     private String orderedItems;
 
 
-    @DatabaseField(columnName = "OrderedDetails", dataType = DataType.LONG_STRING)
-    private String orderedDetails;
+
 
     @DatabaseField(columnName = "CartonCounts")
     private String cartonCounts;
@@ -188,14 +188,6 @@ public class OrderEntity {
         this.orderStatus = orderStatus;
     }
 
-    public String getOrderedDetails() {
-        return orderedDetails;
-    }
-
-    public void setOrderedDetails(String orderedDetails) {
-        this.orderedDetails = orderedDetails;
-    }
-
     @Override
     public String toString() {
         return "OrderEntity{" +
@@ -210,7 +202,8 @@ public class OrderEntity {
                 ", serverTime=" + serverTime +
                 ", isSync=" + isSync +
                 ", orderedItems='" + orderedItems + '\'' +
-                ", orderedDetails='" + orderedDetails + '\'' +
+                ", cartonCounts='" + cartonCounts + '\'' +
+                ", createdBy='" + createdBy + '\'' +
                 '}';
     }
 }
