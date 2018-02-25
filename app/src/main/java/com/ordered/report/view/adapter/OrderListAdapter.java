@@ -51,7 +51,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         holder.createdBy.setText(orderEntity.getCreatedBy());
         int orderCount = getOrderItemsCount(orderEntity);
         holder.orderItemsCount.setText(String.valueOf(orderCount));
-        holder.orderImage.setImageResource(R.mipmap.ordered_icon);
+        holder.orderImage.setImageResource(R.drawable.order_icon_1);
         holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
 
     }

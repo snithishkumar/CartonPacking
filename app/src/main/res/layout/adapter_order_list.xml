@@ -17,10 +17,11 @@
 
         <ImageView
             android:id="@+id/order_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             app:srcCompat="@drawable/image_placeholder" />
 
 
@@ -41,14 +42,16 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ordered_list_order_id"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:layout_marginTop="5dp"
-                android:textColor="@android:color/holo_red_dark" />
+                android:textColor="#B71C1C" />
 
             <TextView
                 android:text="Client Name"
                 android:layout_width="wrap_content"
                 android:id="@+id/ordered_list_client_name"
                 android:textSize="14sp"
+                android:textStyle="bold"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:paddingBottom="5dp"

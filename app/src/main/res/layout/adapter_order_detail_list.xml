@@ -82,6 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:textStyle="bold"
                 android:text="Order Details:"
                 android:id="@+id/size_details"
                 android:layout_marginLeft="10dp"
@@ -89,6 +90,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -102,6 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
+                        android:textStyle="bold"
                         android:id="@+id/ordered_one_size_count"
                         android:text="One Size -> 10" />
 
@@ -110,6 +113,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
+                        android:textStyle="bold"
                         android:id="@+id/ordered_l_count"
                         android:text="L -> 10" />
 
@@ -128,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
+                        android:textStyle="bold"
                         android:id="@+id/ordered_xs_count"
                         android:text="XS -> 10" />
 
@@ -136,6 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
+                        android:textStyle="bold"
                         android:id="@+id/ordered_xl_count"
                         android:text="XL -> 10" />
 
@@ -152,6 +158,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
+                        android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_s_count"
                         android:text="S -> 10" />
@@ -160,6 +167,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
+                        android:textStyle="bold"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_xxxl_count"
                         android:text="XXXL -> 10" />
@@ -179,6 +187,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
+                        android:textStyle="bold"
                         android:id="@+id/ordered_m_count"
                         android:text="M -> 10" />
 
@@ -187,6 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
+                        android:textStyle="bold"
                         android:id="@+id/ordered_xxl_count"
                         android:text="XXL -> 10" />
 
