@@ -60,7 +60,7 @@ public class DeliveredFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        DeliveredListAdapter mAdapter = new DeliveredListAdapter(getActivity(), getOrderedCartonBookList(),OrderStatus.DELIVERED);
+        DeliveredListAdapter mAdapter = new DeliveredListAdapter(getActivity(), getOrderedList());
         recyclerView.setAdapter(mAdapter);
         return view;
     }
@@ -76,8 +76,8 @@ public class DeliveredFragment extends Fragment {
         super.onDetach();
     }
 
-    public List<OrderEntity> getOrderedCartonBookList() {
-        cartonbookEntities = orderedService.getCartonBookEntityByType(OrderStatus.DELIVERED);
+    public List<OrderEntity> getOrderedList() {
+        cartonbookEntities = orderedService.getDeliveredOrdersList();
         return cartonbookEntities;
     }
         //generatePdf

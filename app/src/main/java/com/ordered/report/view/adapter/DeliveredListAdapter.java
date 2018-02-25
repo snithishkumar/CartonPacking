@@ -11,7 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -31,30 +33,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListViewHolder> {
+public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdapter.DeliveredListViewHolder> {
 
     private Context context;
     private List<OrderEntity> orderEntities;
     private HomeActivity homeActivity;
-    private OrderStatus orderStatus;
     private boolean isPopupShow = false;
-    private DeliveredFragment deliveredFragment = null;
 
-    public DeliveredListAdapter(Context context, List<OrderEntity> orderEntities, OrderStatus orderStatus) {
+    public DeliveredListAdapter(Context context, List<OrderEntity> orderEntities) {
         this.context = context;
         homeActivity = (HomeActivity) context;
         this.orderEntities = orderEntities;
-        this.orderStatus = orderStatus;
     }
 
     @Override
     public DeliveredListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
-
-       // if (orderStatus.toString().equals(OrderStatus.ORDERED.toString())) {
-            view = LayoutInflater.from(context).inflate(R.layout.adapter_order_list, parent, false);
-       // }
-
+        View view = LayoutInflater.from(context).inflate(R.layout.ordered_row, parent, false);
         return new DeliveredListViewHolder(view);
     }
 
@@ -71,47 +65,17 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListView
         holder.orderItemsCount.setText(String.valueOf(orderCount));
 
         holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
-        if (orderEntity.getOrderType() == OrderStatus.ORDERED) {
-            holder.orderImage.setImageResource(R.mipmap.ordered_icon);
-        } else if (orderEntity.getOrderType() == OrderStatus.PACKING) {
-            holder.orderImage.setImageResource(R.mipmap.packing_icon);
-        } else {
-            holder.orderImage.setImageResource(R.mipmap.delivered_icon);
-        }
+        holder.orderImage.setImageResource(R.mipmap.delivered_icon);
         String date = null;
         if (orderEntity.getOrderedDate() != 0) {
             date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
             //   holder.createdDate.setText(date);
         }
-       /* holder.report.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isPopupShow = true;
-                showPopup(v,orderEntity);
 
-            }
-        });*/
-
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (orderEntity.getOrderType() == OrderStatus.ORDERED) {
-                    showAlertDialog(orderEntity.getOrderGuid());
-                } else if (orderEntity.getOrderType() == OrderStatus.PACKING) {
-                    homeActivity.showPackingProductDetailsList(orderEntity.getOrderGuid());
-                } else {
-                    // Toast.makeText(context,"hi",Toast.LENGTH_LONG).show();
-                    System.out.println("clicked");
-                    // isPopupShow = true;
-                    /// showPopup(view);
-                    // generate report here
-                }
-            }
-        });
     }
 
     private void showPopup(View v,final OrderEntity orderEntity) {
-
+        isPopupShow = true;
         PopupMenu popup = new PopupMenu(context, v);
         popup.inflate(R.menu.cotton_book_list_popup_item);
 
@@ -141,7 +105,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListView
                         break;
 
                     case R.id.package_report:
-                        //  homeActivity.generateReport(cottonBookListEntity);
+                        // homeActivity.generateReport(cottonBookListEntity);
 
                         break;
                 }
@@ -225,5 +189,40 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListView
         emailIntent.putExtra(Intent.EXTRA_TEXT, " ");
         return emailIntent;
     }
+
+
+    public class DeliveredListViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView orderTitle;
+        public TextView clientName;
+        public TextView createdDate;
+        public TextView createdBy;
+        public TextView orderItemsCount;
+        public TextView report;
+        public ImageView orderImage;
+        public View view;
+
+
+
+        public DeliveredListViewHolder(View itemView) {
+            super(itemView);
+            view = itemView;
+            orderTitle = (TextView) itemView.findViewById(R.id.ordered_list_order_id);
+            clientName = (TextView) itemView.findViewById(R.id.ordered_list_client_name);
+            createdDate = (TextView) itemView.findViewById(R.id.ordered_list_order_date);
+            createdBy = (TextView) itemView.findViewById(R.id.ordered_list_created_by);
+            orderItemsCount = (TextView) itemView.findViewById(R.id.ordered_list_ordered_items);
+            report = (TextView) itemView.findViewById(R.id.report_generate);
+            orderImage = (ImageView) itemView.findViewById(R.id.order_image);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopup(view,orderEntities.get(getAdapterPosition()));
+                }
+            });
+
+        }
+    }
+
 
 }
