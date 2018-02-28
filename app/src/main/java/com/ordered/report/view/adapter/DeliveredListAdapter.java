@@ -69,7 +69,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
         String date = null;
         if (orderEntity.getOrderedDate() != 0) {
             date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
-            //   holder.createdDate.setText(date);
+            //   holder.productColor.setText(date);
         }
 
     }

@@ -14,4 +14,13 @@ public class Constants {
 
     public static final String ORDER_DETAILS_POS="ORDERPOS";
 
+    private static String loginUser;
+
+    public static String getLoginUser() {
+        return loginUser;
+    }
+
+    public static void setLoginUser(String loginUser) {
+        Constants.loginUser = loginUser;
+    }
 }

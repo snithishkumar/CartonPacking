@@ -30,7 +30,7 @@ public class OrderEntity {
     private String orderId;
     @DatabaseField(columnName = "OrderGuid")
     private String orderGuid;
-    @DatabaseField(columnName = "clientName")
+    @DatabaseField(columnName = "productGroup")
     private String clientName;
     @DatabaseField(columnName = "OrderStatus", dataType = DataType.ENUM_INTEGER)
     private OrderStatus orderStatus;
@@ -192,7 +192,7 @@ public class OrderEntity {
                 "Id=" + Id +
                 ", orderId='" + orderId + '\'' +
                 ", orderGuid='" + orderGuid + '\'' +
-                ", clientName='" + clientName + '\'' +
+                ", productGroup='" + clientName + '\'' +
                 ", orderStatus=" + orderStatus +
                 ", paymentStatus=" + paymentStatus +
                 ", orderedDate=" + orderedDate +

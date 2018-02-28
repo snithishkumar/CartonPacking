@@ -155,7 +155,7 @@ public class OrderDetailsListAdapter extends RecyclerView.Adapter<OrderDetailsLi
             del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    orderDetailsActivity.getOrderDetailsListViewModels().remove(getAdapterPosition());
+                   // orderDetailsActivity.getOrderDetailsListViewModels().remove(getAdapterPosition());
                     notifyDataSetChanged();
                 }
             });

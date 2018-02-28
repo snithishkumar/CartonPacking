@@ -152,7 +152,7 @@ this.clientName = orderEntity.getClientName();
         return "OrderDetailsJson{" +
                 "orderId='" + orderId + '\'' +
                 ", orderGuid='" + orderGuid + '\'' +
-                ", clientName='" + clientName + '\'' +
+                ", productGroup='" + clientName + '\'' +
                 ", orderStatus=" + orderStatus +
                 ", paymentStatus=" + paymentStatus +
                 ", orderedDate=" + orderedDate +

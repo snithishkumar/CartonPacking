@@ -8,6 +8,7 @@ import com.ordered.report.SyncAdapter.SyncServiceApi;
 import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
+import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.json.models.LoginEvent;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.models.CartonDetailsEntity;
@@ -134,6 +135,18 @@ public class OrderedService {
             orderDetailsListViewModels.add(orderDetailsListViewModel);
         }
         return orderDetailsListViewModels;
+    }
+
+
+    public List<CartonDetailsJson> getCartonDetailsJson(String orderGuid){
+        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+        List<CartonDetailsEntity> cartonDetailsEntityList =  cartonbookDao.getCartonDetailsList(orderEntity);
+        List<CartonDetailsJson> cartonDetailsJsonList = new ArrayList<>();
+        for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList){
+            CartonDetailsJson cartonDetailsJson = new CartonDetailsJson(cartonDetailsEntity);
+            cartonDetailsJsonList.add(cartonDetailsJson);
+        }
+        return cartonDetailsJsonList;
     }
 
 

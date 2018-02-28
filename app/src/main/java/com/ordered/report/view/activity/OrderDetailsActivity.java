@@ -8,14 +8,20 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.ordered.report.R;
+import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.adapter.OrderDetailsListAdapter;
+import com.ordered.report.view.adapter.ProductNameListAdapter;
 import com.ordered.report.view.fragment.CaptureCartonDetailsFragment;
+import com.ordered.report.view.fragment.CartonListFragment;
+import com.ordered.report.view.fragment.CartonNumberPickerFragment;
 import com.ordered.report.view.fragment.HomeFragment;
 import com.ordered.report.view.fragment.ProductDetailsListFragment;
+import com.ordered.report.view.fragment.ProductNameListFragment;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.ArrayList;
@@ -25,12 +31,16 @@ import java.util.List;
  * Created by Nithish on 24/02/18.
  */
 
-public class OrderDetailsActivity extends AppCompatActivity implements OrderDetailsListAdapter.OrderDetailsClickListeners, CaptureCartonDetailsFragment.ShowFragment {
+public class OrderDetailsActivity extends AppCompatActivity implements OrderDetailsListAdapter.OrderDetailsClickListeners, CaptureCartonDetailsFragment.ShowFragment,ProductNameListAdapter.ProductNameListAdapterCallBack {
 
     private String orderGuid;
     private String totalNoOfCartons;
+   // private String cartonNumber;
     private OrderedService orderedService;
-   private  List<OrderDetailsListViewModel> orderDetailsListViewModels = new ArrayList<>();
+    private OrderDetailsListViewModel orderDetailsListViewModel;
+
+    List<CartonDetailsJson>  cartonDetailsJsonList = new ArrayList<>();
+    private CartonDetailsJson cartonDetailsJson;
 
     public final String LOG_TAG = OrderDetailsActivity.class.getSimpleName();
 
@@ -41,7 +51,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         Toolbar toolbar = (Toolbar) findViewById(R.id.order_Details_toolbar);
         setSupportActionBar(toolbar);
         init();
-        showFragment();
+        showCartonListFragment();
+       // showFragment();
 
     }
 
@@ -54,10 +65,18 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
             orderGuid = getIntent().getStringExtra("orderGuid");
             totalNoOfCartons = getIntent().getStringExtra("totalNoOfCartons");
             orderedService = new OrderedService(this);
+
+            cartonDetailsJsonList =  getOrderedService().getCartonDetailsJson(orderGuid);
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in init",e);
         }
 
+    }
+
+
+    private void showCartonListFragment(){
+        CartonListFragment cartonListFragment = new CartonListFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.order_details_container, cartonListFragment).addToBackStack(null).commit();
     }
 
 
@@ -88,9 +107,43 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
     @Override
     public void viewFragment(int options) {
-        ProductDetailsListFragment productDetailsListFragment = new ProductDetailsListFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productDetailsListFragment).addToBackStack(null).commit();
+        CartonListFragment cartonListFragment = new CartonListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonListFragment).addToBackStack(null).commit();
+        //ProductDetailsListFragment productDetailsListFragment = new ProductDetailsListFragment();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productDetailsListFragment).addToBackStack(null).commit();
 
+    }
+
+
+    private void showCartonNumberPickerFragment(){
+        CartonNumberPickerFragment cartonNumberPickerFragment = new CartonNumberPickerFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonNumberPickerFragment).addToBackStack(null).commit();
+    }
+
+
+    private void showProductNameListFragment(){
+        ProductNameListFragment productNameListFragment = new ProductNameListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productNameListFragment).addToBackStack(null).commit();
+    }
+
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.carton_footer_add:
+                showCartonNumberPickerFragment();
+                break;
+
+            case R.id.carton_number_picking:
+                showProductNameListFragment();
+                break;
+        }
+    }
+
+
+    @Override
+    public void callBack() {
+        CaptureCartonDetailsFragment captureCartonDetailsFragment = new CaptureCartonDetailsFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, captureCartonDetailsFragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -110,7 +163,37 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         return totalNoOfCartons;
     }
 
-    public List<OrderDetailsListViewModel> getOrderDetailsListViewModels() {
+   /* public List<OrderDetailsListViewModel> getOrderDetailsListViewModels() {
         return orderDetailsListViewModels;
     }
+
+    public String getCartonNumber() {
+        return cartonNumber;
+    }*/
+
+
+    public OrderDetailsListViewModel getOrderDetailsListViewModel() {
+        return orderDetailsListViewModel;
+    }
+
+    public void setOrderDetailsListViewModel(OrderDetailsListViewModel orderDetailsListViewModel) {
+        this.orderDetailsListViewModel = orderDetailsListViewModel;
+    }
+
+
+    public CartonDetailsJson getCartonDetailsJson() {
+        return cartonDetailsJson;
+    }
+
+    public void setCartonDetailsJson(CartonDetailsJson cartonDetailsJson) {
+        this.cartonDetailsJson = cartonDetailsJson;
+    }
+
+    public List<CartonDetailsJson> getCartonDetailsJsonList() {
+        return cartonDetailsJsonList;
+    }
+
+   /* public void setCartonNumber(String cartonNumber) {
+        this.cartonNumber = cartonNumber;
+    }*/
 }

@@ -45,10 +45,10 @@ public class ProductDetailsListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         try {
             orderDetailsActivity = (OrderDetailsActivity) context;
-            if(orderDetailsActivity.getOrderDetailsListViewModels().size() == 0){
+           /* if(orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels().size() == 0){
                 List<OrderDetailsListViewModel>  orderDetailsListViewModels =  orderDetailsActivity.getOrderedService().getOrderDetailsListViewModels(orderDetailsActivity.getOrderGuid());
                 orderDetailsActivity.getOrderDetailsListViewModels().addAll(orderDetailsListViewModels);
-            }
+            }*/
             totalCotton = orderDetailsActivity.getTotalNoOfCartons();
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class ProductDetailsListFragment extends Fragment {
 
 
 
-        mAdapter = new OrderDetailsListAdapter(getActivity(), orderDetailsActivity.getOrderDetailsListViewModels(),orderDetailsActivity.getTotalNoOfCartons());
+        mAdapter = new OrderDetailsListAdapter(getActivity(), orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels(),orderDetailsActivity.getTotalNoOfCartons());
         recyclerView.setAdapter(mAdapter);
 
 
@@ -77,7 +77,7 @@ public class ProductDetailsListFragment extends Fragment {
         orderDetailsDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               boolean isSaved =  orderDetailsActivity.getOrderedService().saveProductDetails(orderDetailsActivity.getOrderGuid(),orderDetailsActivity.getOrderDetailsListViewModels(),orderDetailsActivity.getTotalNoOfCartons());
+               boolean isSaved =  orderDetailsActivity.getOrderedService().saveProductDetails(orderDetailsActivity.getOrderGuid(),orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels(),orderDetailsActivity.getTotalNoOfCartons());
                if(!isSaved){
                    showAlert();
                }else{

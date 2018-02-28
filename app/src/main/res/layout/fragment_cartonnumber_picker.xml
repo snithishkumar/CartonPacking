@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context=".view.activity.OrderDetailsActivity"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select a carton..."
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/np"
+        android:textSize="25dp"
+        />
+
+    <NumberPicker
+        android:id="@+id/np"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/np"
+        android:id="@+id/carton_number_picking"
+        android:visibility="invisible"
+        android:text="Next"
+        android:onClick="onClick"
+        android:layout_below="@+id/np"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp" />
+
+</RelativeLayout>

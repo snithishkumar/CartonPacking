@@ -43,12 +43,9 @@ public class CaptureCartonDetailsFragment extends Fragment {
     private EditText vXL;
     private EditText vXXL;
     private EditText vXXXL;
-    private Spinner spinner;
 
     private OrderDetailsListViewModel orderDetailsListViewModel;
-    private int pos;
-    private String cartonNumber;
-    private int noOfCartons;
+
 
     public CaptureCartonDetailsFragment() {
         // Required empty public constructor
@@ -60,9 +57,7 @@ public class CaptureCartonDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         orderDetailsActivity = (OrderDetailsActivity) context;
         showFragment = orderDetailsActivity;
-        if (getArguments() != null) {
-            pos = getArguments().getInt(Constants.ORDER_DETAILS_POS);
-        }
+
     }
 
     private void initView(View view) {
@@ -79,43 +74,18 @@ public class CaptureCartonDetailsFragment extends Fragment {
         vXXL = view.findViewById(R.id.capture_xxl);
         vXXXL = view.findViewById(R.id.capture_xxxl);
 
-        orderDetailsListViewModel = orderDetailsActivity.getOrderDetailsListViewModels().get(pos);
+        orderDetailsListViewModel = orderDetailsActivity.getOrderDetailsListViewModel();
         vProductName.setText(orderDetailsListViewModel.getOrderItemName());
         vProductGroup.setText(orderDetailsListViewModel.getOrderItemGroup());
-        noOfCartons = Integer.valueOf(orderDetailsActivity.getTotalNoOfCartons());
-        setCartonDropDown(view);
+
     }
 
 
-    private void setCartonDropDown(View view) {
-        Spinner spinner = (Spinner) view.findViewById(R.id.capture_order_carton_number);
 
-        List<String> cartonNumberList = new ArrayList<>();
-        for (int i = 1; i <= noOfCartons; i++) {
-            cartonNumberList.add(i + "");
-        }
-// Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(orderDetailsActivity, android.R.layout.simple_spinner_item, cartonNumberList);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                cartonNumber = (String) adapterView.getItemAtPosition(i);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
 
 
     private void createOrder() {
-        orderDetailsListViewModel.setCartonNumber(cartonNumber);
+        orderDetailsListViewModel.setCartonNumber(orderDetailsActivity.getCartonDetailsJson().getCartonNumber());
         orderDetailsListViewModel.setProductL(vL.getText().toString());
 
         orderDetailsListViewModel.setProductM(vM.getText().toString());
@@ -127,6 +97,10 @@ public class CaptureCartonDetailsFragment extends Fragment {
         orderDetailsListViewModel.setProductS(vS.getText().toString());
         orderDetailsListViewModel.setProductCreatedDateTime(System.currentTimeMillis());
         orderDetailsListViewModel.setEdited(true);
+        orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels().add(orderDetailsListViewModel);
+        orderDetailsActivity.getCartonDetailsJsonList().add(orderDetailsActivity.getCartonDetailsJson());
+        orderDetailsActivity.setOrderDetailsListViewModel(null);
+        orderDetailsActivity.setCartonDetailsJson(null);
     }
 
     @Override

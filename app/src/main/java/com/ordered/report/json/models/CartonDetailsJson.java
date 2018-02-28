@@ -1,6 +1,7 @@
 package com.ordered.report.json.models;
 
 import com.ordered.report.models.CartonDetailsEntity;
+import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,9 @@ public class CartonDetailsJson {
     private long lastModifiedTime;
     private String createdBy;
     private String lastModifiedBy;
+    private int noOfProducts;
     private List<ProductDetailsJson> productDetailsJsonList = new ArrayList<>();
+    List<OrderDetailsListViewModel>  orderDetailsListViewModels = new ArrayList<>();
 
     public CartonDetailsJson(){
 
@@ -30,6 +33,15 @@ public class CartonDetailsJson {
         this.createdDateTime = cartonDetailsEntity.getCreatedDateTime();
         this.createdBy = cartonDetailsEntity.getCreatedBy();
         this.lastModifiedBy = cartonDetailsEntity.getLastModifiedBy();
+    }
+
+
+    public int getNoOfProducts() {
+        return noOfProducts;
+    }
+
+    public void setNoOfProducts(int noOfProducts) {
+        this.noOfProducts = noOfProducts;
     }
 
     public String getCartonGuid() {
@@ -86,6 +98,14 @@ public class CartonDetailsJson {
 
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public List<OrderDetailsListViewModel> getOrderDetailsListViewModels() {
+        return orderDetailsListViewModels;
+    }
+
+    public void setOrderDetailsListViewModels(List<OrderDetailsListViewModel> orderDetailsListViewModels) {
+        this.orderDetailsListViewModels = orderDetailsListViewModels;
     }
 
     @Override

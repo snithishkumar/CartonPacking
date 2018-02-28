@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.activity.OrderDetailsActivity"
+    android:layout_height="match_parent">
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/carton_list"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_above="@+id/carton_footer_bar"
+        tools:listitem="@layout/adapter_product_list"
+        android:layout_height="match_parent"/>
+
+
+    <LinearLayout
+        android:id="@+id/carton_footer_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:weightSum="3">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Cancel"
+            android:id="@+id/carton_footer_cancel"
+            android:layout_marginLeft="2dp"
+            android:onClick="onClick"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/carton_footer_add"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Add"
+            android:layout_marginLeft="1dp"
+            android:onClick="onClick"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:text="Done"
+            android:onClick="onClick"
+            android:id="@+id/carton_footer_done"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</RelativeLayout>
