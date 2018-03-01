@@ -11,7 +11,7 @@ import com.ordered.report.json.models.CartonDetailsJson;
 public class CartonDetailsEntity {
 
     public static final String CARTON_GUID = "CartonGuid";
-    public static final String ORDER_ENTITY = "orderEntity";
+    public static final String ORDER_ENTITY = "OrderId";
 
     @DatabaseField(columnName = "CartonId", generatedId = true)
     private int cartonId;
