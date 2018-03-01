@@ -9,6 +9,7 @@ import com.ordered.report.json.models.OrderCreationDetailsJson;
 public class OrderDetailsListViewModel {
 
     private String orderGuid;
+    private String productGuid;
     private String orderItemName;
     private String orderItemGroup;
     private String orderItemGuid;
@@ -41,6 +42,8 @@ public class OrderDetailsListViewModel {
     private boolean isEdited = false;
 
 
+
+
     public void loadOrderItemsDetails(OrderCreationDetailsJson orderDetailsJson) {
         this.orderItemName = orderDetailsJson.getProductStyle();
         this.orderItemGroup = orderDetailsJson.getProductGroup();
@@ -57,6 +60,15 @@ public class OrderDetailsListViewModel {
         this.orderItemLastModifiedDateTime = orderDetailsJson.getLastModifiedDateTime();
         this.orderItemGuid = orderDetailsJson.getOrderItemGuid();
         this.orderItemCategory = orderDetailsJson.getProductCategory();
+    }
+
+
+    public String getProductGuid() {
+        return productGuid;
+    }
+
+    public void setProductGuid(String productGuid) {
+        this.productGuid = productGuid;
     }
 
     public String getOrderItemGuid() {

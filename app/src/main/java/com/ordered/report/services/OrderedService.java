@@ -14,6 +14,7 @@ import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
+import com.ordered.report.utils.Constants;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.lang.reflect.Type;
@@ -150,35 +151,40 @@ public class OrderedService {
     }
 
 
-    public boolean saveProductDetails(String orderGuid,List<OrderDetailsListViewModel> orderDetailsListViewModels,String totalNoOfCartons){
+    public boolean saveProductDetails(String orderGuid,List<CartonDetailsJson> cartonDetailsJsonList){
         OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
         boolean isEdited = false;
-        Map<String,CartonDetailsEntity> cartonDetailsEntityMap = new HashMap<>();
-        for(OrderDetailsListViewModel orderDetailsListViewModel : orderDetailsListViewModels){
-           if(orderDetailsListViewModel.isEdited()){
-               String cartonNumber =  orderDetailsListViewModel.getCartonNumber();
-               CartonDetailsEntity cartonDetailsEntity =  cartonDetailsEntityMap.get(cartonNumber);
-               if(cartonDetailsEntity == null){
-                   cartonDetailsEntity = new CartonDetailsEntity();
-                   cartonDetailsEntity.setOrderEntity(orderEntity);
-                   cartonDetailsEntity.setCartonGuid(UUID.randomUUID().toString());
-                   cartonDetailsEntity.setCartonNumber(cartonNumber);
-                   cartonDetailsEntity.setCreatedDateTime(System.currentTimeMillis());
-                   cartonbookDao.createCartonDetailsEntity(cartonDetailsEntity);
-                   cartonDetailsEntityMap.put(cartonNumber,cartonDetailsEntity);
-               }
-               ProductDetailsEntity productDetailsEntity = new ProductDetailsEntity(orderDetailsListViewModel);
-               productDetailsEntity.setCartonNumber(cartonDetailsEntity);
-               productDetailsEntity.setOrderEntity(orderEntity);
-               cartonbookDao.createProductDetailsEntity(productDetailsEntity);
+       for(CartonDetailsJson cartonDetailsJson : cartonDetailsJsonList){
+           CartonDetailsEntity cartonDetailsEntity =  cartonbookDao.getCartonDetailsEntity(cartonDetailsJson.getCartonGuid());
+           if(cartonDetailsEntity == null){
+               cartonDetailsEntity = new CartonDetailsEntity(cartonDetailsJson);
+               cartonDetailsEntity.setOrderEntity(orderEntity);
+               cartonbookDao.createCartonDetailsEntity(cartonDetailsEntity);
+           }else{
+               cartonDetailsEntity.setLastModifiedBy(cartonDetailsJson.getLastModifiedBy());
+               cartonDetailsEntity.setLastModifiedTime(cartonDetailsJson.getLastModifiedTime());
+           }
+           List<OrderDetailsListViewModel> orderDetailsListViewModels = cartonDetailsJson.getOrderDetailsListViewModels();
+           for(OrderDetailsListViewModel orderDetailsListViewModel : orderDetailsListViewModels){
                isEdited = true;
+               ProductDetailsEntity productDetailsEntity =  cartonbookDao.getProductDetails(orderDetailsListViewModel.getProductGuid());
+               if(productDetailsEntity == null){
+                   productDetailsEntity = new ProductDetailsEntity(orderDetailsListViewModel);
+                   productDetailsEntity.setCartonNumber(cartonDetailsEntity);
+                   productDetailsEntity.setOrderEntity(orderEntity);
+                   productDetailsEntity.setCreatedBy(Constants.getLoginUser());
+                   productDetailsEntity.setModifiedBy(Constants.getLoginUser());
+                   productDetailsEntity.setLastModifiedDateTime(productDetailsEntity.getCreatedDateTime());
+                   cartonbookDao.createProductDetailsEntity(productDetailsEntity);
+               }
            }
 
+       }
 
-        }
+
         if(isEdited){
             orderEntity.setSync(false);
-            orderEntity.setCartonCounts(totalNoOfCartons);
+            orderEntity.setCartonCounts(cartonDetailsJsonList.size()+"");
             orderEntity.setLastModifiedDate(System.currentTimeMillis());
             orderEntity.setOrderStatus(OrderStatus.PACKING);
             cartonbookDao.updateCortonbookEntity(orderEntity);

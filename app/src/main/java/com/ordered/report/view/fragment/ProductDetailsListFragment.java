@@ -31,7 +31,6 @@ import java.util.List;
 public class ProductDetailsListFragment extends Fragment {
     private OrderDetailsActivity orderDetailsActivity;
     private Context context;
-    private String totalCotton ;
     private TextView no_of_cotton;
 
     OrderDetailsListAdapter mAdapter;
@@ -45,11 +44,6 @@ public class ProductDetailsListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         try {
             orderDetailsActivity = (OrderDetailsActivity) context;
-           /* if(orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels().size() == 0){
-                List<OrderDetailsListViewModel>  orderDetailsListViewModels =  orderDetailsActivity.getOrderedService().getOrderDetailsListViewModels(orderDetailsActivity.getOrderGuid());
-                orderDetailsActivity.getOrderDetailsListViewModels().addAll(orderDetailsListViewModels);
-            }*/
-            totalCotton = orderDetailsActivity.getTotalNoOfCartons();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,8 +54,8 @@ public class ProductDetailsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_details_list, container, false);
-        no_of_cotton = (TextView) view.findViewById(R.id.total_carton_no);
-        no_of_cotton.setText(totalCotton);
+        no_of_cotton = view.findViewById(R.id.total_carton_no);
+        no_of_cotton.setText(orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels().size()+"");
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.product_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -69,11 +63,11 @@ public class ProductDetailsListFragment extends Fragment {
 
 
 
-        mAdapter = new OrderDetailsListAdapter(getActivity(), orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels(),orderDetailsActivity.getTotalNoOfCartons());
+        mAdapter = new OrderDetailsListAdapter(getActivity(), orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels());
         recyclerView.setAdapter(mAdapter);
 
 
-        Button orderDetailsDone = view.findViewById(R.id.order_details_done);
+       /* Button orderDetailsDone = view.findViewById(R.id.order_details_done);
         orderDetailsDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,7 +86,7 @@ public class ProductDetailsListFragment extends Fragment {
             public void onClick(View view) {
                 backToHome();
             }
-        });
+        });*/
         return view;
 
     }

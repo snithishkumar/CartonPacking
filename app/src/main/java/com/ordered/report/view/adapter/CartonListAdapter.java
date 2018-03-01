@@ -27,10 +27,12 @@ public class CartonListAdapter extends RecyclerView.Adapter<CartonListAdapter.Ca
 
     private List<CartonDetailsJson> cartonItemModels;
     private OrderDetailsActivity orderDetailsActivity;
+    private CartonListAdapterCallBack cartonListAdapterCallBack;
 
     public CartonListAdapter(Context context, List<CartonDetailsJson> cartonItemModels) {
         orderDetailsActivity = (OrderDetailsActivity) context;
         this.cartonItemModels = cartonItemModels;
+        cartonListAdapterCallBack = orderDetailsActivity;
     }
 
     @Override
@@ -44,8 +46,8 @@ public class CartonListAdapter extends RecyclerView.Adapter<CartonListAdapter.Ca
     public void onBindViewHolder(CartonListViewHolder holder, int position) {
         final CartonDetailsJson cartonItemModel = cartonItemModels.get(position);
 
-        holder.cartonNumber.setText(cartonItemModel.getCartonNumber());
-        holder.noOfProducts.setText(cartonItemModel.getNoOfProducts()+"");
+        holder.cartonNumber.setText("Carton Number:"+cartonItemModel.getCartonNumber());
+        holder.noOfProducts.setText("No of Products:"+cartonItemModel.getOrderDetailsListViewModels().size()+"");
 
         holder.cartonCreatedBy.setText(cartonItemModel.getCreatedBy());
         holder.cartonCreatedDate.setText(formatDate(cartonItemModel.getCreatedDateTime()));
@@ -89,11 +91,15 @@ public class CartonListAdapter extends RecyclerView.Adapter<CartonListAdapter.Ca
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-
+                    orderDetailsActivity.setCartonDetailsJson(cartonItemModels.get(getAdapterPosition()));
+                    cartonListAdapterCallBack.showProductDetailsListFragment();
                 }
             });
         }
     }
 
+
+    public interface CartonListAdapterCallBack{
+        void showProductDetailsListFragment();
+    }
 }

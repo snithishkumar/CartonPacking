@@ -22,6 +22,7 @@ import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,8 +87,8 @@ public class CaptureCartonDetailsFragment extends Fragment {
 
     private void createOrder() {
         orderDetailsListViewModel.setCartonNumber(orderDetailsActivity.getCartonDetailsJson().getCartonNumber());
+        orderDetailsListViewModel.setProductGuid(UUID.randomUUID().toString());
         orderDetailsListViewModel.setProductL(vL.getText().toString());
-
         orderDetailsListViewModel.setProductM(vM.getText().toString());
         orderDetailsListViewModel.setProductOneSize(vOneSize.getText().toString());
         orderDetailsListViewModel.setProductXl(vXL.getText().toString());
@@ -100,7 +101,10 @@ public class CaptureCartonDetailsFragment extends Fragment {
         orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels().add(orderDetailsListViewModel);
         orderDetailsActivity.getCartonDetailsJsonList().add(orderDetailsActivity.getCartonDetailsJson());
         orderDetailsActivity.setOrderDetailsListViewModel(null);
-        orderDetailsActivity.setCartonDetailsJson(null);
+        if(!orderDetailsActivity.isFlag()){
+            orderDetailsActivity.setCartonDetailsJson(null);
+        }
+
     }
 
     @Override

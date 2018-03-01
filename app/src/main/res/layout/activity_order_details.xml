@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
@@ -10,6 +10,7 @@ tools:context=".view.activity.OrderDetailsActivity">
 <android.support.design.widget.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/toolbar_container"
     app:elevation="0dp"
     android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -24,10 +25,11 @@ tools:context=".view.activity.OrderDetailsActivity">
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:layout_below="@+id/toolbar_container"
         android:id="@+id/order_details_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </FrameLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

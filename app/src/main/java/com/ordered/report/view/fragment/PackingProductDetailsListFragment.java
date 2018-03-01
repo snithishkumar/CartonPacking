@@ -75,7 +75,7 @@ public class PackingProductDetailsListFragment extends Fragment {
 
         getProductDetails();
 
-        mAdapter = new OrderDetailsListAdapter(getActivity(), new ArrayList<OrderDetailsListViewModel>(),totalCotton+"");
+        mAdapter = new OrderDetailsListAdapter(getActivity(), new ArrayList<OrderDetailsListViewModel>());
         recyclerView.setAdapter(mAdapter);
         Button addButton = (Button) view.findViewById(R.id.packing_order_details_add);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -113,25 +113,7 @@ public class PackingProductDetailsListFragment extends Fragment {
 
     }
 
-    private void showAlert(){
-        AlertDialog alertDialog = new AlertDialog.Builder(
-                getActivity()).create();
 
-        // Setting Dialog Title
-        alertDialog.setTitle("Error");
-
-        // Setting Dialog Message
-        alertDialog.setMessage("Noting to Save.");
-//            alertDialog.setIcon(R.drawable.tick);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Write your code here to execute after dialog closed
-            }
-        });
-
-        // Showing Alert Message
-        alertDialog.show();
-    }
 
     @Override
     public void onAttach(Context context) {

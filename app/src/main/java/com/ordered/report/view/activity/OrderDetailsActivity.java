@@ -1,5 +1,8 @@
 package com.ordered.report.view.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import com.ordered.report.R;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.view.adapter.CartonListAdapter;
 import com.ordered.report.view.adapter.OrderDetailsListAdapter;
 import com.ordered.report.view.adapter.ProductNameListAdapter;
 import com.ordered.report.view.fragment.CaptureCartonDetailsFragment;
@@ -31,7 +35,7 @@ import java.util.List;
  * Created by Nithish on 24/02/18.
  */
 
-public class OrderDetailsActivity extends AppCompatActivity implements OrderDetailsListAdapter.OrderDetailsClickListeners, CaptureCartonDetailsFragment.ShowFragment,ProductNameListAdapter.ProductNameListAdapterCallBack {
+public class OrderDetailsActivity extends AppCompatActivity implements OrderDetailsListAdapter.OrderDetailsClickListeners, CaptureCartonDetailsFragment.ShowFragment,ProductNameListAdapter.ProductNameListAdapterCallBack, CartonListAdapter.CartonListAdapterCallBack {
 
     private String orderGuid;
     private String totalNoOfCartons;
@@ -107,8 +111,13 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
     @Override
     public void viewFragment(int options) {
-        CartonListFragment cartonListFragment = new CartonListFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonListFragment).addToBackStack(null).commit();
+        if(!flag){
+            CartonListFragment cartonListFragment = new CartonListFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonListFragment).addToBackStack(null).commit();
+        }else{
+            showProductDetailsListFragment();
+        }
+
         //ProductDetailsListFragment productDetailsListFragment = new ProductDetailsListFragment();
         //getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productDetailsListFragment).addToBackStack(null).commit();
 
@@ -126,6 +135,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productNameListFragment).addToBackStack(null).commit();
     }
 
+    private boolean flag = false;
+
 
     public void onClick(View view){
         switch (view.getId()){
@@ -133,8 +144,37 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
                 showCartonNumberPickerFragment();
                 break;
 
+            case R.id.carton_footer_done:
+                if(cartonDetailsJsonList.size() > 0){
+                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList);
+                    finish();
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    startActivity(intent);
+                }else{
+                    showAlert();
+                }
+
+                break;
+
+            case R.id.carton_footer_cancel:
+                finish();
+                Intent  intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                break;
+
             case R.id.carton_number_picking:
                 showProductNameListFragment();
+                break;
+
+            case R.id.order_details_add:
+                flag = true;
+                showProductNameListFragment();
+                break;
+
+            case R.id.order_details_done:
+                flag = false;
+                CartonListFragment cartonListFragment = new CartonListFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonListFragment).addToBackStack(null).commit();
                 break;
         }
     }
@@ -144,6 +184,12 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
     public void callBack() {
         CaptureCartonDetailsFragment captureCartonDetailsFragment = new CaptureCartonDetailsFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, captureCartonDetailsFragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void showProductDetailsListFragment() {
+        ProductDetailsListFragment productDetailsListFragment = new ProductDetailsListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productDetailsListFragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -193,7 +239,32 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         return cartonDetailsJsonList;
     }
 
-   /* public void setCartonNumber(String cartonNumber) {
+    public boolean isFlag() {
+        return flag;
+    }
+
+
+    private void showAlert(){
+        AlertDialog alertDialog = new AlertDialog.Builder(
+                this).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Error");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Noting to Save.");
+//            alertDialog.setIcon(R.drawable.tick);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Write your code here to execute after dialog closed
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    /* public void setCartonNumber(String cartonNumber) {
         this.cartonNumber = cartonNumber;
     }*/
 }

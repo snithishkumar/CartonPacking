@@ -29,6 +29,9 @@ public class ProductDetailsEntity {
     @DatabaseField(columnName = "CreatedBy")
     private  String createdBy;
 
+    @DatabaseField(columnName = "ModifiedBy")
+    private String modifiedBy;
+
     @DatabaseField(columnName = "Id", foreign = true, foreignAutoRefresh = true)
     private OrderEntity orderEntity;
 
@@ -85,7 +88,7 @@ public class ProductDetailsEntity {
 
 
     public ProductDetailsEntity(OrderDetailsListViewModel orderDetailsListViewModel){
-        this.productGuid = UUID.randomUUID().toString();
+        this.productGuid = orderDetailsListViewModel.getProductGuid();
         this.productName = orderDetailsListViewModel.getOrderItemName();
         this.orderItemGuid = orderDetailsListViewModel.getOrderItemGuid();
         this.productCategory = orderDetailsListViewModel.getOrderItemCategory();
@@ -100,8 +103,17 @@ public class ProductDetailsEntity {
         this.xxxl = orderDetailsListViewModel.getProductXxxl();
         this.createdDateTime = System.currentTimeMillis();
         this.lastModifiedDateTime = createdDateTime;
+
     }
 
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
     public String getOrderItemGuid() {
         return orderItemGuid;

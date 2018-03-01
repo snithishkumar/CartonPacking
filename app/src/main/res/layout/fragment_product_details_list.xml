@@ -19,7 +19,7 @@
             android:textAllCaps="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:text="Total No.of cortons: "/>
+            android:text="Total No.of Products: "/>
         <TextView
             android:id="@+id/total_carton_no"
             android:layout_width="wrap_content"
@@ -36,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_bar"
+        tools:listitem="@layout/adapter_order_detail_list"
         android:layout_above="@+id/footer_bar">
 
     </android.support.v7.widget.RecyclerView>
@@ -45,21 +46,14 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:weightSum="3">
+        android:weightSum="2">
+
         <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Cancel"
-            android:id="@+id/order_details_cancel"
-            android:layout_marginLeft="5dp"
-            android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/add"
+            android:id="@+id/order_details_add"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Add"
+            android:onClick="onClick"
             android:layout_marginLeft="5dp"
             android:textColor="@android:color/white"
             android:background="@color/colorPrimary"
@@ -70,6 +64,7 @@
             android:textColor="@android:color/white"
             android:background="@color/colorPrimary"
             android:text="Done"
+            android:onClick="onClick"
             android:id="@+id/order_details_done"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"

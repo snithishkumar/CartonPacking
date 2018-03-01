@@ -29,13 +29,13 @@ public class OrderDetailsListAdapter extends RecyclerView.Adapter<OrderDetailsLi
     private List<OrderDetailsListViewModel>  orderCreationDetails = new ArrayList<>();
     private OrderDetailsActivity orderDetailsActivity;
     private OrderDetailsClickListeners orderDetailsClickListeners;
-    private String totalCartonCount;
-    public OrderDetailsListAdapter(Context context, List<OrderDetailsListViewModel> orderDetailsListViewModels,String totalCartonCount) {
+    //private String totalCartonCount;
+    public OrderDetailsListAdapter(Context context, List<OrderDetailsListViewModel> orderDetailsListViewModels) {
         this.orderCreationDetails = orderDetailsListViewModels;
         this.context = context;
         orderDetailsActivity = (OrderDetailsActivity) context;
         orderDetailsClickListeners = orderDetailsActivity;
-        this.totalCartonCount = totalCartonCount;
+      //  this.totalCartonCount = totalCartonCount;
     }
 
     @Override
@@ -170,12 +170,12 @@ public class OrderDetailsListAdapter extends RecyclerView.Adapter<OrderDetailsLi
             orderedXxxl = v.findViewById(R.id.ordered_xxl_count);
 
 
-            v.setOnClickListener(new View.OnClickListener() {
+            /*v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     orderDetailsClickListeners.orderDetailsListOnClick(getAdapterPosition());
                 }
-            });
+            });*/
 
         }
 
