@@ -46,7 +46,7 @@ public class CartonListFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
-
+        getActivity().setTitle("CARTON LIST");
         CartonListAdapter  cartonListAdapter = new CartonListAdapter(orderDetailsActivity,orderDetailsActivity.getCartonDetailsJsonList());
         //ProductNameListAdapter productNameListAdapter = new ProductNameListAdapter(orderDetailsActivity,orderDetailsListViewModels);
         recyclerView.setAdapter(cartonListAdapter);

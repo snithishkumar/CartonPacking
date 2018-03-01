@@ -39,6 +39,7 @@ public class CartonNumberPickerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cartonnumber_picker, container, false);
 
+        getActivity().setTitle("ADD CARTON");
         final TextView tv = (TextView) view.findViewById(R.id.tv);
         NumberPicker np = (NumberPicker) view.findViewById(R.id.np);
 

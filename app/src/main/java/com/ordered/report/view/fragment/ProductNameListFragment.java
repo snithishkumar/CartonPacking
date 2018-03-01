@@ -43,6 +43,7 @@ public class ProductNameListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.product_list);
+        getActivity().setTitle("PRODUCT LIST");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);

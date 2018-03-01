@@ -64,6 +64,7 @@ public class CaptureCartonDetailsFragment extends Fragment {
     private void initView(View view) {
         //capture_carton_product_group"
         //
+        getActivity().setTitle("CAPTURE DETAILS");
         vProductName = view.findViewById(R.id.capture_carton_product_name);
         vProductGroup = view.findViewById(R.id.capture_carton_product_group);
         vOneSize = view.findViewById(R.id.capture_oneSize);

@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.ordered.report.R;
@@ -262,6 +264,19 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
         // Showing Alert Message
         alertDialog.show();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //  getMenuInflater().inflate(R.menu.music, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
     }
 
     /* public void setCartonNumber(String cartonNumber) {

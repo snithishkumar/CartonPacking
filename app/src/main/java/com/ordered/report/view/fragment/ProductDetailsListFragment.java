@@ -55,6 +55,7 @@ public class ProductDetailsListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_details_list, container, false);
         no_of_cotton = view.findViewById(R.id.total_carton_no);
+        getActivity().setTitle("CAPTURED ORDER DETAILS");
         no_of_cotton.setText(orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels().size()+"");
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.product_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
