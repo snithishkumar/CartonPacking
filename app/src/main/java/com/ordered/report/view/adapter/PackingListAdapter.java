@@ -29,6 +29,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
     private List<OrderEntity> orderEntities;
     private HomeActivity homeActivity;
+    private PackingListAdapterCallBack packingListAdapterCallBack;
 
     public PackingListAdapter(Context context, List<OrderEntity> orderEntities) {
         homeActivity = (HomeActivity) context;
@@ -51,7 +52,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         holder.createdBy.setText(orderEntity.getCreatedBy());
         int orderCount = getOrderItemsCount(orderEntity);
         holder.orderItemsCount.setText(String.valueOf(orderCount));
-        holder.orderImage.setImageResource(R.mipmap.packing_icon);
+        holder.orderImage.setImageResource(R.drawable.order_packing);
         holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
 
     }
@@ -105,8 +106,15 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
                 @Override
                 public void onClick(View view) {
                     OrderEntity orderEntity =  orderEntities.get(getAdapterPosition());
+                    packingListAdapterCallBack.showPackingDetails(orderEntity.getOrderGuid());
+                    return;
                 }
             });
         }
+    }
+
+
+    public interface PackingListAdapterCallBack{
+        void showPackingDetails(String orderGuid);
     }
 }

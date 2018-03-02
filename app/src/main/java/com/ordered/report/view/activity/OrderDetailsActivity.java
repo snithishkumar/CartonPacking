@@ -17,6 +17,7 @@ import android.view.View;
 
 import com.ordered.report.R;
 import com.ordered.report.json.models.CartonDetailsJson;
+import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.adapter.CartonListAdapter;
@@ -40,6 +41,7 @@ import java.util.List;
 public class OrderDetailsActivity extends AppCompatActivity implements OrderDetailsListAdapter.OrderDetailsClickListeners, CaptureCartonDetailsFragment.ShowFragment,ProductNameListAdapter.ProductNameListAdapterCallBack, CartonListAdapter.CartonListAdapterCallBack {
 
     private String orderGuid;
+    private String view;
     private String totalNoOfCartons;
    // private String cartonNumber;
     private OrderedService orderedService;
@@ -71,8 +73,12 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
             orderGuid = getIntent().getStringExtra("orderGuid");
             totalNoOfCartons = getIntent().getStringExtra("totalNoOfCartons");
             orderedService = new OrderedService(this);
-
+            view = getIntent().getStringExtra("view");
             cartonDetailsJsonList =  getOrderedService().getCartonDetailsJson(orderGuid);
+            if(view.equals(Constants.VIEW_PACKING)){
+                OrderEntity orderEntity =  getOrderedService().getOrderEntityByGuid(orderGuid);
+                totalNoOfCartons = orderEntity.getCartonCounts();
+            }
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in init",e);
         }
