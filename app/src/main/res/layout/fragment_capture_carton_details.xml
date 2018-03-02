@@ -108,9 +108,11 @@
                             android:id="@+id/capture_oneSize"
                             android:inputType="number"
                             android:singleLine="true"
-                            android:imeOptions="actionSend"
+                            android:imeOptions="actionNext"
                             android:maxLength="10"
-                            android:hint="One Size"/>
+                            android:hint="One Size">
+                        <requestFocus />
+                        </EditText>
                     </android.support.design.widget.TextInputLayout>
 
 
@@ -124,7 +126,7 @@
                             android:id="@+id/capture_xs"
                             android:inputType="number"
                             android:singleLine="true"
-                            android:imeOptions="actionSend"
+                            android:imeOptions="actionNext"
                             android:maxLength="10"
                             android:hint="xs"/>
                     </android.support.design.widget.TextInputLayout>
@@ -149,7 +151,7 @@
                             android:id="@+id/capture_small"
                             android:inputType="number"
                             android:singleLine="true"
-                            android:imeOptions="actionSend"
+                            android:imeOptions="actionNext"
                             android:maxLength="10"
                             android:hint="s"/>
                     </android.support.design.widget.TextInputLayout>
@@ -165,7 +167,7 @@
                             android:id="@+id/capture_medium"
                             android:inputType="number"
                             android:singleLine="true"
-                            android:imeOptions="actionSend"
+                            android:imeOptions="actionNext"
                             android:maxLength="10"
                             android:hint="m"/>
                     </android.support.design.widget.TextInputLayout>
@@ -190,7 +192,7 @@
                             android:id="@+id/capture_l"
                             android:inputType="number"
                             android:singleLine="true"
-                            android:imeOptions="actionSend"
+                            android:imeOptions="actionNext"
                             android:maxLength="10"
                             android:hint="l"/>
                     </android.support.design.widget.TextInputLayout>
@@ -206,7 +208,7 @@
                             android:id="@+id/capture_xl"
                             android:inputType="number"
                             android:singleLine="true"
-                            android:imeOptions="actionSend"
+                            android:imeOptions="actionNext"
                             android:maxLength="10"
                             android:hint="xl"/>
                     </android.support.design.widget.TextInputLayout>
@@ -232,7 +234,7 @@
                             android:id="@+id/capture_xxl"
                             android:inputType="number"
                             android:singleLine="true"
-                            android:imeOptions="actionSend"
+                            android:imeOptions="actionNext"
                             android:maxLength="10"
                             android:hint="xxl"/>
                     </android.support.design.widget.TextInputLayout>
@@ -260,22 +262,22 @@
 
 
             </LinearLayout>
-            <Button
-                android:id="@+id/capture_done"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_margin="20dp"
-                android:background="@color/colorPrimary"
-                android:textColor="@android:color/white"
-                android:layout_alignParentBottom="true"
-                android:text="Done"/>
+
         </RelativeLayout>
 
 
     </ScrollView>
 
 
-
+    <Button
+        android:id="@+id/capture_done"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:text="Done"/>
 
 
 

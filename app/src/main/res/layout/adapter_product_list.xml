@@ -25,6 +25,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_alignParentLeft="true"
+            android:textSize="@dimen/_22sdp"
             android:textStyle="bold"
             android:layout_height="wrap_content" />
 
@@ -33,21 +34,227 @@
             android:text="Product Group"
             android:id="@+id/product_group_sel"
             android:layout_below="@+id/product_name_sel"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
+            android:textSize="@dimen/_15sdp"
             android:textStyle="bold"
             android:layout_height="wrap_content" />
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:text="Product Color"
-            android:layout_marginTop="10dp"
             android:id="@+id/product_color_sel"
-            android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/product_group_sel"
+            android:layout_alignBottom="@+id/product_group_sel"
+            android:layout_alignEnd="@+id/divider2"
+            android:text="Product Color" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/product_group_sel"
+
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#ebebeb" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/divider2"
+            android:id="@+id/order_items_size_details"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Order Details:"
+                android:id="@+id/size_details"
+                android:layout_marginLeft="10dp"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ordered_size_count_layout_1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_one_size_count"
+                        android:text="One Size -> 10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_l_count"
+                        android:text="L -> 10" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ordered_size_count_layout_2"
+                    android:layout_toRightOf="@+id/ordered_size_count_layout_1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_xs_count"
+                        android:text="XS -> 10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_xl_count"
+                        android:text="XL -> 10" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ordered_size_count_layout_3"
+                    android:layout_toRightOf="@+id/ordered_size_count_layout_2"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_s_count"
+                        android:text="S -> 10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_xxxl_count"
+                        android:text="XXXL -> 10" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ordered_size_count_layout_4"
+                    android:layout_toRightOf="@+id/ordered_size_count_layout_3"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_m_count"
+                        android:text="M -> 10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_xxl_count"
+                        android:text="XXL -> 10" />
+
+                </LinearLayout>
+
+
+
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/order_items_size_details"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
+            android:background="#ebebeb" />
+
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/text_likes_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:text="Created On:"
+            android:textColor="#827f93"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/order_details_created_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_likes_count"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="17/2/2018 3:45 PM"
+            android:textColor="#827f93"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/order_details_lastmodified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider"
+            android:layout_alignEnd="@+id/divider"
+            android:text="Modified On:"
+            android:layout_marginTop="15dp"
+            android:textColor="#827f93"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/order_details_lastmodified_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_details_lastmodified"
+            android:layout_alignEnd="@+id/divider"
+            android:text="17/2/2018 3:45 PM"
+            android:textColor="#827f93"
+            android:textSize="12sp" />
+
 
 
     </RelativeLayout>

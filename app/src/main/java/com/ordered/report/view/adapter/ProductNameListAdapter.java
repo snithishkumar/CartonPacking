@@ -12,6 +12,8 @@ import com.ordered.report.models.OrderEntity;
 import com.ordered.report.view.activity.OrderDetailsActivity;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,8 +48,36 @@ public class ProductNameListAdapter extends RecyclerView.Adapter<ProductNameList
 
         holder.productColor.setText(orderDetailsListViewModel.getOrderItemColor());
 
+        formDateTime(orderDetailsListViewModel.getOrderItemCreatedDateTime(),holder.createDateTime);
+        formDateTime(orderDetailsListViewModel.getOrderItemCreatedDateTime(),holder.lastModifiedDateTime);
+
+        setProductVal(holder.orderedOneSize,"OneSize",orderDetailsListViewModel.getOrderItemOneSize());
+        setProductVal(holder.orderedXS,"XS",orderDetailsListViewModel.getOrderItemXS());
+        setProductVal(holder.orderedSmall,"S",orderDetailsListViewModel.getOrderItemS());
+        setProductVal(holder.orderedMedium,"M",orderDetailsListViewModel.getOrderItemM());
+        setProductVal(holder.orderedLarge,"L",orderDetailsListViewModel.getOrderItemL());
+        setProductVal(holder.orderedXl,"XL",orderDetailsListViewModel.getOrderItemXl());
+        setProductVal(holder.orderedXxl,"XXL",orderDetailsListViewModel.getOrderItemXxl());
+        setProductVal(holder.orderedXxxl,"XXXL",orderDetailsListViewModel.getOrderItemXxxl());
+
     }
 
+
+    private void setProductVal(TextView textView,String key,String val){
+        if(val != null && !val.isEmpty()){
+            textView.setText(key+" --> "+val);
+        }else{
+            textView.setText(key+" --> 0");
+        }
+    }
+
+
+    private void formDateTime(long milliSeconds,TextView createDateTime){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date date = new Date(milliSeconds);
+        String res =  simpleDateFormat.format(date);
+        createDateTime.setText(res);
+    }
 
 
 
@@ -65,6 +95,19 @@ public class ProductNameListAdapter extends RecyclerView.Adapter<ProductNameList
         public TextView productColor;
 
 
+        private TextView orderedOneSize;
+        private TextView orderedXS;
+        private TextView orderedSmall;
+        private TextView orderedMedium;
+        private TextView orderedLarge;
+        private TextView orderedXl;
+        private TextView orderedXxl;
+        private TextView orderedXxxl;
+
+        private TextView createDateTime;
+        private TextView lastModifiedDateTime;
+
+
         public ProductNameViewHolder(View itemView) {
             super(itemView);
             productName =  itemView.findViewById(R.id.product_name_sel);
@@ -80,6 +123,21 @@ public class ProductNameListAdapter extends RecyclerView.Adapter<ProductNameList
                     return;
                 }
             });
+
+
+            orderedOneSize = itemView.findViewById(R.id.ordered_one_size_count);
+            orderedXS = itemView.findViewById(R.id.ordered_l_count);
+            orderedSmall = itemView.findViewById(R.id.ordered_xs_count);
+            orderedMedium = itemView.findViewById(R.id.ordered_xl_count);
+            orderedLarge = itemView.findViewById(R.id.ordered_s_count);
+            orderedXl = itemView.findViewById(R.id.ordered_xxxl_count);
+            orderedXxl = itemView.findViewById(R.id.ordered_m_count);
+            orderedXxxl = itemView.findViewById(R.id.ordered_xxl_count);
+
+            createDateTime = itemView.findViewById(R.id.order_details_created_date);
+            lastModifiedDateTime = itemView.findViewById(R.id.order_details_lastmodified_val);
+
+
         }
     }
 
