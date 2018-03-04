@@ -26,6 +26,7 @@ import java.util.UUID;
 public class CartonNumberPickerFragment extends Fragment {
 
     private OrderDetailsActivity orderDetailsActivity;
+    private String cartonNumberVal;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,22 +65,26 @@ public class CartonNumberPickerFragment extends Fragment {
                 //Display the newly selected number from picker
                 tv.setText("Selected Carton Number : " + newVal);
                 nextButton.setVisibility(View.VISIBLE);
-                populateCartonDetails(String.valueOf(newVal));
+                cartonNumberVal = String.valueOf(newVal);
+                populateCartonDetails();
                // orderDetailsActivity.setCartonNumber(String.valueOf(newVal));
             }
         });
+
+
         return view;
     }
 
 
-    private void populateCartonDetails(String cartonNumber){
+    public void populateCartonDetails(){
         CartonDetailsJson cartonDetailsJson = new CartonDetailsJson();
         cartonDetailsJson.setCartonGuid(UUID.randomUUID().toString());
-        cartonDetailsJson.setCartonNumber(cartonNumber);
+        cartonDetailsJson.setCartonNumber(cartonNumberVal);
         cartonDetailsJson.setCreatedDateTime(System.currentTimeMillis());
         cartonDetailsJson.setCreatedBy(Constants.getLoginUser());
         cartonDetailsJson.setLastModifiedBy(Constants.getLoginUser());
         cartonDetailsJson.setLastModifiedTime(cartonDetailsJson.getCreatedDateTime());
+        //orderDetailsActivity.getCartonDetailsJsonList().add(cartonDetailsJson);
         orderDetailsActivity.setCartonDetailsJson(cartonDetailsJson);
     }
 

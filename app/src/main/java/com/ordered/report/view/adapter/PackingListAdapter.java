@@ -34,6 +34,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
     public PackingListAdapter(Context context, List<OrderEntity> orderEntities) {
         homeActivity = (HomeActivity) context;
         this.orderEntities = orderEntities;
+        packingListAdapterCallBack = homeActivity;
     }
 
     @Override

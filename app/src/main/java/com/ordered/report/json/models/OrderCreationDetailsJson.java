@@ -1,5 +1,7 @@
 package com.ordered.report.json.models;
 
+import java.util.Objects;
+
 /**
  * Created by Nithish on 11/02/18.
  */
@@ -209,5 +211,18 @@ public class OrderCreationDetailsJson {
                 ", createdDateTime=" + createdDateTime +
                 ", lastModifiedDateTime=" + lastModifiedDateTime +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderCreationDetailsJson that = (OrderCreationDetailsJson) o;
+        return Objects.equals(orderItemGuid, that.orderItemGuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderItemGuid);
     }
 }

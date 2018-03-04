@@ -55,9 +55,9 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
     @Override
     public void onBindViewHolder(DeliveredListViewHolder holder, int position) {
         final OrderEntity orderEntity = orderEntities.get(position);
-        if (orderEntity.getOrderType().toString().equals(OrderType.DELIVERED.toString())) {
+       /* if (orderEntity.getOrderType().toString().equals(OrderType.DELIVERED.toString())) {
             holder.report.setVisibility(View.VISIBLE);
-        }
+        }*/
         holder.orderTitle.setText(orderEntity.getOrderId());
         holder.clientName.setText(orderEntity.getClientName());
         holder.createdBy.setText(orderEntity.getCreatedBy());
@@ -65,7 +65,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
         holder.orderItemsCount.setText(String.valueOf(orderCount));
 
         holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
-        holder.orderImage.setImageResource(R.mipmap.delivered_icon);
+        holder.orderImage.setImageResource(R.drawable.delivery_icon_1x);
         String date = null;
         if (orderEntity.getOrderedDate() != 0) {
             date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
@@ -87,7 +87,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
 
                     case R.id.mail_report:
                         // homeActivity.showProgress();
-                        CartonInvoiceSummary cartonInvoiceSummary = homeActivity.getCartonInvoiceSummary(orderEntity);
+                       /* CartonInvoiceSummary cartonInvoiceSummary = homeActivity.getCartonInvoiceSummary(orderEntity);
                         String pdfFile = homeActivity.createPdfReport(cartonInvoiceSummary);
                         ArrayList<Uri> uris = new ArrayList<>();
                         try {
@@ -101,7 +101,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
                         } catch (android.content.ActivityNotFoundException ex) {
                             Toast.makeText(context,
                                     "There is no email client installed.", Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
                         break;
 
                     case R.id.package_report:

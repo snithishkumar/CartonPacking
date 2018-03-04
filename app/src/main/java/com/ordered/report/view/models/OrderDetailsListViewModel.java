@@ -1,6 +1,8 @@
 package com.ordered.report.view.models;
 
 import com.ordered.report.json.models.OrderCreationDetailsJson;
+import com.ordered.report.json.models.ProductDetailsJson;
+import com.ordered.report.models.ProductDetailsEntity;
 
 /**
  * Created by Nithish on 24/02/18.
@@ -42,6 +44,27 @@ public class OrderDetailsListViewModel {
     private boolean isEdited = false;
 
 
+    public void loadOrderItemsDetails(ProductDetailsEntity productDetailsJson){
+        this.productGuid = productDetailsJson.getProductGuid();
+        this.orderItemName = productDetailsJson.getProductName();
+        this.orderItemGroup = productDetailsJson.getProductGroup();
+        this.orderItemColor = productDetailsJson.getColorStyle();
+        this.productOneSize = productDetailsJson.getOneSize();
+        this.productXS = productDetailsJson.getXs();
+        this.productS = productDetailsJson.getS();
+        this.productM = productDetailsJson.getM();
+        this.productL = productDetailsJson.getL();
+        this.productXl = productDetailsJson.getXl();
+        this.productXxl = productDetailsJson.getXxl();
+        this.productXxxl = productDetailsJson.getXxxl();
+        this.orderItemCreatedDateTime = productDetailsJson.getCreatedDateTime();
+        this.orderItemLastModifiedDateTime = productDetailsJson.getLastModifiedDateTime();
+        this.orderItemGuid = productDetailsJson.getOrderItemGuid();
+        this.orderItemCategory = productDetailsJson.getProductCategory();
+
+
+
+    }
 
 
     public void loadOrderItemsDetails(OrderCreationDetailsJson orderDetailsJson) {

@@ -171,6 +171,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
                 break;
 
             case R.id.carton_number_picking:
+                getCartonDetailsJsonList().add(cartonDetailsJson);
                 showProductNameListFragment();
                 break;
 

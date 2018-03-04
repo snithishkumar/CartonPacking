@@ -11,17 +11,22 @@ import android.view.ViewGroup;
 
 import com.ordered.report.R;
 import com.ordered.report.enumeration.OrderStatus;
+import com.ordered.report.eventBus.AppBus;
+import com.ordered.report.json.models.ResponseData;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.view.adapter.DeliveredListAdapter;
 import com.ordered.report.view.adapter.PackingListAdapter;
+import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PackingFragment extends Fragment {
-    private List<OrderEntity> cartonbookEntities = null;
+    private List<OrderEntity> cartonbookEntities = new ArrayList<>();
     private OrderedService orderedService = null;
     RecyclerView recyclerView = null;
+    PackingListAdapter mAdapter = null;
 
     public PackingFragment() {
     }
@@ -35,15 +40,38 @@ public class PackingFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
-
-        PackingListAdapter mAdapter = new PackingListAdapter(getActivity(), getOrderedCartonBookList());
+        List<OrderEntity> orderEntityList =  getOrderedCartonBookList();
+        this.cartonbookEntities.clear();
+        cartonbookEntities.addAll(orderEntityList);
+        mAdapter = new PackingListAdapter(getActivity(),cartonbookEntities);
         recyclerView.setAdapter(mAdapter);
         return view;
     }
 
 
     public List<OrderEntity> getOrderedCartonBookList() {
-        cartonbookEntities = orderedService.getPackingOrdersList();
-        return cartonbookEntities;
+        return orderedService.getPackingOrdersList();
+    }
+
+
+    @Override
+    public void onPause() {
+        AppBus.getInstance().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        AppBus.getInstance().register(this);
+        super.onResume();
+    }
+
+    @Subscribe
+    public void packingResponse(ResponseData responseData){
+        List<OrderEntity> orderEntityList =  getOrderedCartonBookList();
+        this.cartonbookEntities.clear();
+        this.cartonbookEntities.addAll(orderEntityList);
+        mAdapter.notifyDataSetChanged();
+
     }
 }

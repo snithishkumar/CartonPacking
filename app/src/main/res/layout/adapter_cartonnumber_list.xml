@@ -14,17 +14,23 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_marginBottom="10dp"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="10dp"
+            android:id="@+id/carton_icons"
+            android:src="@drawable/carton_icon"
+            android:layout_height="50dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:text="Carton Number: 1"
             android:id="@+id/carton_number"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentLeft="true"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/carton_icons"
             android:textStyle="bold"
             android:layout_height="wrap_content" />
 
@@ -32,9 +38,9 @@
             android:layout_width="wrap_content"
             android:text="No Of Products: 10"
             android:id="@+id/products_count_carton_number"
+            android:layout_toRightOf="@id/carton_icons"
             android:layout_below="@+id/carton_number"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
             android:textStyle="bold"
             android:layout_height="wrap_content" />
 

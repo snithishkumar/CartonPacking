@@ -11,6 +11,7 @@ import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.json.models.LoginEvent;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
+import com.ordered.report.json.models.ProductDetailsJson;
 import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
@@ -141,13 +142,39 @@ public class OrderedService {
 
     public List<CartonDetailsJson> getCartonDetailsJson(String orderGuid){
         OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+       String orderItems =  orderEntity.getOrderedItems();
+        List<OrderCreationDetailsJson>  orderCreationDetailsJsons =  getOrderedItems(orderItems);
         List<CartonDetailsEntity> cartonDetailsEntityList =  cartonbookDao.getCartonDetailsList(orderEntity);
         List<CartonDetailsJson> cartonDetailsJsonList = new ArrayList<>();
         for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList){
             CartonDetailsJson cartonDetailsJson = new CartonDetailsJson(cartonDetailsEntity);
+            List<ProductDetailsEntity> productDetailsEntities =  cartonbookDao.getProductDetailsEntityList(orderEntity,cartonDetailsEntity);
+            for(ProductDetailsEntity productDetailsEntity : productDetailsEntities){
+                OrderDetailsListViewModel  orderDetailsListViewModel = new OrderDetailsListViewModel();
+
+
+                OrderCreationDetailsJson orderCreationDetailsJsonTemp = new OrderCreationDetailsJson();
+                orderCreationDetailsJsonTemp.setOrderItemGuid(productDetailsEntity.getOrderItemGuid());
+               int pos = orderCreationDetailsJsons.indexOf(orderCreationDetailsJsonTemp);
+               if(pos != -1){
+                   OrderCreationDetailsJson orderCreationDetailsJson =  orderCreationDetailsJsons.get(pos);
+                   orderDetailsListViewModel.loadOrderItemsDetails(orderCreationDetailsJson);
+               }
+                orderDetailsListViewModel.setCartonNumber(cartonDetailsEntity.getCartonNumber());
+                orderDetailsListViewModel.loadOrderItemsDetails(productDetailsEntity);
+                cartonDetailsJson.getOrderDetailsListViewModels().add(orderDetailsListViewModel);
+            }
+
             cartonDetailsJsonList.add(cartonDetailsJson);
         }
         return cartonDetailsJsonList;
+    }
+
+
+    private List<OrderCreationDetailsJson> getOrderedItems(String orderedItems){
+        Type listType = new TypeToken<ArrayList<OrderCreationDetailsJson>>() {
+        }.getType();
+       return  gson.fromJson(orderedItems, listType);
     }
 
 
@@ -186,7 +213,7 @@ public class OrderedService {
             orderEntity.setSync(false);
             orderEntity.setCartonCounts(cartonDetailsJsonList.size()+"");
             orderEntity.setLastModifiedDate(System.currentTimeMillis());
-            orderEntity.setOrderStatus(OrderStatus.PACKING);
+            orderEntity.setOrderStatus(OrderStatus.DELIVERED);
             cartonbookDao.updateCortonbookEntity(orderEntity);
         }
         return isEdited;

@@ -9,11 +9,7 @@ import android.widget.TextView;
 
 import com.ordered.report.R;
 import com.ordered.report.json.models.CartonDetailsJson;
-import com.ordered.report.json.models.CartonItemModel;
-import com.ordered.report.models.CartonDetailsEntity;
-import com.ordered.report.models.CartonItemEntity;
 import com.ordered.report.view.activity.OrderDetailsActivity;
-import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

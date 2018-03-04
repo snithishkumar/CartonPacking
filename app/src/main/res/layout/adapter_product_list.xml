@@ -69,14 +69,31 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Order Details:"
-                android:id="@+id/size_details"
-                android:layout_marginLeft="10dp"
-                />
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:src="@drawable/ic_receipt_black_48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Order Details:"
+                    android:id="@+id/size_details"
+                    android:layout_marginLeft="5dp"
+                    />
+
+            </LinearLayout>
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"

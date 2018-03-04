@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ProductDetailsEntity {
 
     public static final String PRODUCT_GUID = "productGuid";
-    public static final String ORDER_ENTITY = "orderEntity";
+    public static final String ORDER_ENTITY = "OrderId";
     public static final String CARTON_NUMBER = "cartonNumber";
 
     @DatabaseField(columnName = "ProductId", generatedId = true)
@@ -32,7 +32,7 @@ public class ProductDetailsEntity {
     @DatabaseField(columnName = "ModifiedBy")
     private String modifiedBy;
 
-    @DatabaseField(columnName = "Id", foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(columnName = "OrderId", foreign = true, foreignAutoRefresh = true)
     private OrderEntity orderEntity;
 
     @DatabaseField(columnName = "productCategory")
@@ -40,6 +40,9 @@ public class ProductDetailsEntity {
 
     @DatabaseField(columnName = "colorStyle")
     private String colorStyle;
+
+    @DatabaseField(columnName = "productGroup")
+    private String productGroup;
 
     @DatabaseField(columnName = "oneSize")
     private String oneSize;
@@ -68,8 +71,17 @@ public class ProductDetailsEntity {
 
     }
 
+    public String getProductGroup() {
+        return productGroup;
+    }
+
+    public void setProductGroup(String productGroup) {
+        this.productGroup = productGroup;
+    }
+
     public ProductDetailsEntity(ProductDetailsJson productDetailsJson){
         this.productGuid = productDetailsJson.getProductGuid();
+        this.productGroup = productDetailsJson.getProductGroup();
         this.productName = productDetailsJson.getProductStyle();
         this.orderItemGuid = productDetailsJson.getOrderItemGuid();
        this.productCategory = productDetailsJson.getProductCategory();
@@ -91,6 +103,7 @@ public class ProductDetailsEntity {
         this.productGuid = orderDetailsListViewModel.getProductGuid();
         this.productName = orderDetailsListViewModel.getOrderItemName();
         this.orderItemGuid = orderDetailsListViewModel.getOrderItemGuid();
+        this.productGroup = orderDetailsListViewModel.getOrderItemGroup();
         this.productCategory = orderDetailsListViewModel.getOrderItemCategory();
         this.colorStyle = orderDetailsListViewModel.getOrderItemColor();
         this.oneSize = orderDetailsListViewModel.getProductOneSize();

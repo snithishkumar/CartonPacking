@@ -13,6 +13,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.ordered.report.dao.CartonbookDao;
+import com.ordered.report.eventBus.AppBus;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.json.models.OrderDetailsJson;
 import com.ordered.report.json.models.ProductDetailsJson;
@@ -131,7 +132,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 }
             }
-
+            ResponseData responseData = new ResponseData();
+            AppBus.getInstance().post(responseData);
         }
     }
 
@@ -142,6 +144,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             List<OrderDetailsJson> orderDetailsJsonList = new ArrayList<>();
             for (OrderEntity orderEntity : orderEntityList) {
                 OrderDetailsJson orderDetailsJson = new OrderDetailsJson(orderEntity);
+                orderDetailsJson.setOrderStatus(orderEntity.getOrderStatus());
                 orderDetailsJsonList.add(orderDetailsJson);
                 List<CartonDetailsEntity> cartonDetailsEntityList = cartonbookDao.getCartonDetailsList(orderEntity);
                 for (CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList) {
@@ -157,7 +160,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             }
             if (orderDetailsJsonList.size() > 0) {
-                Call<String> orderSyncedDetails = syncServiceApi.uploadData(gson.toJson(orderDetailsJsonList));
+                Call<String> orderSyncedDetails = syncServiceApi.uploadData(orderDetailsJsonList);
                 Response<String> response = orderSyncedDetails.execute();
                 if (response != null && response.isSuccessful()) {
                     String dataRespond = response.body();

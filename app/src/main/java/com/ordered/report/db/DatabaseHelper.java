@@ -9,7 +9,6 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.ordered.report.models.CartonDetailsEntity;
-import com.ordered.report.models.CartonItemEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.models.UsersEntity;
@@ -62,10 +61,10 @@ public class DatabaseHelper<T, T1> extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getName(), "onUpgrade");
 
-            TableUtils.createTable(connectionSource, UsersEntity.class);
-            TableUtils.createTable(connectionSource, OrderEntity.class);
-            TableUtils.createTable(connectionSource, CartonItemEntity.class);
-            TableUtils.createTable(connectionSource, ProductDetailsEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, UsersEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, OrderEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, CartonDetailsEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, ProductDetailsEntity.class);
 
 
         } catch (Exception e) {

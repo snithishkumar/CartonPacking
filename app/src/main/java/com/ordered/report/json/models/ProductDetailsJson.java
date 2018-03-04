@@ -32,6 +32,7 @@ public class ProductDetailsJson {
 
     public ProductDetailsJson(ProductDetailsEntity productDetailsEntity){
        this.productGuid = productDetailsEntity.getProductGuid();
+       this.productGroup = productDetailsEntity.getProductGroup();
        this.productCategory = productDetailsEntity.getProductCategory();
        this.productStyle = productDetailsEntity.getProductName();
        this.colorStyle = productDetailsEntity.getColorStyle();
