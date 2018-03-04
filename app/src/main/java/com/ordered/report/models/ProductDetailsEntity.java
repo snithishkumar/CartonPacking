@@ -16,6 +16,7 @@ public class ProductDetailsEntity {
     public static final String PRODUCT_GUID = "productGuid";
     public static final String ORDER_ENTITY = "OrderId";
     public static final String CARTON_NUMBER = "cartonNumber";
+    public static final String PRODUCT_CATEGORY = "productCategory";
 
     @DatabaseField(columnName = "ProductId", generatedId = true)
     private int productId;

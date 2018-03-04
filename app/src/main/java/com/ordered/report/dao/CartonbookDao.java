@@ -210,6 +210,33 @@ public class CartonbookDao {
     }
 
 
+
+    public  List<ProductDetailsEntity> getCategoryList(OrderEntity orderEntity){
+        try{
+            QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
+            queryBuilder.distinct().selectColumns(ProductDetailsEntity.PRODUCT_CATEGORY);
+            queryBuilder.where().eq(ProductDetailsEntity.ORDER_ENTITY,orderEntity);
+           List<ProductDetailsEntity> productDetailsEntities = queryBuilder.query();
+           return productDetailsEntities;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public List<ProductDetailsEntity> getProductDetailsByCategory(String categoryName,OrderEntity orderEntity){
+        try{
+            QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
+            queryBuilder.where().eq(ProductDetailsEntity.ORDER_ENTITY,orderEntity).and().eq(ProductDetailsEntity.PRODUCT_CATEGORY,categoryName);
+            List<ProductDetailsEntity> productDetailsEntities = queryBuilder.query();
+            return productDetailsEntities;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
     public ProductDetailsEntity getProductDetails(String productDetailsGuid){
         try {
             QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();

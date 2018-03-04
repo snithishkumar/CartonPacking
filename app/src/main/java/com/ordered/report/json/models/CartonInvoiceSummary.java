@@ -23,7 +23,7 @@ public class CartonInvoiceSummary {
     private String loadingCity;
     private String placeofDelivery;
     private int cartonCount;
-    Map<String, List<OrderCreationDetailsJson>> cartonMap = new HashMap<>();
+   private InvoiceReportJson invoiceReportJson;
 
     public String getExporterAddress() {
         return exporterAddress;
@@ -121,10 +121,6 @@ public class CartonInvoiceSummary {
         this.placeofDelivery = placeofDelivery;
     }
 
-    public Map<String, List<OrderCreationDetailsJson>> getCartonMap() {
-        return cartonMap;
-    }
-
     public int getCartonCount() {
         return cartonCount;
     }
@@ -133,8 +129,12 @@ public class CartonInvoiceSummary {
         this.cartonCount = cartonCount;
     }
 
-    public void setCartonMap(Map<String, List<OrderCreationDetailsJson>> cartonMap) {
-        this.cartonMap = cartonMap;
+    public InvoiceReportJson getInvoiceReportJson() {
+        return invoiceReportJson;
+    }
+
+    public void setInvoiceReportJson(InvoiceReportJson invoiceReportJson) {
+        this.invoiceReportJson = invoiceReportJson;
     }
 
     @Override
@@ -153,7 +153,7 @@ public class CartonInvoiceSummary {
                 ", loadingCity='" + loadingCity + '\'' +
                 ", placeofDelivery='" + placeofDelivery + '\'' +
                 ", cartonCount=" + cartonCount +
-                ", cartonMap=" + cartonMap +
+                ", invoiceReportJson=" + invoiceReportJson +
                 '}';
     }
 }

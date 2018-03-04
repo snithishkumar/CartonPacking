@@ -25,7 +25,7 @@ public class OrderCreationDetailsJson {
     private long lastModifiedDateTime;
     private String cartonNumber;
     private int quantity = 10;
-    private long rate = 2;
+    private String rate = "2.0";
     private long amount = 150;
 
     public String getCartonNumber() {
@@ -175,11 +175,11 @@ public class OrderCreationDetailsJson {
         this.quantity = quantity;
     }
 
-    public long getRate() {
+    public String getRate() {
         return rate;
     }
 
-    public void setRate(long rate) {
+    public void setRate(String rate) {
         this.rate = rate;
     }
 

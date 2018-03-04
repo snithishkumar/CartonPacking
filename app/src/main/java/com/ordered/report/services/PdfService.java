@@ -2,6 +2,7 @@ package com.ordered.report.services;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,9 +24,14 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
+import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.json.models.CartonInvoiceSummary;
+import com.ordered.report.json.models.InvoiceReportCategoryDetailsJson;
+import com.ordered.report.json.models.InvoiceReportJson;
+import com.ordered.report.json.models.InvoiceReportOrderDetailsJson;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.models.OrderEntity;
+import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.utils.DeviceConfig;
 import com.ordered.report.utils.NumberToWord;
 import com.ordered.report.utils.UtilService;
@@ -40,6 +46,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Double.valueOf;
+import static java.lang.System.out;
+
 /**
  * Created by Admin on 3/2/2018.
  */
@@ -52,29 +61,68 @@ public class PdfService {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
+    Gson gson;
+    CartonbookDao cartonbookDao;
+    public  PdfService(Context context){
+        try{
+            gson = new Gson();
+            cartonbookDao = new CartonbookDao(context);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private int parseInt(String val){
+        return (val != null && !val.isEmpty()) ? Integer.valueOf(val) : 0;
+    }
+
 
     public CartonInvoiceSummary getCartonInvoiceSummary(OrderEntity orderEntity) {
-        Gson gson = new Gson();
         String orderDetails = orderEntity.getOrderedItems();
         Type listType = new TypeToken<List<OrderCreationDetailsJson>>() {
         }.getType();
-
         List<OrderCreationDetailsJson> cottonItemEntities = gson.fromJson(orderDetails, listType);
-        List<String> productList = new ArrayList<>();
-        // Map<String, List<CottonItemEntity>> cartonListMap = new HashMap<>();
-        List<OrderCreationDetailsJson> cottonItemEntityList = new ArrayList<>();
-        Map<String, List<OrderCreationDetailsJson>> cartonMap = new HashMap<>();
-        for (OrderCreationDetailsJson cottonItemEntity : cottonItemEntities) {
-            productList.add(cottonItemEntity.getProductStyle());
-            // cottonItemEntityList = cartonItemService.getCottonItemByStyle(cottonItemEntity.getCottonBookListGuid(), cottonItemEntity.getProductStyleCategory());
-            cottonItemEntityList = new ArrayList<>();
-            cottonItemEntityList.add(cottonItemEntity);
-            cartonMap.put(cottonItemEntity.getProductCategory(), cottonItemEntityList);
+        InvoiceReportJson invoiceReportJson = new InvoiceReportJson();
+        List<ProductDetailsEntity> categoryNamesList = cartonbookDao.getCategoryList(orderEntity);
+
+        for(ProductDetailsEntity categoryName : categoryNamesList){
+            InvoiceReportCategoryDetailsJson invoiceReportCategoryDetailsJson = new InvoiceReportCategoryDetailsJson();
+            invoiceReportCategoryDetailsJson.setCategoryName(categoryName.getProductCategory());
+            invoiceReportJson.getInvoiceReportCategoryDetailsJsons().add(invoiceReportCategoryDetailsJson);
+            List<ProductDetailsEntity> productDetailsEntityList =  cartonbookDao.getProductDetailsByCategory(categoryName.getProductCategory(),orderEntity);
+           for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList) {
+               InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson = new InvoiceReportOrderDetailsJson();
+               invoiceReportCategoryDetailsJson.getInvoiceReportOrder().add(invoiceReportOrderDetailsJson);
+               invoiceReportOrderDetailsJson.setProductName(productDetailsEntity.getProductName());
+               int quantity = parseInt(productDetailsEntity.getOneSize()) + parseInt(productDetailsEntity.getL()) +
+                       parseInt(productDetailsEntity.getM()) + parseInt(productDetailsEntity.getS()) +
+                       parseInt(productDetailsEntity.getXl()) + parseInt(productDetailsEntity.getXs()) +
+                       parseInt(productDetailsEntity.getXxl()) + parseInt(productDetailsEntity.getXxxl());
+               invoiceReportOrderDetailsJson.setQuantity(String.valueOf(quantity));
+
+               OrderCreationDetailsJson orderCreationDetailsJsonTemp = new OrderCreationDetailsJson();
+               orderCreationDetailsJsonTemp.setOrderItemGuid(productDetailsEntity.getOrderItemGuid());
+               int pos = cottonItemEntities.indexOf(orderCreationDetailsJsonTemp);
+               if (pos != -1) {
+                   OrderCreationDetailsJson orderCreationDetailsJson = cottonItemEntities.get(pos);
+                   String rate = orderCreationDetailsJson.getRate();
+                   double totalAmount = Double.valueOf(rate) * quantity;
+                   invoiceReportJson.setTotalQuantity(invoiceReportJson.getTotalQuantity() + quantity);
+                   invoiceReportJson.setTotalAmount(invoiceReportJson.getTotalAmount() + totalAmount);
+                   invoiceReportOrderDetailsJson.setAmount(String.valueOf(totalAmount));
+               }
+
+           }
+
         }
+
+
 
         String clientAddress = "Exporter\n M/s. GLOBAL IMPEX,\n 8/3401 PONTHIRUMALAI NAGAR\n PANDIAN NAGAR, TIRUPUR - 641602\n INDIA";
         CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();
-        cartonInvoiceSummary.setCartonMap(cartonMap);
+        cartonInvoiceSummary.setInvoiceReportJson(invoiceReportJson);
         cartonInvoiceSummary.setCartonCount(Integer.parseInt(orderEntity.getCartonCounts()));
         cartonInvoiceSummary.setExporterAddress("Exporter\n M/s. GLOBAL IMPEX,\n 8/3401 PONTHIRUMALAI NAGAR\n PANDIAN NAGAR, TIRUPUR - 641602\n INDIA");
         cartonInvoiceSummary.setConsigneAddress("Consignee\n" + clientAddress);
@@ -85,6 +133,44 @@ public class PdfService {
         cartonInvoiceSummary.setExporteRef("Exporter Ref.\t\n IE CODE: 0410033006\n");
         cartonInvoiceSummary.setInvoiceWithDate("Invoice No.& Date\t\t\n" + "CREA2342345" + "/DATE-" + UtilService.formatDateTime(new Date().getTime()));
         return cartonInvoiceSummary;
+    }
+
+
+    private  void populateCategoryDetails(InvoiceReportCategoryDetailsJson reportCategoryDetailsJson,PdfPTable cartonTable,Font bfBold12,Font bf12){
+        PdfPCell cartoncell1 = getInsertCell("", Element.ALIGN_RIGHT, 1, bf12);
+        cartoncell1.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell1);
+        PdfPCell cartoncell2 = getInsertCell(""+reportCategoryDetailsJson.getCategoryName(), Element.ALIGN_LEFT, 1, bfBold12);
+        cartoncell2.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell2);
+        PdfPCell cartoncell3 = getInsertCell("", Element.ALIGN_RIGHT, 1, bf12);
+        cartoncell3.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell3);
+        PdfPCell cartoncell4 = getInsertCell("", Element.ALIGN_RIGHT, 1, bf12);
+        cartoncell4.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell4);
+        PdfPCell cartoncell5 = getInsertCell("", Element.ALIGN_RIGHT, 1, bf12);
+        cartoncell5.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell5);
+    }
+
+
+    private void populateOrderDetails(PdfPTable cartonTable,Font bf12,InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson){
+        PdfPCell cartoncell1 = getInsertCell("", Element.ALIGN_RIGHT, 1, bf12);
+        cartoncell1.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell1);
+        PdfPCell cartoncell2 = getInsertCell("Style : " + invoiceReportOrderDetailsJson.getProductName(), Element.ALIGN_LEFT, 1, bf12);
+        cartoncell2.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell2);
+        PdfPCell cartoncell3 = getInsertCell("" + invoiceReportOrderDetailsJson.getQuantity(), Element.ALIGN_RIGHT, 1, bf12);
+        cartoncell3.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell3);
+        PdfPCell cartoncell4 = getInsertCell("£" + invoiceReportOrderDetailsJson.getRate(), Element.ALIGN_RIGHT, 1, bf12);
+        cartoncell4.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell4);
+        PdfPCell cartoncell5 = getInsertCell("£" + invoiceReportOrderDetailsJson.getAmount(), Element.ALIGN_RIGHT, 1, bf12);
+        cartoncell5.setBorder(PdfPCell.NO_BORDER);
+        cartonTable.addCell(cartoncell5);
     }
 
     public String createPdfReport(Context context, CartonInvoiceSummary cartonInvoiceSummary) {
@@ -98,7 +184,8 @@ public class PdfService {
 
         File myDir = new File(root);
         if (!myDir.exists()) {
-            myDir.mkdirs();
+          boolean res =  myDir.mkdirs();
+          boolean tt = res;
         }
         try {
 
@@ -194,52 +281,35 @@ public class PdfService {
             insertCell(cartonTable, "Rate \n GBP", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
             insertCell(cartonTable, "Amount \nGBP ", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
             cartonTable.setHeaderRows(1);
-            Map<String, List<OrderCreationDetailsJson>> cartonMap = cartonInvoiceSummary.getCartonMap();
-            int pcs = 0;
-            long totalAmount = 0;
-            for (Map.Entry<String, List<OrderCreationDetailsJson>> entry : cartonMap.entrySet()) {
-                String key = entry.getKey();
-                List<OrderCreationDetailsJson> cottonItemEntities = entry.getValue();
-                PdfPCell cartoncelx = getInsertCell("Carton 0 - " + cartonInvoiceSummary.getCartonCount(), Element.ALIGN_LEFT, 5, bf12);
-                cartoncelx.setBorder(PdfPCell.NO_BORDER);
-                cartonTable.addCell(cartoncelx);
-                for (OrderCreationDetailsJson cottonItemEntity : cottonItemEntities) {
+           InvoiceReportJson invoiceReportJson = cartonInvoiceSummary.getInvoiceReportJson();
+            List<InvoiceReportCategoryDetailsJson> invoiceReportCategoryDetailsJsons =  invoiceReportJson.getInvoiceReportCategoryDetailsJsons();
 
-                    pcs = pcs + cottonItemEntity.getQuantity();
-                    totalAmount = totalAmount + cottonItemEntity.getAmount();
-                    PdfPCell cartoncell1 = getInsertCell("", Element.ALIGN_RIGHT, 1, bf12);
-                    cartoncell1.setBorder(PdfPCell.NO_BORDER);
-                    cartonTable.addCell(cartoncell1);
-                    PdfPCell cartoncell2 = getInsertCell("Style : " + cottonItemEntity.getProductStyle(), Element.ALIGN_LEFT, 1, bf12);
-                    cartoncell2.setBorder(PdfPCell.NO_BORDER);
-                    cartonTable.addCell(cartoncell2);
-                    PdfPCell cartoncell3 = getInsertCell("" + cottonItemEntity.getQuantity(), Element.ALIGN_RIGHT, 1, bf12);
-                    cartoncell3.setBorder(PdfPCell.NO_BORDER);
-                    cartonTable.addCell(cartoncell3);
-                    PdfPCell cartoncell4 = getInsertCell("£" + cottonItemEntity.getRate(), Element.ALIGN_RIGHT, 1, bf12);
-                    cartoncell4.setBorder(PdfPCell.NO_BORDER);
-                    cartonTable.addCell(cartoncell4);
-                    PdfPCell cartoncell5 = getInsertCell("£" + cottonItemEntity.getAmount(), Element.ALIGN_RIGHT, 1, bf12);
-                    cartoncell5.setBorder(PdfPCell.NO_BORDER);
-                    cartonTable.addCell(cartoncell5);
+            PdfPCell cartoncelx = getInsertCell("Carton 0 - " + cartonInvoiceSummary.getCartonCount(), Element.ALIGN_LEFT, 5, bf12);
+            cartoncelx.setBorder(PdfPCell.NO_BORDER);
+            cartonTable.addCell(cartoncelx);
+           for(InvoiceReportCategoryDetailsJson reportCategoryDetailsJson : invoiceReportCategoryDetailsJsons){
+               List<InvoiceReportOrderDetailsJson> invoiceReportOrderDetailsJsons =  reportCategoryDetailsJson.getInvoiceReportOrder();
+               populateCategoryDetails(reportCategoryDetailsJson,cartonTable,bfBold12,bf12);
+               for(InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson : invoiceReportOrderDetailsJsons){
+                   populateOrderDetails(cartonTable,bf12,invoiceReportOrderDetailsJson);
+               }
+           }
 
-                }
-            }
 
             PdfPCell pdfPCells[] = cartonTable.getRow(cartonTable.getRows().size() - 1).getCells();
             for (PdfPCell pdfPCell : pdfPCells) {
                 pdfPCell.setBorder(PdfPCell.BOTTOM);
             }
             insertCell(cartonTable, "", Element.ALIGN_RIGHT, 2, bf12, "normal");
-            insertCell(cartonTable, "" + pcs, Element.ALIGN_RIGHT, 1, bfBold12, "normal");
+            insertCell(cartonTable, "" + invoiceReportJson.getTotalQuantity(), Element.ALIGN_RIGHT, 1, bfBold12, "normal");
             insertCell(cartonTable, "", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
-            insertCell(cartonTable, "£" + totalAmount, Element.ALIGN_RIGHT, 1, bfBold12, "normal");
+            insertCell(cartonTable, "£" + invoiceReportJson.getTotalAmount(), Element.ALIGN_RIGHT, 1, bfBold12, "normal");
 
-            PdfPCell cartonrPcs = getInsertCell("Pcs: " + NumberToWord.convert((int) pcs), Element.ALIGN_LEFT, 5, bf12);
+            PdfPCell cartonrPcs = getInsertCell("Pcs: " + NumberToWord.convert(invoiceReportJson.getTotalQuantity()), Element.ALIGN_LEFT, 5, bf12);
             cartonrPcs.setBorder(PdfPCell.NO_BORDER);
             cartonrPcs.setFixedHeight(30f);
             cartonTable.addCell(cartonrPcs);
-            PdfPCell cartonrAmount = getInsertCell("AMOUNT: GBP " + NumberToWord.convert((int) totalAmount), Element.ALIGN_LEFT, 5, bf12);
+            PdfPCell cartonrAmount = getInsertCell("AMOUNT: GBP " + NumberToWord.convert((int) invoiceReportJson.getTotalAmount()), Element.ALIGN_LEFT, 5, bf12);
             cartonrAmount.setBorder(PdfPCell.NO_BORDER);
             cartonrAmount.setFixedHeight(30f);
             cartonTable.addCell(cartonrAmount);
@@ -261,8 +331,17 @@ public class PdfService {
             doc.add(new Chunk(ls));
             try {
                 //  Toast.makeText(this, "Done", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(new File(FILE)), "application/pdf");
+                Intent target = new Intent(Intent.ACTION_VIEW);
+                target.setDataAndType(Uri.fromFile(new File(FILE)), "application/pdf");
+                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                Intent intent = Intent.createChooser(target, "Open File");
+                try {
+
+                    context.startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    // Instruct the user to install a PDF reader here, or something
+                }
                 context.startActivity(intent);
                 return FILE;
             } catch (Exception e) {
