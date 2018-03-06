@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_above="@+id/delivery_in_button"
+            android:layout_alignParentStart="true"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shipping Place"
+                android:textSize="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_place_black_24dp"
+                android:drawablePadding="10dp"
+                android:textStyle="bold"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="25dp"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/place_of_loading"
+                        android:imeOptions="actionNext"
+                        android:hint="Place of Loading">
+                        <requestFocus />
+                    </EditText>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/place_of_delivery"
+                        android:imeOptions="actionNext"
+                        android:hint="Place of Delivery">
+                        <requestFocus />
+                    </EditText>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/port_of_discharge"
+                        android:imeOptions="actionNext"
+                        android:hint="Port of Discharge">
+                        <requestFocus />
+                    </EditText>
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="#ebebeb" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delivery"
+                android:textSize="20dp"
+                android:layout_marginLeft="5dp"
+                android:drawableLeft="@drawable/ic_local_shipping_black_24dp"
+                android:drawablePadding="10dp"
+                android:textStyle="bold"
+                />
+
+
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="25dp"
+                android:id="@+id/adapt_pur_delivery"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:text="AIR"
+                    android:id="@+id/carton_delivery_by_air"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:text="SEA"
+                    android:id="@+id/carton_delivery_by_sea"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:text="ROAD or RAIL"
+                    android:id="@+id/carton_delivery_by_road"
+                    android:layout_height="wrap_content" />
+
+                <!--   <RadioButton
+                      android:layout_width="match_parent"
+                      android:text="RAIL"
+                      android:id="@+id/carton_delivery_by_rail"
+                      android:layout_height="wrap_content" />
+
+                 <RadioButton
+                      android:layout_width="match_parent"
+                      android:text="OTHERS"
+                      android:id="@+id/carton_delivery_by_others"
+                      android:layout_height="wrap_content" /> -->
+
+            </RadioGroup>
+
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+    <Button
+        android:id="@+id/delivery_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:paddingBottom="@dimen/_15sdp"
+        android:paddingTop="@dimen/_15sdp"
+        android:text="@string/login_now"
+        android:textAllCaps="true"
+        android:textColor="@color/colorWhite"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:textStyle="bold" />
+</RelativeLayout>

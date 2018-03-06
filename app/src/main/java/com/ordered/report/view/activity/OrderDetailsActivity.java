@@ -286,6 +286,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         return super.onOptionsItemSelected(item);
     }
 
+    public String getView() {
+        return view;
+    }
+
+
     /* public void setCartonNumber(String cartonNumber) {
         this.cartonNumber = cartonNumber;
     }*/
