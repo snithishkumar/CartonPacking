@@ -30,6 +30,8 @@ import com.ordered.report.json.models.InvoiceReportCategoryDetailsJson;
 import com.ordered.report.json.models.InvoiceReportJson;
 import com.ordered.report.json.models.InvoiceReportOrderDetailsJson;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
+import com.ordered.report.models.ClientDetailsEntity;
+import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.utils.DeviceConfig;
@@ -107,8 +109,8 @@ public class PdfService {
                int pos = cottonItemEntities.indexOf(orderCreationDetailsJsonTemp);
                if (pos != -1) {
                    OrderCreationDetailsJson orderCreationDetailsJson = cottonItemEntities.get(pos);
-                   String rate = orderCreationDetailsJson.getRate();
-                   double totalAmount = Double.valueOf(rate) * quantity;
+                   double rate = orderCreationDetailsJson.getUnitPrice();
+                   double totalAmount = rate * quantity;
                    invoiceReportJson.setTotalQuantity(invoiceReportJson.getTotalQuantity() + quantity);
                    invoiceReportJson.setTotalAmount(invoiceReportJson.getTotalAmount() + totalAmount);
                    invoiceReportOrderDetailsJson.setAmount(String.valueOf(totalAmount));
@@ -118,9 +120,10 @@ public class PdfService {
 
         }
 
+        DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(orderEntity);
+       ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
 
-
-        String clientAddress = "Exporter\n M/s. GLOBAL IMPEX,\n 8/3401 PONTHIRUMALAI NAGAR\n PANDIAN NAGAR, TIRUPUR - 641602\n INDIA";
+        String clientAddress = clientDetailsEntity.getExporterDetails();
         CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();
         cartonInvoiceSummary.setInvoiceReportJson(invoiceReportJson);
         cartonInvoiceSummary.setCartonCount(Integer.parseInt(orderEntity.getCartonCounts()));
@@ -128,8 +131,8 @@ public class PdfService {
         cartonInvoiceSummary.setConsigneAddress("Consignee\n" + clientAddress);
         cartonInvoiceSummary.setOrderNo("Buyer Order No.& Date\n" + "ORDER No:");
         cartonInvoiceSummary.setTermsAndConditions("Terms of Delivery and payment\t\n" + "Accept");
-        cartonInvoiceSummary.setTintNo("TIN NO. \t" + "Tint");
-        cartonInvoiceSummary.setVessels("Vessel/Flight No.\n" + orderEntity.getOrderType());
+        cartonInvoiceSummary.setTintNo("TIN NO. \t" + clientDetailsEntity.getTinNumber());
+        cartonInvoiceSummary.setVessels("Vessel/Flight No.\n" + deliveryDetailsEntity.getDeliveringType().toString());
         cartonInvoiceSummary.setExporteRef("Exporter Ref.\t\n IE CODE: 0410033006\n");
         cartonInvoiceSummary.setInvoiceWithDate("Invoice No.& Date\t\t\n" + "CREA2342345" + "/DATE-" + UtilService.formatDateTime(new Date().getTime()));
         return cartonInvoiceSummary;

@@ -4,12 +4,10 @@
 
     <item android:id="@+id/mail_report"
         android:title="Export Invoice Report"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:visible="true" />
     <item android:id="@+id/package_report"
         android:title="Export PackingList Report"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:visible="true" />
 
    <!-- <item android:id="@+id/list_item_delete"
         android:title="Delete"

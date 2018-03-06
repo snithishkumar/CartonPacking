@@ -2,6 +2,8 @@ package com.ordered.report.json.models;
 
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.PaymentStatus;
+import com.ordered.report.models.ClientDetailsEntity;
+import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ public class OrderDetailsJson {
     private List<CartonDetailsJson> productDetails = new ArrayList<>();
     private String cartonCounts;
     private String createdBy;
+    private DeliveryDetailsEntity deliveryDetails;
+    private ClientDetailsEntity clientDetails;
 
     public OrderDetailsJson(){
 
@@ -147,12 +151,28 @@ this.clientName = orderEntity.getClientName();
         this.productDetails = productDetails;
     }
 
+    public DeliveryDetailsEntity getDeliveryDetails() {
+        return deliveryDetails;
+    }
+
+    public void setDeliveryDetails(DeliveryDetailsEntity deliveryDetails) {
+        this.deliveryDetails = deliveryDetails;
+    }
+
+    public ClientDetailsEntity getClientDetails() {
+        return clientDetails;
+    }
+
+    public void setClientDetails(ClientDetailsEntity clientDetails) {
+        this.clientDetails = clientDetails;
+    }
+
     @Override
     public String toString() {
         return "OrderDetailsJson{" +
                 "orderId='" + orderId + '\'' +
                 ", orderGuid='" + orderGuid + '\'' +
-                ", productGroup='" + clientName + '\'' +
+                ", clientName='" + clientName + '\'' +
                 ", orderStatus=" + orderStatus +
                 ", paymentStatus=" + paymentStatus +
                 ", orderedDate=" + orderedDate +
@@ -161,6 +181,10 @@ this.clientName = orderEntity.getClientName();
                 ", isDeleted=" + isDeleted +
                 ", orderedItems=" + orderedItems +
                 ", productDetails=" + productDetails +
+                ", cartonCounts='" + cartonCounts + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", deliveryDetails=" + deliveryDetails +
+                ", clientDetails=" + clientDetails +
                 '}';
     }
 }

@@ -32,6 +32,9 @@ public class CartonDetailsEntity {
     @DatabaseField(columnName = "LastModifiedBy")
     private String lastModifiedBy;
 
+    @DatabaseField(columnName = "TotalWeight")
+    private String totalWeight;
+
 
 
 
@@ -47,6 +50,16 @@ this.createdDateTime = cartonDetailsJson.getCreatedDateTime();
 this.lastModifiedTime = cartonDetailsJson.getLastModifiedTime();
 this.createdBy = cartonDetailsJson.getCreatedBy();
 this.lastModifiedBy = cartonDetailsJson.getLastModifiedBy();
+this.totalWeight = cartonDetailsJson.getTotalWeight();
+    }
+
+
+    public String getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(String totalWeight) {
+        this.totalWeight = totalWeight;
     }
 
     public int getCartonId() {

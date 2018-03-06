@@ -11,7 +11,7 @@
         android:layout_margin="10dp"
         android:layout_marginTop="10dp"
         android:layout_above="@+id/carton_footer_bar"
-        tools:listitem="@layout/adapter_product_list"
+        tools:listitem="@layout/adapter_cartonnumber_list"
         android:layout_height="match_parent"/>
 
 

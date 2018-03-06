@@ -101,20 +101,18 @@
                 android:textStyle="bold"
                 android:text="10"
                 android:textColor="@android:color/black" />
-            <TextView
-                android:id="@+id/report_generate"
+
+            <ImageView
                 android:layout_width="wrap_content"
+                android:id="@+id/ordered_list_reports"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
                 android:visibility="gone"
-                android:layout_toEndOf="@+id/gl"
-                android:layout_alignBaseline="@+id/ordered_list_created_by"
-                android:layout_below="@+id/ordered_list_ordered_items"
-                android:paddingTop="1dp"
-                android:textSize="20sp"
-                android:layout_marginTop="5dp"
-                android:text="Report"
-                android:textColor="@android:color/holo_red_dark"/>
+                android:src="@drawable/ic_more_vert_black_48dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toEndOf="@+id/ordered_list_ordered_items"
+                android:layout_centerVertical="true"
+                />
+
 
 
 

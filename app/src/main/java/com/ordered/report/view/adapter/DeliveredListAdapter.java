@@ -65,6 +65,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
         int orderCount = getOrderItemsCount(orderEntity);
         holder.orderItemsCount.setText(String.valueOf(orderCount));
 
+        holder.reportPopUp.setVisibility(View.VISIBLE);
         holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
         holder.orderImage.setImageResource(R.drawable.delivery_icon_1x);
         String date = null;
@@ -205,6 +206,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
         public TextView report;
         public ImageView orderImage;
         public View view;
+        public ImageView reportPopUp;
 
 
 
@@ -216,9 +218,9 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
             createdDate = (TextView) itemView.findViewById(R.id.ordered_list_order_date);
             createdBy = (TextView) itemView.findViewById(R.id.ordered_list_created_by);
             orderItemsCount = (TextView) itemView.findViewById(R.id.ordered_list_ordered_items);
-            report = (TextView) itemView.findViewById(R.id.report_generate);
             orderImage = (ImageView) itemView.findViewById(R.id.order_image);
-            view.setOnClickListener(new View.OnClickListener() {
+            reportPopUp = itemView.findViewById(R.id.ordered_list_reports);
+            reportPopUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     showPopup(view,orderEntities.get(getAdapterPosition()));

@@ -19,6 +19,8 @@ import com.ordered.report.json.models.OrderDetailsJson;
 import com.ordered.report.json.models.ProductDetailsJson;
 import com.ordered.report.json.models.ResponseData;
 import com.ordered.report.models.CartonDetailsEntity;
+import com.ordered.report.models.ClientDetailsEntity;
+import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 
@@ -132,8 +134,35 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 }
             }
+            processDeliveryDetails(orderDetailsJson,orderEntity);
+            processClientDetails(orderDetailsJson,orderEntity);
             ResponseData responseData = new ResponseData();
             AppBus.getInstance().post(responseData);
+        }
+    }
+
+
+    private void processDeliveryDetails(OrderDetailsJson orderDetailsJson, OrderEntity orderEntity ){
+        if(orderDetailsJson.getDeliveryDetails() != null){
+            DeliveryDetailsEntity deliveryDetailsEntity=  orderDetailsJson.getDeliveryDetails();
+            DeliveryDetailsEntity dbDeliveryDetailsEntity=   cartonbookDao.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
+            if(dbDeliveryDetailsEntity == null){
+                deliveryDetailsEntity.setOrderEntity(orderEntity);
+                cartonbookDao.createDeliveryDetailsEntity(deliveryDetailsEntity);
+            }
+        }
+
+    }
+
+
+    private void processClientDetails(OrderDetailsJson orderDetailsJson, OrderEntity orderEntity ){
+        if(orderDetailsJson.getClientDetails() != null){
+            ClientDetailsEntity clientDetailsEntity =  orderDetailsJson.getClientDetails();
+            ClientDetailsEntity dbClientDetailsEntity =  cartonbookDao.getClientDetailsEntity(clientDetailsEntity.getClientDetailsUUID());
+            if(dbClientDetailsEntity == null){
+                clientDetailsEntity.setOrderEntity(orderEntity);
+                cartonbookDao.createClientDetails(clientDetailsEntity);
+            }
         }
     }
 
@@ -157,6 +186,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     }
                 }
 
+                ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
+                clientDetailsEntity.setOrderEntity(null);
+                orderDetailsJson.setClientDetails(clientDetailsEntity);
+
+                DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(orderEntity);
+                deliveryDetailsEntity.setOrderEntity(null);
+                orderDetailsJson.setDeliveryDetails(deliveryDetailsEntity);
 
             }
             if (orderDetailsJsonList.size() > 0) {

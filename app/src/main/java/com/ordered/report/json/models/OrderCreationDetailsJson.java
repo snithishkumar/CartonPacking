@@ -24,9 +24,7 @@ public class OrderCreationDetailsJson {
     private long createdDateTime;
     private long lastModifiedDateTime;
     private String cartonNumber;
-    private int quantity = 10;
-    private String rate = "2.0";
-    private long amount = 150;
+    private double unitPrice;
 
     public String getCartonNumber() {
         return cartonNumber;
@@ -167,28 +165,13 @@ public class OrderCreationDetailsJson {
     public void setLastModifiedDateTime(long lastModifiedDateTime) {
         this.lastModifiedDateTime = lastModifiedDateTime;
     }
-    public int getQuantity() {
-        return quantity;
+
+    public double getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getRate() {
-        return rate;
-    }
-
-    public void setRate(String rate) {
-        this.rate = rate;
-    }
-
-    public long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(long amount) {
-        this.amount = amount;
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     @Override
@@ -210,6 +193,8 @@ public class OrderCreationDetailsJson {
                 ", xxxl='" + xxxl + '\'' +
                 ", createdDateTime=" + createdDateTime +
                 ", lastModifiedDateTime=" + lastModifiedDateTime +
+                ", cartonNumber='" + cartonNumber + '\'' +
+                ", unitPrice=" + unitPrice +
                 '}';
     }
 

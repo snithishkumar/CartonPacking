@@ -8,6 +8,8 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import com.ordered.report.db.DatabaseHelper;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.CartonDetailsEntity;
+import com.ordered.report.models.ClientDetailsEntity;
+import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 
@@ -24,6 +26,8 @@ public class CartonbookDao {
     Dao<OrderEntity, String> orderDao = null;
     Dao<CartonDetailsEntity, String> cartonItemDao = null;
     Dao<ProductDetailsEntity, String> productDao = null;
+    Dao<ClientDetailsEntity,String> clientDetailsDao = null;
+    Dao<DeliveryDetailsEntity,String> deliveryDetailsDao = null;
 
     public CartonbookDao(Context context) throws Exception {
         this.databaseHelper = DatabaseHelper.getInstance(context);
@@ -35,6 +39,8 @@ public class CartonbookDao {
             orderDao = getOrderDao();
             cartonItemDao = databaseHelper.getDao(CartonDetailsEntity.class);
             productDao = databaseHelper.getDao(ProductDetailsEntity.class);
+            clientDetailsDao = databaseHelper.getDao(ClientDetailsEntity.class);
+            deliveryDetailsDao = databaseHelper.getDao(DeliveryDetailsEntity.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -279,6 +285,65 @@ public class CartonbookDao {
             e.printStackTrace();
         }
         return new ArrayList<>();
+    }
+
+
+    public DeliveryDetailsEntity getDeliveryDetailsEntity(OrderEntity orderEntity){
+        try {
+            return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.ORDER_ID, orderEntity).queryForFirst();
+            //return orderDao.queryBuilder().query();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public DeliveryDetailsEntity getDeliveryDetailsEntity(String  deliveryUUID){
+        try {
+            return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.DELIVERY_UUID, deliveryUUID).queryForFirst();
+            //return orderDao.queryBuilder().query();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void createDeliveryDetailsEntity(DeliveryDetailsEntity deliveryDetailsEntity){
+        try{
+            deliveryDetailsDao.create(deliveryDetailsEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public ClientDetailsEntity getClientDetailsEntity(OrderEntity orderEntity){
+        try{
+            clientDetailsDao.queryBuilder().where().eq(ClientDetailsEntity.ORDER_ID,orderEntity).queryForFirst();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public ClientDetailsEntity getClientDetailsEntity(String clientUUID){
+        try{
+            clientDetailsDao.queryBuilder().where().eq(ClientDetailsEntity.CLIENT_DETAILS_UUID,clientUUID).queryForFirst();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public void createClientDetails(ClientDetailsEntity clientDetailsEntity){
+        try{
+            clientDetailsDao.create(clientDetailsEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

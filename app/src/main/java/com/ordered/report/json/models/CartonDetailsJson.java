@@ -17,6 +17,7 @@ public class CartonDetailsJson {
     private long createdDateTime;
     private long lastModifiedTime;
     private String createdBy;
+    private String totalWeight;
     private String lastModifiedBy;
     private int noOfProducts;
     private List<ProductDetailsJson> productDetailsJsonList = new ArrayList<>();
@@ -33,8 +34,16 @@ public class CartonDetailsJson {
         this.createdDateTime = cartonDetailsEntity.getCreatedDateTime();
         this.createdBy = cartonDetailsEntity.getCreatedBy();
         this.lastModifiedBy = cartonDetailsEntity.getLastModifiedBy();
+        this.totalWeight = cartonDetailsEntity.getTotalWeight();
     }
 
+    public String getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(String totalWeight) {
+        this.totalWeight = totalWeight;
+    }
 
     public int getNoOfProducts() {
         return noOfProducts;

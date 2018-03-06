@@ -88,7 +88,6 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         public TextView createdDate;
         public TextView createdBy;
         public TextView orderItemsCount;
-        public TextView report;
         public ImageView orderImage;
 
 
@@ -100,7 +99,6 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
             createdDate = (TextView) itemView.findViewById(R.id.ordered_list_order_date);
             createdBy = (TextView) itemView.findViewById(R.id.ordered_list_created_by);
             orderItemsCount = (TextView) itemView.findViewById(R.id.ordered_list_ordered_items);
-            report = (TextView) itemView.findViewById(R.id.report_generate);
             orderImage = (ImageView) itemView.findViewById(R.id.order_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
