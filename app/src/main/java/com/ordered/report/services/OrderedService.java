@@ -13,6 +13,7 @@ import com.ordered.report.json.models.LoginEvent;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
 import com.ordered.report.json.models.ProductDetailsJson;
 import com.ordered.report.models.CartonDetailsEntity;
+import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.utils.Constants;
@@ -178,7 +179,7 @@ public class OrderedService {
     }
 
 
-    public boolean saveProductDetails(String orderGuid,List<CartonDetailsJson> cartonDetailsJsonList){
+    public boolean saveProductDetails(String orderGuid,List<CartonDetailsJson> cartonDetailsJsonList,String view){
         OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
         boolean isEdited = false;
        for(CartonDetailsJson cartonDetailsJson : cartonDetailsJsonList){
@@ -213,11 +214,21 @@ public class OrderedService {
             orderEntity.setSync(false);
             orderEntity.setCartonCounts(cartonDetailsJsonList.size()+"");
             orderEntity.setLastModifiedDate(System.currentTimeMillis());
-            orderEntity.setOrderStatus(OrderStatus.DELIVERED);
+            if(view != null && view.equals(Constants.VIEW_PACKING)){
+                orderEntity.setOrderStatus(OrderStatus.DELIVERED);
+            }else{
+                orderEntity.setOrderStatus(OrderStatus.PACKING);
+            }
+
             cartonbookDao.updateCortonbookEntity(orderEntity);
         }
         return isEdited;
 
+    }
+
+
+    public void createDelivery(DeliveryDetailsEntity deliveryDetailsEntity){
+        cartonbookDao.createDeliveryDetailsEntity(deliveryDetailsEntity);
     }
 
 

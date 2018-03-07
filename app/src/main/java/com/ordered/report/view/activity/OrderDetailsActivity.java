@@ -29,6 +29,7 @@ import com.ordered.report.view.fragment.CartonNumberPickerFragment;
 import com.ordered.report.view.fragment.HomeFragment;
 import com.ordered.report.view.fragment.ProductDetailsListFragment;
 import com.ordered.report.view.fragment.ProductNameListFragment;
+import com.ordered.report.view.fragment.ShippingDetailsFragment;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
     private String orderGuid;
     private String view;
+    private String nextView;
     private String totalNoOfCartons;
    // private String cartonNumber;
     private OrderedService orderedService;
@@ -59,7 +61,12 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         Toolbar toolbar = (Toolbar) findViewById(R.id.order_Details_toolbar);
         setSupportActionBar(toolbar);
         init();
-        showCartonListFragment();
+        if(view != null && view.equals(Constants.VIEW_PACKING) && nextView != null && nextView.equals(Constants.VIEW_DELIVERY)){
+            showShippingDetailsFragment();
+        }else{
+            showCartonListFragment();
+        }
+
        // showFragment();
 
     }
@@ -74,6 +81,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
             totalNoOfCartons = getIntent().getStringExtra("totalNoOfCartons");
             orderedService = new OrderedService(this);
             view = getIntent().getStringExtra("view");
+            nextView = getIntent().getStringExtra("newView");
             cartonDetailsJsonList =  getOrderedService().getCartonDetailsJson(orderGuid);
             if(view.equals(Constants.VIEW_PACKING)){
                 OrderEntity orderEntity =  getOrderedService().getOrderEntityByGuid(orderGuid);
@@ -83,6 +91,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
             Log.e(LOG_TAG,"Error in init",e);
         }
 
+    }
+
+    private void showShippingDetailsFragment(){
+        ShippingDetailsFragment shippingDetailsFragment = new ShippingDetailsFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.order_details_container, shippingDetailsFragment).addToBackStack(null).commit();
     }
 
 
@@ -154,7 +167,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
             case R.id.carton_footer_done:
                 if(cartonDetailsJsonList.size() > 0){
-                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList);
+                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList,this.view);
                     finish();
                     Intent intent = new Intent(this, HomeActivity.class);
                     startActivity(intent);
@@ -189,6 +202,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
     }
 
 
+
+
+
+
     @Override
     public void callBack() {
         CaptureCartonDetailsFragment captureCartonDetailsFragment = new CaptureCartonDetailsFragment();
@@ -203,6 +220,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
     @Override
     public void onBackPressed() {
+        finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
         super.onBackPressed();
     }
 

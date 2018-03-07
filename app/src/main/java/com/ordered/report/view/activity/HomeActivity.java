@@ -145,10 +145,14 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
 
 
 
-    private void showPackingDetailsList(String orderGuid){
+    private void showPackingDetailsList(String orderGuid,String newView){
         Intent intent = new Intent(this, OrderDetailsActivity.class);
         intent.putExtra("orderGuid",orderGuid);
         intent.putExtra("view",Constants.VIEW_PACKING);
+        if(newView != null){
+            intent.putExtra("newView",newView);
+        }
+
         startActivity(intent);
     }
 
@@ -236,7 +240,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
 
 
     @Override
-    public void showPackingDetails(String orderGuid) {
-        showPackingDetailsList(orderGuid);
+    public void showPackingDetails(String orderGuid,String nextView) {
+        showPackingDetailsList(orderGuid,nextView);
     }
 }

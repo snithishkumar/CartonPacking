@@ -279,6 +279,7 @@ public class CartonbookDao {
 
     public List<OrderEntity> getDeliveredOrders(){
         try {
+            List<OrderEntity>  test = orderDao.queryForAll();
             return orderDao.queryBuilder().where().eq(OrderEntity.ORDER_STATUS, OrderStatus.DELIVERED).query();
             //return orderDao.queryBuilder().query();
         } catch (Exception e) {
@@ -320,7 +321,8 @@ public class CartonbookDao {
 
     public ClientDetailsEntity getClientDetailsEntity(OrderEntity orderEntity){
         try{
-            clientDetailsDao.queryBuilder().where().eq(ClientDetailsEntity.ORDER_ID,orderEntity).queryForFirst();
+          List<ClientDetailsEntity>  clientDetailsEntities =  clientDetailsDao.queryForAll();
+           return  clientDetailsDao.queryBuilder().where().eq(ClientDetailsEntity.ORDER_ID,orderEntity).queryForFirst();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -330,7 +332,7 @@ public class CartonbookDao {
 
     public ClientDetailsEntity getClientDetailsEntity(String clientUUID){
         try{
-            clientDetailsDao.queryBuilder().where().eq(ClientDetailsEntity.CLIENT_DETAILS_UUID,clientUUID).queryForFirst();
+            return  clientDetailsDao.queryBuilder().where().eq(ClientDetailsEntity.CLIENT_DETAILS_UUID,clientUUID).queryForFirst();
         }catch (Exception e){
             e.printStackTrace();
         }

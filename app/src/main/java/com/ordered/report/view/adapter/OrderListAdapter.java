@@ -66,7 +66,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
 
     private String formatDate(long dateTime) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date(dateTime);
         String val = simpleDateFormat.format(date);
         return val;

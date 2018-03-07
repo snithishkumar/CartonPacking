@@ -43,8 +43,9 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
 
     public DeliveredListAdapter(Context context, List<OrderEntity> orderEntities) {
         this.context = context;
-        homeActivity = (HomeActivity) context;
         this.orderEntities = orderEntities;
+        homeActivity = (HomeActivity) context;
+
     }
 
     @Override
@@ -136,7 +137,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
 
 
     private String formatDate(long dateTime) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date(dateTime);
         String val = simpleDateFormat.format(date);
         return val;
@@ -144,6 +145,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
 
     @Override
     public int getItemCount() {
+        int si = orderEntities.size();
         return orderEntities.size();
     }
 

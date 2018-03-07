@@ -26,9 +26,12 @@
                 android:id="@+id/login_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="20dp"
+                android:textSize="@dimen/_26sdp"
                 android:padding="@dimen/_4sdp"
-                android:text=""
+                android:text="@string/login_name"
                 android:textColor="@color/colorAccent" />
 
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"

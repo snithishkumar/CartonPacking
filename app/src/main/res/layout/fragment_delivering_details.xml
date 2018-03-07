@@ -55,7 +55,6 @@
                         android:id="@+id/place_of_delivery"
                         android:imeOptions="actionNext"
                         android:hint="Place of Delivery">
-                        <requestFocus />
                     </EditText>
                 </android.support.design.widget.TextInputLayout>
 
@@ -69,7 +68,6 @@
                         android:id="@+id/port_of_discharge"
                         android:imeOptions="actionNext"
                         android:hint="Port of Discharge">
-                        <requestFocus />
                     </EditText>
                 </android.support.design.widget.TextInputLayout>
 
@@ -136,16 +134,7 @@
             </RadioGroup>
 
 
-
-
-
-
-
-
         </LinearLayout>
-
-
-
 
 
     <Button
@@ -155,7 +144,7 @@
         android:layout_margin="15dp"
         android:paddingBottom="@dimen/_15sdp"
         android:paddingTop="@dimen/_15sdp"
-        android:text="@string/login_now"
+        android:text="Delivered"
         android:textAllCaps="true"
         android:textColor="@color/colorWhite"
         android:layout_alignParentBottom="true"

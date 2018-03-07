@@ -16,6 +16,7 @@ public class Constants {
 
     public static final String VIEW_ORDER = "order";
     public static final String VIEW_PACKING = "packing";
+    public static final String VIEW_DELIVERY = "delivery";
 
     private static String loginUser;
 

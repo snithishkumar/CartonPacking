@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.ordered.report.R;
+import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.models.OrderEntity;
+import com.ordered.report.utils.Constants;
 import com.ordered.report.view.activity.HomeActivity;
 
 import java.text.SimpleDateFormat;
@@ -55,6 +58,9 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         holder.orderItemsCount.setText(String.valueOf(orderCount));
         holder.orderImage.setImageResource(R.drawable.order_packing);
         holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
+        if(orderEntity.getOrderStatus().toString().equals(OrderStatus.PACKING.toString())){
+            holder.deliveryView.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -68,7 +74,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
 
     private String formatDate(long dateTime) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date(dateTime);
         String val = simpleDateFormat.format(date);
         return val;
@@ -89,6 +95,8 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         public TextView createdBy;
         public TextView orderItemsCount;
         public ImageView orderImage;
+        public RelativeLayout relativeLayout;
+        public ImageView deliveryView;
 
 
 
@@ -100,12 +108,23 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
             createdBy = (TextView) itemView.findViewById(R.id.ordered_list_created_by);
             orderItemsCount = (TextView) itemView.findViewById(R.id.ordered_list_ordered_items);
             orderImage = (ImageView) itemView.findViewById(R.id.order_image);
+            relativeLayout = itemView.findViewById(R.id.order_list_details_layout);
+            deliveryView = itemView.findViewById(R.id.ordered_list_packing_delivery);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     OrderEntity orderEntity =  orderEntities.get(getAdapterPosition());
-                    packingListAdapterCallBack.showPackingDetails(orderEntity.getOrderGuid());
+                    packingListAdapterCallBack.showPackingDetails(orderEntity.getOrderGuid(),null);
+                    return;
+                }
+            });
+
+            deliveryView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    OrderEntity orderEntity =  orderEntities.get(getAdapterPosition());
+                    packingListAdapterCallBack.showPackingDetails(orderEntity.getOrderGuid(), Constants.VIEW_DELIVERY);
                     return;
                 }
             });
@@ -114,6 +133,6 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
 
     public interface PackingListAdapterCallBack{
-        void showPackingDetails(String orderGuid);
+        void showPackingDetails(String orderGuid,String nextView);
     }
 }
