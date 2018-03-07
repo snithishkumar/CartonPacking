@@ -72,7 +72,7 @@ public class CartonListAdapter extends RecyclerView.Adapter<CartonListAdapter.Ca
 
 
     private String formatDate(long dateTime) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy hh:MM");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         Date date = new Date(dateTime);
         String val = simpleDateFormat.format(date);
         return val;

@@ -214,11 +214,7 @@ public class OrderedService {
             orderEntity.setSync(false);
             orderEntity.setCartonCounts(cartonDetailsJsonList.size()+"");
             orderEntity.setLastModifiedDate(System.currentTimeMillis());
-            if(view != null && view.equals(Constants.VIEW_PACKING)){
-                orderEntity.setOrderStatus(OrderStatus.DELIVERED);
-            }else{
-                orderEntity.setOrderStatus(OrderStatus.PACKING);
-            }
+            orderEntity.setOrderStatus(OrderStatus.PACKING);
 
             cartonbookDao.updateCortonbookEntity(orderEntity);
         }

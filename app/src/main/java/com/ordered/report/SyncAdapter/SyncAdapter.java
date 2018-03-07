@@ -191,7 +191,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 orderDetailsJson.setClientDetails(clientDetailsEntity);
 
                 DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(orderEntity);
-                deliveryDetailsEntity.setOrderEntity(null);
+                if(deliveryDetailsEntity != null){
+                    deliveryDetailsEntity.setOrderEntity(null);
+                }
+
                 orderDetailsJson.setDeliveryDetails(deliveryDetailsEntity);
 
             }
