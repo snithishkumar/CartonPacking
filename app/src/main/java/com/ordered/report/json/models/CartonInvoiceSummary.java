@@ -23,7 +23,14 @@ public class CartonInvoiceSummary {
     private String loadingCity;
     private String placeofDelivery;
     private int cartonCount;
-   private InvoiceReportJson invoiceReportJson;
+
+    private int totalCartonCount = 0;
+    private int totalProductsCount = 0;
+    private double totalWeight = 0;
+    private double totalGrossWeight = 0;
+
+    private InvoiceReportJson invoiceReportJson;
+
 
     public String getExporterAddress() {
         return exporterAddress;
@@ -129,31 +136,43 @@ public class CartonInvoiceSummary {
         this.cartonCount = cartonCount;
     }
 
+    public int getTotalCartonCount() {
+        return totalCartonCount;
+    }
+
+    public void setTotalCartonCount(int totalCartonCount) {
+        this.totalCartonCount = totalCartonCount;
+    }
+
+    public int getTotalProductsCount() {
+        return totalProductsCount;
+    }
+
+    public void setTotalProductsCount(int totalProductsCount) {
+        this.totalProductsCount = totalProductsCount;
+    }
+
+    public double getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(double totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+
+    public double getTotalGrossWeight() {
+        return totalGrossWeight;
+    }
+
+    public void setTotalGrossWeight(double totalGrossWeight) {
+        this.totalGrossWeight = totalGrossWeight;
+    }
+
     public InvoiceReportJson getInvoiceReportJson() {
         return invoiceReportJson;
     }
 
     public void setInvoiceReportJson(InvoiceReportJson invoiceReportJson) {
         this.invoiceReportJson = invoiceReportJson;
-    }
-
-    @Override
-    public String toString() {
-        return "CartonInvoiceSummary{" +
-                "exporterAddress='" + exporterAddress + '\'' +
-                ", invoiceWithDate='" + invoiceWithDate + '\'' +
-                ", exporteRef='" + exporteRef + '\'' +
-                ", orderNo='" + orderNo + '\'' +
-                ", tintNo='" + tintNo + '\'' +
-                ", consigneAddress='" + consigneAddress + '\'' +
-                ", vessels='" + vessels + '\'' +
-                ", termsAndConditions='" + termsAndConditions + '\'' +
-                ", country='" + country + '\'' +
-                ", finalDestination='" + finalDestination + '\'' +
-                ", loadingCity='" + loadingCity + '\'' +
-                ", placeofDelivery='" + placeofDelivery + '\'' +
-                ", cartonCount=" + cartonCount +
-                ", invoiceReportJson=" + invoiceReportJson +
-                '}';
     }
 }

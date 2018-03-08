@@ -55,7 +55,7 @@ this.totalWeight = cartonDetailsJson.getTotalWeight();
 
 
     public String getTotalWeight() {
-        return totalWeight;
+        return totalWeight != null ? totalWeight : "0";
     }
 
     public void setTotalWeight(String totalWeight) {

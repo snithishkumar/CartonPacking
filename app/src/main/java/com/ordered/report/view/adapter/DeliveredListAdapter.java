@@ -24,6 +24,7 @@ import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.json.models.CartonInvoiceSummary;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.PdfService;
+import com.ordered.report.services.PdfServiceReport;
 import com.ordered.report.utils.Utils;
 import com.ordered.report.view.activity.HomeActivity;
 import com.ordered.report.view.fragment.DeliveredFragment;
@@ -111,6 +112,9 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
                         break;
 
                     case R.id.package_report:
+                        PdfServiceReport pdfServiceReport = new PdfServiceReport(homeActivity,orderEntity);
+                         cartonInvoiceSummary = pdfServiceReport.getCartonInvoiceSummary();
+                        pdfServiceReport.createPDF(cartonInvoiceSummary);
                         // homeActivity.generateReport(cottonBookListEntity);
 
                         break;

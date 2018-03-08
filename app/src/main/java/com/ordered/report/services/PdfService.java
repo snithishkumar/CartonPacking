@@ -188,7 +188,6 @@ public class PdfService {
         File myDir = new File(root);
         if (!myDir.exists()) {
           boolean res =  myDir.mkdirs();
-          boolean tt = res;
         }
         try {
 
@@ -345,7 +344,6 @@ public class PdfService {
                 } catch (ActivityNotFoundException e) {
                     // Instruct the user to install a PDF reader here, or something
                 }
-                context.startActivity(intent);
                 return FILE;
             } catch (Exception e) {
                 e.printStackTrace();
