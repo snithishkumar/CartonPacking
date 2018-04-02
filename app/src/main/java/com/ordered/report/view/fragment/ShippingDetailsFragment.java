@@ -1,8 +1,12 @@
 package com.ordered.report.view.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,19 +15,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.ordered.report.R;
 import com.ordered.report.enumeration.DeliveringType;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.PaymentStatus;
+import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.utils.UtilService;
 import com.ordered.report.view.activity.HomeActivity;
 import com.ordered.report.view.activity.OrderDetailsActivity;
 import com.ordered.report.view.adapter.CartonListAdapter;
+import com.ordered.report.view.adapter.DeliverOrderListAdapter;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -38,7 +48,11 @@ public class ShippingDetailsFragment  extends Fragment {
     private EditText portOfDischarge;
     private RadioGroup deliveryType;
     private Button submit;
+    View mainLayOut;
 
+    List<CartonDetailsEntity> cartonDetailsEntityList = null;
+
+    AlertDialog alertDialog;
     public ShippingDetailsFragment(){
 
     }
@@ -63,6 +77,7 @@ public class ShippingDetailsFragment  extends Fragment {
 
     private void populateData(){
         DeliveryDetailsEntity deliveryDetailsEntity = new DeliveryDetailsEntity();
+        deliveryDetailsEntity.setDeliveryId(UtilService.getDeliveryId());
         deliveryDetailsEntity.setDeliveryUUID(UUID.randomUUID().toString());
         if(placeOfDelivery.getText() != null){
             deliveryDetailsEntity.setPlaceOfDelivery(placeOfDelivery.getText().toString());
@@ -92,16 +107,105 @@ public class ShippingDetailsFragment  extends Fragment {
 
         OrderEntity orderEntity = orderDetailsActivity.getOrderedService().getOrderEntityByGuid(orderDetailsActivity.getOrderGuid());
         deliveryDetailsEntity.setOrderEntity(orderEntity);
+        showDialog(deliveryDetailsEntity,orderEntity);
+
+    }
+
+
+    private void saveDeliveryDetails(DeliveryDetailsEntity deliveryDetailsEntity,OrderEntity orderEntity){
         orderDetailsActivity.getOrderedService().createDelivery(deliveryDetailsEntity);
-        orderEntity.setOrderStatus(OrderStatus.DELIVERED);
+
+        for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList){
+            if(cartonDetailsEntity.getDeliveryDetails() != null){
+                orderDetailsActivity.getOrderedService().updateCartonDetailsEntity(cartonDetailsEntity);
+            }
+        }
+
+
         orderEntity.setPaymentStatus(PaymentStatus.NOT_PAIED);
         orderEntity.setLastModifiedDate(System.currentTimeMillis());
         orderEntity.setSync(false);
         orderDetailsActivity.getOrderedService().updateOrderUpdates(orderEntity);
-
         Intent intent = new Intent(orderDetailsActivity, HomeActivity.class);
         startActivity(intent);
         orderDetailsActivity.finish();
+        alertDialog.dismiss();
+    }
+
+    private void processDeliveryDetails(final DeliveryDetailsEntity deliveryDetailsEntity,final OrderEntity orderEntity){
+        orderEntity.setOrderStatus(OrderStatus.DELIVERED);
+        boolean isSelected = false;
+        boolean isPartial = false;
+        for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList){
+            if(cartonDetailsEntity.getDeliveryDetails() != null){
+                //orderDetailsActivity.getOrderedService().updateCartonDetailsEntity(cartonDetailsEntity);
+                isSelected = true;
+            }else{
+                orderEntity.setOrderStatus(OrderStatus.PARTIAL_DELIVERED);
+                isPartial = true;
+            }
+        }
+        if(isPartial){
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Title")
+                    .setMessage("Do you really want to whatever?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            saveDeliveryDetails(deliveryDetailsEntity,orderEntity);
+                        }})
+                    .setNegativeButton(android.R.string.no, null).show();
+        }else if(isSelected){
+            saveDeliveryDetails(deliveryDetailsEntity,orderEntity);
+        }else{
+            Snackbar snackbar = Snackbar
+                    .make(mainLayOut, "Welcome to AndroidHive", Snackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(Color.DKGRAY);
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            snackbar.show();
+
+        }
+
+    }
+
+
+    public void showDialog(final DeliveryDetailsEntity deliveryDetailsEntity, final OrderEntity orderEntity){
+        AlertDialog.Builder  dialog = new AlertDialog.Builder(getContext());
+
+        dialog.setTitle("List of Cartons");
+        //dialog.setCancelable(true);
+
+        View view = orderDetailsActivity.getLayoutInflater().inflate(R.layout.order_list_delivery_list_view, null);
+
+        ListView list = (ListView) view.findViewById(R.id.ListLikersList);
+        cartonDetailsEntityList = orderDetailsActivity.getOrderedService().getUnDeliveryCartonDetailsEntity(orderEntity);
+
+
+        DeliverOrderListAdapter deliverOrderListAdapter = new DeliverOrderListAdapter(orderDetailsActivity,cartonDetailsEntityList,deliveryDetailsEntity);
+        list.setAdapter(deliverOrderListAdapter);
+
+
+        dialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                processDeliveryDetails(deliveryDetailsEntity,orderEntity);
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+        dialog.setView(view);
+        alertDialog = dialog.create();
+        alertDialog.show();
     }
 
 
@@ -110,6 +214,7 @@ public class ShippingDetailsFragment  extends Fragment {
         placeOfDelivery =  view.findViewById(R.id.place_of_delivery);
         portOfDischarge = view.findViewById(R.id.port_of_discharge);
         deliveryType = view.findViewById(R.id.adapt_pur_delivery);
+        mainLayOut = view.findViewById(R.id.main_layout_id);
         submit = view.findViewById(R.id.delivery_in_button);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -27,7 +27,7 @@ public class OrderDetailsJson {
     private List<CartonDetailsJson> productDetails = new ArrayList<>();
     private String cartonCounts;
     private String createdBy;
-    private DeliveryDetailsEntity deliveryDetails;
+    private List<DeliveryDetailsEntity> deliveryDetailsList = new ArrayList<>();
     private ClientDetailsEntity clientDetails;
 
     public OrderDetailsJson(){
@@ -151,12 +151,12 @@ this.clientName = orderEntity.getClientName();
         this.productDetails = productDetails;
     }
 
-    public DeliveryDetailsEntity getDeliveryDetails() {
-        return deliveryDetails;
+    public List<DeliveryDetailsEntity> getDeliveryDetailsList() {
+        return deliveryDetailsList;
     }
 
-    public void setDeliveryDetails(DeliveryDetailsEntity deliveryDetails) {
-        this.deliveryDetails = deliveryDetails;
+    public void setDeliveryDetailsList(List<DeliveryDetailsEntity> deliveryDetailsList) {
+        this.deliveryDetailsList = deliveryDetailsList;
     }
 
     public ClientDetailsEntity getClientDetails() {
@@ -183,7 +183,7 @@ this.clientName = orderEntity.getClientName();
                 ", productDetails=" + productDetails +
                 ", cartonCounts='" + cartonCounts + '\'' +
                 ", createdBy='" + createdBy + '\'' +
-                ", deliveryDetails=" + deliveryDetails +
+                ", deliveryDetailsList=" + deliveryDetailsList +
                 ", clientDetails=" + clientDetails +
                 '}';
     }

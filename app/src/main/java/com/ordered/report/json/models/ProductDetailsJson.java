@@ -48,9 +48,12 @@ public class ProductDetailsJson {
        this.cartonNumber = productDetailsEntity.getCartonNumber().getCartonNumber();
        this.createdDateTime= productDetailsEntity.getCreatedDateTime();
        this.lastModifiedDateTime = productDetailsEntity.getLastModifiedDateTime();
+
       //  this.productGroup = productDetailsEntity.getpr
 
     }
+
+
 
     public String getProductGroup() {
         return productGroup;

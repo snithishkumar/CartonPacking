@@ -36,6 +36,8 @@ public class ProductDetailsEntity {
     @DatabaseField(columnName = "OrderId", foreign = true, foreignAutoRefresh = true)
     private OrderEntity orderEntity;
 
+
+
     @DatabaseField(columnName = "productCategory")
     private String productCategory;
 
@@ -119,6 +121,8 @@ public class ProductDetailsEntity {
         this.lastModifiedDateTime = createdDateTime;
 
     }
+
+
 
 
     public String getModifiedBy() {

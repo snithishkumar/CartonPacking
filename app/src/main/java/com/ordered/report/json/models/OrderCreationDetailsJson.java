@@ -25,7 +25,6 @@ public class OrderCreationDetailsJson {
     private long lastModifiedDateTime;
     private String cartonNumber;
     private double unitPrice;
-
     public String getCartonNumber() {
         return cartonNumber;
     }

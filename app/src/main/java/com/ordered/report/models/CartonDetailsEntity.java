@@ -12,6 +12,7 @@ public class CartonDetailsEntity {
 
     public static final String CARTON_GUID = "CartonGuid";
     public static final String ORDER_ENTITY = "OrderId";
+    public static final String DELIVERY_DETAILS_ENTITY = "DeliveryDetailsId";
 
     @DatabaseField(columnName = "CartonId", generatedId = true)
     private int cartonId;
@@ -36,6 +37,9 @@ public class CartonDetailsEntity {
     private String totalWeight;
 
 
+    @DatabaseField(columnName = "DeliveryDetailsId", foreign = true, foreignAutoRefresh = true)
+    private DeliveryDetailsEntity deliveryDetails;
+
 
 
     public CartonDetailsEntity(){
@@ -53,6 +57,14 @@ this.lastModifiedBy = cartonDetailsJson.getLastModifiedBy();
 this.totalWeight = cartonDetailsJson.getTotalWeight();
     }
 
+
+    public DeliveryDetailsEntity getDeliveryDetails() {
+        return deliveryDetails;
+    }
+
+    public void setDeliveryDetails(DeliveryDetailsEntity deliveryDetails) {
+        this.deliveryDetails = deliveryDetails;
+    }
 
     public String getTotalWeight() {
         return totalWeight != null ? totalWeight : "0";
@@ -137,6 +149,8 @@ this.totalWeight = cartonDetailsJson.getTotalWeight();
                 ", orderEntity=" + orderEntity +
                 ", createdBy='" + createdBy + '\'' +
                 ", lastModifiedBy='" + lastModifiedBy + '\'' +
+                ", totalWeight='" + totalWeight + '\'' +
+                ", deliveryDetails=" + deliveryDetails +
                 '}';
     }
 }

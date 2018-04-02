@@ -19,6 +19,10 @@ public class DeliveryDetailsEntity {
     private int deliveryDetailsId;
     @DatabaseField(columnName = "DeliveryUUID")
     private String deliveryUUID;
+
+    @DatabaseField(columnName = "DeliveryID")
+    private String deliveryId;
+
     @DatabaseField(columnName = "DeliveringType", dataType = DataType.ENUM_INTEGER)
     private DeliveringType deliveringType;
     @DatabaseField(columnName = "PlaceOfLoading")
@@ -87,11 +91,20 @@ public class DeliveryDetailsEntity {
         this.orderEntity = orderEntity;
     }
 
+    public String getDeliveryId() {
+        return deliveryId;
+    }
+
+    public void setDeliveryId(String deliveryId) {
+        this.deliveryId = deliveryId;
+    }
+
     @Override
     public String toString() {
         return "DeliveryDetailsEntity{" +
                 "deliveryDetailsId=" + deliveryDetailsId +
                 ", deliveryUUID='" + deliveryUUID + '\'' +
+                ", deliveryId='" + deliveryId + '\'' +
                 ", deliveringType=" + deliveringType +
                 ", placeOfLoading='" + placeOfLoading + '\'' +
                 ", placeOfDelivery='" + placeOfDelivery + '\'' +

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+    android:layout_marginBottom="25dp"
+        tools:context=".view.activity.HomeActivity"
+        android:layout_height="match_parent">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Carton Number : 1"
+            android:id="@+id/packing_order_delivery_carton_no"
+            android:layout_height="wrap_content" />
+
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/colorBlack" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="No Of Products:"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Total Weights:"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Last Modified Time:"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="10"
+                    android:id="@+id/packing_order_delivery_no_products"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="100Kg"
+                    android:id="@+id/packing_order_delivery_total_weights"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="20/March/2018"
+                    android:id="@+id/packing_order_delivery_last_modified_time"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="20dp"
+        android:background="@color/colorBorder" />
+
+    </LinearLayout>
+
+
+

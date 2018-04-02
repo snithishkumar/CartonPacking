@@ -5,5 +5,5 @@ package com.ordered.report.enumeration;
  */
 
 public enum OrderStatus {
-    ORDERED,PACKING,DELIVERED;
+    ORDERED,PACKING,PARTIAL_DELIVERED,DELIVERED;
 }

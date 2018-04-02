@@ -22,7 +22,7 @@ public class CartonDetailsJson {
     private int noOfProducts;
     private List<ProductDetailsJson> productDetailsJsonList = new ArrayList<>();
     List<OrderDetailsListViewModel>  orderDetailsListViewModels = new ArrayList<>();
-
+    private String deliverDetailsGuid;
     public CartonDetailsJson(){
 
     }
@@ -35,6 +35,18 @@ public class CartonDetailsJson {
         this.createdBy = cartonDetailsEntity.getCreatedBy();
         this.lastModifiedBy = cartonDetailsEntity.getLastModifiedBy();
         this.totalWeight = cartonDetailsEntity.getTotalWeight();
+        if(cartonDetailsEntity.getDeliveryDetails() != null){
+            this.deliverDetailsGuid = cartonDetailsEntity.getDeliveryDetails().getDeliveryUUID();
+        }
+
+    }
+
+    public String getDeliverDetailsGuid() {
+        return deliverDetailsGuid;
+    }
+
+    public void setDeliverDetailsGuid(String deliverDetailsGuid) {
+        this.deliverDetailsGuid = deliverDetailsGuid;
     }
 
     public String getTotalWeight() {

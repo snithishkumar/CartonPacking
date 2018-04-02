@@ -15,6 +15,7 @@ import com.ordered.report.R;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.eventBus.AppBus;
 import com.ordered.report.json.models.ResponseData;
+import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.view.adapter.DeliveredListAdapter;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeliveredFragment extends Fragment {
-    private List<OrderEntity> cartonbookEntities = new ArrayList<>();
+    private List<DeliveryDetailsEntity> deliveryDetailsEntities = new ArrayList<>();
     private OrderedService orderedService = null;
     RecyclerView recyclerView = null;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -64,10 +65,10 @@ public class DeliveredFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
-        List<OrderEntity> orderEntityList =  getOrderedList();
-        this.cartonbookEntities.clear();
-        this.cartonbookEntities.addAll(orderEntityList);
-        mAdapter = new DeliveredListAdapter(getActivity(),cartonbookEntities);
+        List<DeliveryDetailsEntity> deliveryDetailsEntityList =  getDeliveredOrdersList();
+        this.deliveryDetailsEntities.clear();
+        this.deliveryDetailsEntities.addAll(deliveryDetailsEntityList);
+        mAdapter = new DeliveredListAdapter(getActivity(),deliveryDetailsEntities);
         recyclerView.setAdapter(mAdapter);
         return view;
     }
@@ -83,7 +84,7 @@ public class DeliveredFragment extends Fragment {
         super.onDetach();
     }
 
-    public List<OrderEntity> getOrderedList() {
+    public List<DeliveryDetailsEntity> getDeliveredOrdersList() {
         return orderedService.getDeliveredOrdersList();
     }
 
@@ -103,9 +104,9 @@ public class DeliveredFragment extends Fragment {
 
     @Subscribe
     public void orderResponse(ResponseData responseData){
-        List<OrderEntity> orderEntityList =  getOrderedList();
-        this.cartonbookEntities.clear();
-        this.cartonbookEntities.addAll(orderEntityList);
+        List<DeliveryDetailsEntity> deliveryDetailsEntityList =  getDeliveredOrdersList();
+        this.deliveryDetailsEntities.clear();
+        this.deliveryDetailsEntities.addAll(deliveryDetailsEntityList);
         mAdapter.notifyDataSetChanged();
 
     }

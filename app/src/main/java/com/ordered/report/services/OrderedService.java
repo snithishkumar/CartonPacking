@@ -87,8 +87,8 @@ public class OrderedService {
     }
 
 
-    public List<OrderEntity> getDeliveredOrdersList(){
-        return cartonbookDao.getDeliveredOrders();
+    public List<DeliveryDetailsEntity> getDeliveredOrdersList(){
+        return cartonbookDao.getDeliveryDetailsEntity();
     }
 
     public List<OrderEntity> getCartonBookEntityByType(OrderStatus orderType) {
@@ -191,6 +191,7 @@ public class OrderedService {
            }else{
                cartonDetailsEntity.setLastModifiedBy(cartonDetailsJson.getLastModifiedBy());
                cartonDetailsEntity.setLastModifiedTime(cartonDetailsJson.getLastModifiedTime());
+               cartonDetailsEntity.setTotalWeight(cartonDetailsJson.getTotalWeight());
            }
            List<OrderDetailsListViewModel> orderDetailsListViewModels = cartonDetailsJson.getOrderDetailsListViewModels();
            for(OrderDetailsListViewModel orderDetailsListViewModel : orderDetailsListViewModels){
@@ -230,5 +231,15 @@ public class OrderedService {
 
     public void updateOrderUpdates(OrderEntity orderEntity){
         cartonbookDao.updateCortonbookEntity(orderEntity);
+    }
+
+
+    public void updateCartonDetailsEntity(CartonDetailsEntity cartonDetailsEntity){
+        cartonbookDao.updateCartonDetailsEntity(cartonDetailsEntity);
+    }
+
+
+    public List<CartonDetailsEntity> getUnDeliveryCartonDetailsEntity(OrderEntity orderEntity){
+       return cartonbookDao.getUnDeliveredCartonDetailsList(orderEntity);
     }
 }

@@ -58,7 +58,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         holder.orderItemsCount.setText(String.valueOf(orderCount));
         holder.orderImage.setImageResource(R.drawable.order_packing);
         holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
-        if(orderEntity.getOrderStatus().toString().equals(OrderStatus.PACKING.toString())){
+        if(orderEntity.getOrderStatus().toString().equals(OrderStatus.PACKING.toString()) ||orderEntity.getOrderStatus().toString().equals(OrderStatus.PARTIAL_DELIVERED.toString())  ){
             holder.deliveryView.setVisibility(View.VISIBLE);
         }
 

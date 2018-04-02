@@ -36,4 +36,10 @@ public class UtilService {
         return simpleDateFormat.format(dateInMilliSecs);
     }
 
+
+    public static String getDeliveryId(){
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMM_HHmmss");
+        return "DEL_"+sdf.format(System.currentTimeMillis());
+    }
+
 }

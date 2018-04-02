@@ -185,6 +185,26 @@ public class CartonbookDao {
     }
 
 
+    public List<CartonDetailsEntity> getCartonDetailsList(OrderEntity orderEntity,DeliveryDetailsEntity deliveryDetailsEntity){
+        try{
+            return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.ORDER_ENTITY,orderEntity).and().eq(CartonDetailsEntity.DELIVERY_DETAILS_ENTITY,deliveryDetailsEntity).query();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
+    public List<CartonDetailsEntity> getUnDeliveredCartonDetailsList(OrderEntity orderEntity){
+        try{
+            return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.ORDER_ENTITY,orderEntity).and().isNull(CartonDetailsEntity.DELIVERY_DETAILS_ENTITY).query();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
     public CartonDetailsEntity getCartonDetailsEntity(String cartonGuid){
         try{
            return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.CARTON_GUID,cartonGuid).queryForFirst();
@@ -217,11 +237,14 @@ public class CartonbookDao {
 
 
 
-    public  List<ProductDetailsEntity> getCategoryList(OrderEntity orderEntity){
+
+
+
+    public  List<ProductDetailsEntity> getCategoryList(List<CartonDetailsEntity> cartonDetailsEntityList){
         try{
             QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
             queryBuilder.distinct().selectColumns(ProductDetailsEntity.PRODUCT_CATEGORY);
-            queryBuilder.where().eq(ProductDetailsEntity.ORDER_ENTITY,orderEntity);
+            queryBuilder.where().in(ProductDetailsEntity.CARTON_NUMBER,cartonDetailsEntityList);
            List<ProductDetailsEntity> productDetailsEntities = queryBuilder.query();
            return productDetailsEntities;
         }catch (Exception e){
@@ -230,10 +253,10 @@ public class CartonbookDao {
         return new ArrayList<>();
     }
 
-    public List<ProductDetailsEntity> getProductDetailsByCategory(String categoryName,OrderEntity orderEntity){
+    public List<ProductDetailsEntity> getProductDetailsByCategory(String categoryName,List<CartonDetailsEntity> cartonDetailsEntities){
         try{
             QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
-            queryBuilder.where().eq(ProductDetailsEntity.ORDER_ENTITY,orderEntity).and().eq(ProductDetailsEntity.PRODUCT_CATEGORY,categoryName);
+            queryBuilder.where().in(ProductDetailsEntity.CARTON_NUMBER,cartonDetailsEntities).and().eq(ProductDetailsEntity.PRODUCT_CATEGORY,categoryName);
             List<ProductDetailsEntity> productDetailsEntities = queryBuilder.query();
             return productDetailsEntities;
         }catch (Exception e){
@@ -269,7 +292,7 @@ public class CartonbookDao {
 
     public List<OrderEntity> getPackingOrders(){
         try {
-            return orderDao.queryBuilder().where().eq(OrderEntity.ORDER_STATUS, OrderStatus.PACKING).query();
+            return orderDao.queryBuilder().where().eq(OrderEntity.ORDER_STATUS, OrderStatus.PACKING).or().eq(OrderEntity.ORDER_STATUS, OrderStatus.PARTIAL_DELIVERED).query();
             //return orderDao.queryBuilder().query();
         } catch (Exception e) {
             e.printStackTrace();
@@ -277,21 +300,20 @@ public class CartonbookDao {
         return new ArrayList<>();
     }
 
-    public List<OrderEntity> getDeliveredOrders(){
+    public List<DeliveryDetailsEntity> getDeliveryDetailsEntity(){
         try {
-            List<OrderEntity>  test = orderDao.queryForAll();
-            return orderDao.queryBuilder().where().eq(OrderEntity.ORDER_STATUS, OrderStatus.DELIVERED).query();
+            return deliveryDetailsDao.queryForAll();
             //return orderDao.queryBuilder().query();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
+        return null;
     }
 
 
-    public DeliveryDetailsEntity getDeliveryDetailsEntity(OrderEntity orderEntity){
+    public List<DeliveryDetailsEntity> getDeliveryDetailsEntity(OrderEntity orderEntity){
         try {
-            return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.ORDER_ID, orderEntity).queryForFirst();
+            return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.ORDER_ID, orderEntity).query();
             //return orderDao.queryBuilder().query();
         } catch (Exception e) {
             e.printStackTrace();

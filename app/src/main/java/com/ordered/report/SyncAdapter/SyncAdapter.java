@@ -104,6 +104,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
 
+
     private void processOrderDetails(OrderDetailsJson orderDetailsJson) {
         OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderDetailsJson.getOrderGuid());
         if (orderEntity == null) {
@@ -111,6 +112,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             orderEntity.setSync(true);
             orderEntity.setOrderedItems(gson.toJson(orderDetailsJson.getOrderedItems()));
             cartonbookDao.savCartonbookEntity(orderEntity);
+            processDeliveryDetails(orderDetailsJson,orderEntity);
             if (orderDetailsJson.getProductDetails() != null && orderDetailsJson.getProductDetails().size() > 0) {
                 for (CartonDetailsJson cartonDetailsJson : orderDetailsJson.getProductDetails()) {
 
@@ -118,7 +120,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     if (cartonDetailsEntity == null) {
                         cartonDetailsEntity = new CartonDetailsEntity(cartonDetailsJson);
                         cartonDetailsEntity.setOrderEntity(orderEntity);
+                        if(cartonDetailsJson.getDeliverDetailsGuid() != null){
+                            DeliveryDetailsEntity deliveryDetailsEntity =  cartonbookDao.getDeliveryDetailsEntity(cartonDetailsJson.getDeliverDetailsGuid());
+                            cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
+                        }
                         cartonbookDao.createCartonDetailsEntity(cartonDetailsEntity);
+                    }else{
+                        if(cartonDetailsJson.getDeliverDetailsGuid() != null){
+                            DeliveryDetailsEntity deliveryDetailsEntity =  cartonbookDao.getDeliveryDetailsEntity(cartonDetailsJson.getDeliverDetailsGuid());
+                            cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
+                            cartonbookDao.updateCartonDetailsEntity(cartonDetailsEntity);
+                        }
                     }
 
                     for (ProductDetailsJson productDetailsJson : cartonDetailsJson.getProductDetailsJsonList()) {
@@ -134,7 +146,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 }
             }
-            processDeliveryDetails(orderDetailsJson,orderEntity);
+
             processClientDetails(orderDetailsJson,orderEntity);
             ResponseData responseData = new ResponseData();
             AppBus.getInstance().post(responseData);
@@ -143,14 +155,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
     private void processDeliveryDetails(OrderDetailsJson orderDetailsJson, OrderEntity orderEntity ){
-        if(orderDetailsJson.getDeliveryDetails() != null){
-            DeliveryDetailsEntity deliveryDetailsEntity=  orderDetailsJson.getDeliveryDetails();
+        List<DeliveryDetailsEntity> deliveryDetailsEntityList = orderDetailsJson.getDeliveryDetailsList();
+        for(DeliveryDetailsEntity deliveryDetailsEntity : deliveryDetailsEntityList){
             DeliveryDetailsEntity dbDeliveryDetailsEntity=   cartonbookDao.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
             if(dbDeliveryDetailsEntity == null){
                 deliveryDetailsEntity.setOrderEntity(orderEntity);
                 cartonbookDao.createDeliveryDetailsEntity(deliveryDetailsEntity);
             }
         }
+
 
     }
 
@@ -190,12 +203,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 clientDetailsEntity.setOrderEntity(null);
                 orderDetailsJson.setClientDetails(clientDetailsEntity);
 
-                DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(orderEntity);
-                if(deliveryDetailsEntity != null){
+                List<DeliveryDetailsEntity> deliveryDetailsEntityList = cartonbookDao.getDeliveryDetailsEntity(orderEntity);
+                for(DeliveryDetailsEntity deliveryDetailsEntity : deliveryDetailsEntityList){
                     deliveryDetailsEntity.setOrderEntity(null);
-                }
+                    orderDetailsJson.getDeliveryDetailsList().add(deliveryDetailsEntity);
 
-                orderDetailsJson.setDeliveryDetails(deliveryDetailsEntity);
+                }
 
             }
             if (orderDetailsJsonList.size() > 0) {

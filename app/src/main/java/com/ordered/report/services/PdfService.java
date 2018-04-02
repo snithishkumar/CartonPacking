@@ -30,6 +30,7 @@ import com.ordered.report.json.models.InvoiceReportCategoryDetailsJson;
 import com.ordered.report.json.models.InvoiceReportJson;
 import com.ordered.report.json.models.InvoiceReportOrderDetailsJson;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
+import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.ClientDetailsEntity;
 import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
@@ -81,19 +82,20 @@ public class PdfService {
     }
 
 
-    public CartonInvoiceSummary getCartonInvoiceSummary(OrderEntity orderEntity) {
-        String orderDetails = orderEntity.getOrderedItems();
+    public CartonInvoiceSummary getCartonInvoiceSummary(DeliveryDetailsEntity deliveryDetailsEntity) {
+        String orderDetails = deliveryDetailsEntity.getOrderEntity().getOrderedItems();
         Type listType = new TypeToken<List<OrderCreationDetailsJson>>() {
         }.getType();
         List<OrderCreationDetailsJson> cottonItemEntities = gson.fromJson(orderDetails, listType);
         InvoiceReportJson invoiceReportJson = new InvoiceReportJson();
-        List<ProductDetailsEntity> categoryNamesList = cartonbookDao.getCategoryList(orderEntity);
+        List<CartonDetailsEntity> cartonDetailsEntities = cartonbookDao.getCartonDetailsList(deliveryDetailsEntity.getOrderEntity(),deliveryDetailsEntity);
+        List<ProductDetailsEntity> categoryNamesList = cartonbookDao.getCategoryList(cartonDetailsEntities);
 
         for(ProductDetailsEntity categoryName : categoryNamesList){
             InvoiceReportCategoryDetailsJson invoiceReportCategoryDetailsJson = new InvoiceReportCategoryDetailsJson();
             invoiceReportCategoryDetailsJson.setCategoryName(categoryName.getProductCategory());
             invoiceReportJson.getInvoiceReportCategoryDetailsJsons().add(invoiceReportCategoryDetailsJson);
-            List<ProductDetailsEntity> productDetailsEntityList =  cartonbookDao.getProductDetailsByCategory(categoryName.getProductCategory(),orderEntity);
+            List<ProductDetailsEntity> productDetailsEntityList =  cartonbookDao.getProductDetailsByCategory(categoryName.getProductCategory(),cartonDetailsEntities);
            for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList) {
                InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson = new InvoiceReportOrderDetailsJson();
                invoiceReportCategoryDetailsJson.getInvoiceReportOrder().add(invoiceReportOrderDetailsJson);
@@ -110,7 +112,9 @@ public class PdfService {
                if (pos != -1) {
                    OrderCreationDetailsJson orderCreationDetailsJson = cottonItemEntities.get(pos);
                    double rate = orderCreationDetailsJson.getUnitPrice();
+                   invoiceReportOrderDetailsJson.setRate(rate+"");
                    double totalAmount = rate * quantity;
+                   invoiceReportOrderDetailsJson.setAmount(totalAmount+"");
                    invoiceReportJson.setTotalQuantity(invoiceReportJson.getTotalQuantity() + quantity);
                    invoiceReportJson.setTotalAmount(invoiceReportJson.getTotalAmount() + totalAmount);
                    invoiceReportOrderDetailsJson.setAmount(String.valueOf(totalAmount));
@@ -120,16 +124,15 @@ public class PdfService {
 
         }
 
-        DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(orderEntity);
-       ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
+       ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(deliveryDetailsEntity.getOrderEntity());
 
         String clientAddress = clientDetailsEntity.getExporterDetails();
         CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();
         cartonInvoiceSummary.setInvoiceReportJson(invoiceReportJson);
-        cartonInvoiceSummary.setCartonCount(Integer.parseInt(orderEntity.getCartonCounts()));
-        cartonInvoiceSummary.setExporterAddress("Exporter\n M/s. GLOBAL IMPEX,\n 8/3401 PONTHIRUMALAI NAGAR\n PANDIAN NAGAR, TIRUPUR - 641602\n INDIA");
+        cartonInvoiceSummary.setCartonCount(Integer.parseInt(deliveryDetailsEntity.getOrderEntity().getCartonCounts()));
+        cartonInvoiceSummary.setExporterAddress("Exporter\n "+clientDetailsEntity.getExporterDetails());
         cartonInvoiceSummary.setConsigneAddress("Consignee\n" + clientAddress);
-        cartonInvoiceSummary.setOrderNo("Buyer Order No.& Date\n" + "ORDER No:");
+        cartonInvoiceSummary.setOrderNo("Buyer Order No.& Date\n" + "ORDER No:"+deliveryDetailsEntity.getOrderEntity().getOrderId()+"\n Date:"+UtilService.formatDateTime(deliveryDetailsEntity.getOrderEntity().getOrderedDate()));
         cartonInvoiceSummary.setTermsAndConditions("Terms of Delivery and payment\t\n" + "Accept");
         cartonInvoiceSummary.setTintNo("TIN NO. \t" + clientDetailsEntity.getTinNumber());
         cartonInvoiceSummary.setVessels("Vessel/Flight No.\n" + deliveryDetailsEntity.getDeliveringType().toString());
@@ -160,7 +163,7 @@ public class PdfService {
 
     private void populateOrderDetails(PdfPTable cartonTable,Font bf12,InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson){
         PdfPCell cartoncell1 = getInsertCell("", Element.ALIGN_RIGHT, 1, bf12);
-        cartoncell1.setBorder(PdfPCell.NO_BORDER);
+        cartoncell1.setBorder(PdfPCell.LEFT);
         cartonTable.addCell(cartoncell1);
         PdfPCell cartoncell2 = getInsertCell("Style : " + invoiceReportOrderDetailsJson.getProductName(), Element.ALIGN_LEFT, 1, bf12);
         cartoncell2.setBorder(PdfPCell.NO_BORDER);
@@ -287,7 +290,7 @@ public class PdfService {
             List<InvoiceReportCategoryDetailsJson> invoiceReportCategoryDetailsJsons =  invoiceReportJson.getInvoiceReportCategoryDetailsJsons();
 
             PdfPCell cartoncelx = getInsertCell("Carton 0 - " + cartonInvoiceSummary.getCartonCount(), Element.ALIGN_LEFT, 5, bf12);
-            cartoncelx.setBorder(PdfPCell.NO_BORDER);
+            cartoncelx.setBorder(PdfPCell.LEFT);
             cartonTable.addCell(cartoncelx);
            for(InvoiceReportCategoryDetailsJson reportCategoryDetailsJson : invoiceReportCategoryDetailsJsons){
                List<InvoiceReportOrderDetailsJson> invoiceReportOrderDetailsJsons =  reportCategoryDetailsJson.getInvoiceReportOrder();

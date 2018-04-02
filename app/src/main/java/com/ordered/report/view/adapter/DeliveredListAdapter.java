@@ -22,6 +22,7 @@ import com.ordered.report.R;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.json.models.CartonInvoiceSummary;
+import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.PdfService;
 import com.ordered.report.services.PdfServiceReport;
@@ -38,13 +39,13 @@ import java.util.List;
 public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdapter.DeliveredListViewHolder> {
 
     private Context context;
-    private List<OrderEntity> orderEntities;
+    private List<DeliveryDetailsEntity> deliveryDetailsEntities;
     private HomeActivity homeActivity;
     private boolean isPopupShow = false;
 
-    public DeliveredListAdapter(Context context, List<OrderEntity> orderEntities) {
+    public DeliveredListAdapter(Context context, List<DeliveryDetailsEntity> deliveryDetailsEntities) {
         this.context = context;
-        this.orderEntities = orderEntities;
+        this.deliveryDetailsEntities = deliveryDetailsEntities;
         homeActivity = (HomeActivity) context;
 
     }
@@ -57,10 +58,12 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
 
     @Override
     public void onBindViewHolder(DeliveredListViewHolder holder, int position) {
-        final OrderEntity orderEntity = orderEntities.get(position);
+        final DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsEntities.get(position);
        /* if (orderEntity.getOrderType().toString().equals(OrderType.DELIVERED.toString())) {
             holder.report.setVisibility(View.VISIBLE);
         }*/
+        holder.deliverId.setText(deliveryDetailsEntity.getDeliveryId());
+        OrderEntity orderEntity = deliveryDetailsEntity.getOrderEntity();
         holder.orderTitle.setText(orderEntity.getOrderId());
         holder.clientName.setText(orderEntity.getClientName());
         holder.createdBy.setText(orderEntity.getCreatedBy());
@@ -78,7 +81,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
 
     }
 
-    private void showPopup(View v,final OrderEntity orderEntity) {
+    private void showPopup(View v,final DeliveryDetailsEntity deliveryDetailsEntity) {
         isPopupShow = true;
         PopupMenu popup = new PopupMenu(context, v);
         popup.inflate(R.menu.cotton_book_list_popup_item);
@@ -91,7 +94,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
 
                     case R.id.mail_report:
                         PdfService pdfService = new PdfService(homeActivity);
-                        CartonInvoiceSummary cartonInvoiceSummary = pdfService.getCartonInvoiceSummary(orderEntity);
+                        CartonInvoiceSummary cartonInvoiceSummary = pdfService.getCartonInvoiceSummary(deliveryDetailsEntity);
                         pdfService.createPdfReport(homeActivity,cartonInvoiceSummary);
                         // homeActivity.showProgress();
                        /* CartonInvoiceSummary cartonInvoiceSummary = homeActivity.getCartonInvoiceSummary(orderEntity);
@@ -112,7 +115,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
                         break;
 
                     case R.id.package_report:
-                        PdfServiceReport pdfServiceReport = new PdfServiceReport(homeActivity,orderEntity);
+                        PdfServiceReport pdfServiceReport = new PdfServiceReport(homeActivity,deliveryDetailsEntity);
                          cartonInvoiceSummary = pdfServiceReport.getCartonInvoiceSummary();
                         pdfServiceReport.createPDF(cartonInvoiceSummary);
                         // homeActivity.generateReport(cottonBookListEntity);
@@ -149,8 +152,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
 
     @Override
     public int getItemCount() {
-        int si = orderEntities.size();
-        return orderEntities.size();
+        return deliveryDetailsEntities.size();
     }
 
     private void showAlertDialog(final String order) {
@@ -205,6 +207,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
     public class DeliveredListViewHolder extends RecyclerView.ViewHolder {
 
         public TextView orderTitle;
+        public TextView deliverId;
         public TextView clientName;
         public TextView createdDate;
         public TextView createdBy;
@@ -220,6 +223,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
             super(itemView);
             view = itemView;
             orderTitle = (TextView) itemView.findViewById(R.id.ordered_list_order_id);
+            deliverId = itemView.findViewById(R.id.ordered_list_deliver_id);
             clientName = (TextView) itemView.findViewById(R.id.ordered_list_client_name);
             createdDate = (TextView) itemView.findViewById(R.id.ordered_list_order_date);
             createdBy = (TextView) itemView.findViewById(R.id.ordered_list_created_by);
@@ -229,7 +233,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
             reportPopUp.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showPopup(view,orderEntities.get(getAdapterPosition()));
+                    showPopup(view,deliveryDetailsEntities.get(getAdapterPosition()));
                 }
             });
 
