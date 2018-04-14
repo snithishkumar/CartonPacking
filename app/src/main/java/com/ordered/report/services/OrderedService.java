@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.field.DatabaseField;
 import com.ordered.report.SyncAdapter.SyncServiceApi;
 import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.enumeration.OrderStatus;
@@ -125,8 +126,8 @@ public class OrderedService {
     }
 
 
-    public List<OrderDetailsListViewModel> getOrderDetailsListViewModels(String orderGuid) {
-        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+    public List<OrderDetailsListViewModel> getOrderDetailsListViewModels(String cartonbookGuid) {
+        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(cartonbookGuid);
         String orderedItems = orderEntity.getOrderedItems();
         Type listType = new TypeToken<ArrayList<OrderCreationDetailsJson>>() {
         }.getType();
@@ -141,8 +142,8 @@ public class OrderedService {
     }
 
 
-    public List<CartonDetailsJson> getCartonDetailsJson(String orderGuid){
-        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+    public List<CartonDetailsJson> getCartonDetailsJson(String cartonbookGuid){
+        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(cartonbookGuid);
        String orderItems =  orderEntity.getOrderedItems();
         List<OrderCreationDetailsJson>  orderCreationDetailsJsons =  getOrderedItems(orderItems);
         List<CartonDetailsEntity> cartonDetailsEntityList =  cartonbookDao.getCartonDetailsList(orderEntity);
@@ -221,6 +222,69 @@ public class OrderedService {
         }
         return isEdited;
 
+    }
+
+
+    public void calcAvailableCount(OrderDetailsListViewModel orderDetailsListViewModel,List<CartonDetailsJson> cartonDetailsJsonsList){
+        List<ProductDetailsEntity> productDetailsEntityList = cartonbookDao.getOrderItem(orderDetailsListViewModel.getOrderItemGuid());
+        int oneSize = 0;
+        int xs = 0;
+        int s = 0;
+        int m = 0;
+        int l = 0;
+        int xl = 0;
+        int xxl = 0;
+        int xxxl = 0;
+
+        for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList){
+            oneSize = oneSize + intValueOf(productDetailsEntity.getOneSize());
+            xs = xs + intValueOf(productDetailsEntity.getXs());
+            s = s + intValueOf(productDetailsEntity.getS());
+            m = m + intValueOf(productDetailsEntity.getM());
+            l = l + intValueOf(productDetailsEntity.getL());
+            xl = xl + intValueOf(productDetailsEntity.getXl());
+            xxl = xxl + intValueOf(productDetailsEntity.getXxl());
+            xxxl = xxxl + intValueOf(productDetailsEntity.getXxxl());
+        }
+
+        for(CartonDetailsJson cartonDetailsJson : cartonDetailsJsonsList){
+            List<OrderDetailsListViewModel> orderDetailsListViewModelList =  cartonDetailsJson.getOrderDetailsListViewModels();
+            for(OrderDetailsListViewModel detailsListViewModel : orderDetailsListViewModelList){
+                if(orderDetailsListViewModel.getOrderItemGuid().equals(detailsListViewModel.getOrderItemGuid())){
+                    oneSize = oneSize + intValueOf(detailsListViewModel.getProductOneSize());
+                    xs = xs + intValueOf(detailsListViewModel.getProductXS());
+                    s = s + intValueOf(detailsListViewModel.getProductS());
+                    m = m + intValueOf(detailsListViewModel.getProductM());
+                    l = l + intValueOf(detailsListViewModel.getProductL());
+                    xl = xl + intValueOf(detailsListViewModel.getProductXl());
+                    xxl = xxl + intValueOf(detailsListViewModel.getProductXxl());
+                    xxxl = xxxl + intValueOf(detailsListViewModel.getProductXxxl());
+                }
+            }
+        }
+        orderDetailsListViewModel.setOrderItemOneSize(calculate(orderDetailsListViewModel.getOrderItemOneSize() , oneSize));
+        orderDetailsListViewModel.setOrderItemS(calculate(orderDetailsListViewModel.getOrderItemS() , s));
+        orderDetailsListViewModel.setOrderItemM(calculate(orderDetailsListViewModel.getOrderItemM() , m));
+        orderDetailsListViewModel.setOrderItemL(calculate(orderDetailsListViewModel.getOrderItemL() , l));
+        orderDetailsListViewModel.setOrderItemXS(calculate(orderDetailsListViewModel.getOrderItemXS() , xs));
+        orderDetailsListViewModel.setOrderItemXl(calculate(orderDetailsListViewModel.getOrderItemXl() , xl));
+        orderDetailsListViewModel.setOrderItemXxl(calculate(orderDetailsListViewModel.getOrderItemXxl() , xxl));
+        orderDetailsListViewModel.setOrderItemXxxl(calculate(orderDetailsListViewModel.getOrderItemXxxl() , xxxl));
+
+    }
+
+    private int intValueOf(String value){
+        if(value != null){
+           return Integer.valueOf(value);
+        }
+        return 0;
+    }
+
+    private String calculate(String value,int val){
+        if(value != null){
+          return String.valueOf(Integer.valueOf(value) - val);
+        }
+        return null;
     }
 
 

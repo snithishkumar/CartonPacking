@@ -279,6 +279,19 @@ public class CartonbookDao {
 
 
 
+    public List<ProductDetailsEntity> getOrderItem(String orderItemGuid){
+        try {
+            QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
+            queryBuilder.where().eq(ProductDetailsEntity.ORDER_ITEM_GUID, orderItemGuid);
+            return queryBuilder.query();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
+
     public List<OrderEntity> getOrders(){
         try {
             return orderDao.queryBuilder().where().eq(OrderEntity.ORDER_STATUS, OrderStatus.ORDERED).query();

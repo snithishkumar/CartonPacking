@@ -45,6 +45,16 @@ public class CaptureCartonDetailsFragment extends Fragment {
     private EditText vXXL;
     private EditText vXXXL;
 
+    private TextView availabilityOneSize;
+    private TextView availabilityXs;
+    private TextView availabilityX;
+    private TextView availabilityM;
+    private TextView availabilityL;
+    private TextView availabilityS;
+    private TextView availabilityXl;
+    private TextView availabilityXxl;
+    private TextView availabilityXxxl;
+
     private OrderDetailsListViewModel orderDetailsListViewModel;
 
 
@@ -76,10 +86,37 @@ public class CaptureCartonDetailsFragment extends Fragment {
         vXXL = view.findViewById(R.id.capture_xxl);
         vXXXL = view.findViewById(R.id.capture_xxxl);
 
+
+        availabilityOneSize = view.findViewById(R.id.availability_one_size);
+        availabilityS = view.findViewById(R.id.availability_s);
+        availabilityXs = view.findViewById(R.id.availability_xs);
+        availabilityX = view.findViewById(R.id.capture_carton_product_name);
+        availabilityM = view.findViewById(R.id.capture_carton_product_name);
+        availabilityL = view.findViewById(R.id.capture_carton_product_name);
+        availabilityXl = view.findViewById(R.id.capture_carton_product_name);
+        availabilityXxl = view.findViewById(R.id.capture_carton_product_name);
+        availabilityXxxl = view.findViewById(R.id.capture_carton_product_name);
+
+
+
         orderDetailsListViewModel = orderDetailsActivity.getOrderDetailsListViewModel();
+
+        orderDetailsActivity.getOrderedService().calcAvailableCount(orderDetailsListViewModel,orderDetailsActivity.getCartonDetailsJsonList());
         vProductName.setText(orderDetailsListViewModel.getOrderItemName());
         vProductGroup.setText(orderDetailsListViewModel.getOrderItemGroup());
+        setAvailability("One Size",orderDetailsListViewModel.getOrderItemOneSize(),availabilityOneSize);
+        setAvailability("XS",orderDetailsListViewModel.getOrderItemXS(),availabilityXs);
+        setAvailability("S",orderDetailsListViewModel.getOrderItemS(),availabilityS);
+        setAvailability("M",orderDetailsListViewModel.getOrderItemM(),availabilityM);
+        setAvailability("l",orderDetailsListViewModel.getOrderItemL(),availabilityL);
+        setAvailability("xl",orderDetailsListViewModel.getOrderItemXl(),availabilityXl);
+        setAvailability("xxl",orderDetailsListViewModel.getOrderItemXxl(),availabilityXxl);
+        setAvailability("xxxl",orderDetailsListViewModel.getOrderItemXxl(),availabilityXxxl);
+    }
 
+
+    private void setAvailability(String text ,String val,TextView textView){
+        availabilityOneSize.setText(text+"->"+val);
     }
 
 
