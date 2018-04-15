@@ -14,6 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:text="Remaning Cartons:"
+            android:id="@+id/remaning_carton_count"
             android:layout_marginLeft="20dp"
             android:textColor="@color/colorWhite"
             android:layout_height="match_parent" />

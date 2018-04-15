@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ordered.report.R;
 import com.ordered.report.json.models.CartonDetailsJson;
@@ -25,6 +26,7 @@ import java.util.List;
 public class CartonListFragment extends Fragment {
 
     private OrderDetailsActivity orderDetailsActivity;
+    TextView remaningCartonCount = null;
 
     public CartonListFragment(){
 
@@ -42,11 +44,16 @@ public class CartonListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_carton_list, container, false);
+        remaningCartonCount = view.findViewById(R.id.remaning_carton_count);
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.carton_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         getActivity().setTitle("CARTON LIST");
+        int totalNoOfCartons = Integer.valueOf(orderDetailsActivity.getTotalNoOfCartons());
+        totalNoOfCartons =  totalNoOfCartons - orderDetailsActivity.getCartonDetailsJsonList().size();
+        remaningCartonCount.setText("Remaning Cartons:"+totalNoOfCartons);
         CartonListAdapter  cartonListAdapter = new CartonListAdapter(orderDetailsActivity,orderDetailsActivity.getCartonDetailsJsonList());
         //ProductNameListAdapter productNameListAdapter = new ProductNameListAdapter(orderDetailsActivity,orderDetailsListViewModels);
         recyclerView.setAdapter(cartonListAdapter);
