@@ -28,11 +28,12 @@ import java.util.List;
  * Created by Nithish on 25/02/18.
  */
 
-public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.PackingListViewHolder>{
+public class PackingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private List<OrderEntity> orderEntities;
     private HomeActivity homeActivity;
     private PackingListAdapterCallBack packingListAdapterCallBack;
+    private static final int EMPTY_VIEW = -1;
 
     public PackingListAdapter(Context context, List<OrderEntity> orderEntities) {
         homeActivity = (HomeActivity) context;
@@ -41,26 +42,39 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
     }
 
     @Override
-    public PackingListAdapter.PackingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(homeActivity).inflate(R.layout.adapter_order_list, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == EMPTY_VIEW){
+            View view = LayoutInflater.from(homeActivity).inflate(R.layout.adapt_packing_list_empty, parent, false);
 
-        return new PackingListAdapter.PackingListViewHolder(view);
+            return new EmptyViewHolder(view);
+        }else {
+            View view = LayoutInflater.from(homeActivity).inflate(R.layout.adapter_order_list, parent, false);
+
+            return new PackingListAdapter.PackingListViewHolder(view);
+        }
+
+
     }
 
     @Override
-    public void onBindViewHolder(PackingListAdapter.PackingListViewHolder holder, int position) {
-        final OrderEntity orderEntity = orderEntities.get(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+       if(viewHolder instanceof PackingListViewHolder){
+           PackingListAdapter.PackingListViewHolder holder = (PackingListViewHolder)viewHolder;
 
-        holder.orderTitle.setText(orderEntity.getOrderId());
-        holder.clientName.setText(orderEntity.getClientName());
-        holder.createdBy.setText(orderEntity.getCreatedBy());
-        int orderCount = getOrderItemsCount(orderEntity);
-        holder.orderItemsCount.setText(String.valueOf(orderCount));
-        holder.orderImage.setImageResource(R.drawable.order_packing);
-        holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
-        if(orderEntity.getOrderStatus().toString().equals(OrderStatus.PACKING.toString()) ||orderEntity.getOrderStatus().toString().equals(OrderStatus.PARTIAL_DELIVERED.toString())  ){
-            holder.deliveryView.setVisibility(View.VISIBLE);
-        }
+           final OrderEntity orderEntity = orderEntities.get(position);
+
+           holder.orderTitle.setText(orderEntity.getOrderId());
+           holder.clientName.setText(orderEntity.getClientName());
+           holder.createdBy.setText(orderEntity.getCreatedBy());
+           int orderCount = getOrderItemsCount(orderEntity);
+           holder.orderItemsCount.setText(String.valueOf(orderCount));
+           holder.orderImage.setImageResource(R.drawable.order_packing);
+           holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
+           if(orderEntity.getOrderStatus().toString().equals(OrderStatus.PACKING.toString()) ||orderEntity.getOrderStatus().toString().equals(OrderStatus.PARTIAL_DELIVERED.toString())  ){
+               holder.deliveryView.setVisibility(View.VISIBLE);
+           }
+       }
+
 
     }
 
@@ -81,11 +95,24 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
     }
 
     @Override
-    public int getItemCount() {
-        return orderEntities.size();
+    public int getItemViewType(int position) {
+        if (orderEntities.size() == 0) {
+            return EMPTY_VIEW;
+        }
+        return super.getItemViewType(position);
     }
 
+    @Override
+    public int getItemCount() {
+        return orderEntities.size()  > 0 ? orderEntities.size() : 1;
+    }
 
+    class  EmptyViewHolder extends RecyclerView.ViewHolder{
+        public EmptyViewHolder(View view){
+            super(view);
+
+        }
+    }
 
     public class PackingListViewHolder extends RecyclerView.ViewHolder {
 

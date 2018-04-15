@@ -36,12 +36,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdapter.DeliveredListViewHolder> {
+public class DeliveredListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private List<DeliveryDetailsEntity> deliveryDetailsEntities;
     private HomeActivity homeActivity;
     private boolean isPopupShow = false;
+    private static final int EMPTY_VIEW = -1;
 
     public DeliveredListAdapter(Context context, List<DeliveryDetailsEntity> deliveryDetailsEntities) {
         this.context = context;
@@ -51,33 +52,43 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
     }
 
     @Override
-    public DeliveredListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.ordered_row, parent, false);
-        return new DeliveredListViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == EMPTY_VIEW){
+            View view = LayoutInflater.from(homeActivity).inflate(R.layout.adpt_delivery_list_empty, parent, false);
+
+            return new EmptyViewHolder(view);
+        }else {
+            View view = LayoutInflater.from(context).inflate(R.layout.ordered_row, parent, false);
+            return new DeliveredListViewHolder(view);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(DeliveredListViewHolder holder, int position) {
-        final DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsEntities.get(position);
-       /* if (orderEntity.getOrderType().toString().equals(OrderType.DELIVERED.toString())) {
-            holder.report.setVisibility(View.VISIBLE);
-        }*/
-        holder.deliverId.setText(deliveryDetailsEntity.getDeliveryId());
-        OrderEntity orderEntity = deliveryDetailsEntity.getOrderEntity();
-        holder.orderTitle.setText(orderEntity.getOrderId());
-        holder.clientName.setText(orderEntity.getClientName());
-        holder.createdBy.setText(orderEntity.getCreatedBy());
-        int orderCount = getOrderItemsCount(orderEntity);
-        holder.orderItemsCount.setText(String.valueOf(orderCount));
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+       if(viewHolder instanceof DeliveredListViewHolder){
+           DeliveredListViewHolder holder = (DeliveredListViewHolder)viewHolder;
 
-        holder.reportPopUp.setVisibility(View.VISIBLE);
-        holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
-        holder.orderImage.setImageResource(R.drawable.delivery_icon_1x);
-        String date = null;
-        if (orderEntity.getOrderedDate() != 0) {
-            date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
-            //   holder.productColor.setText(date);
-        }
+           final DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsEntities.get(position);
+
+           holder.deliverId.setText(deliveryDetailsEntity.getDeliveryId());
+           OrderEntity orderEntity = deliveryDetailsEntity.getOrderEntity();
+           holder.orderTitle.setText(orderEntity.getOrderId());
+           holder.clientName.setText(orderEntity.getClientName());
+           holder.createdBy.setText(orderEntity.getCreatedBy());
+           int orderCount = getOrderItemsCount(orderEntity);
+           holder.orderItemsCount.setText(String.valueOf(orderCount));
+
+           holder.reportPopUp.setVisibility(View.VISIBLE);
+           holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
+           holder.orderImage.setImageResource(R.drawable.delivery_icon_1x);
+           String date = null;
+           if (orderEntity.getOrderedDate() != 0) {
+               date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
+               //   holder.productColor.setText(date);
+           }
+       }
+
 
     }
 
@@ -151,9 +162,18 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
     }
 
     @Override
-    public int getItemCount() {
-        return deliveryDetailsEntities.size();
+    public int getItemViewType(int position) {
+        if (deliveryDetailsEntities.size() == 0) {
+            return EMPTY_VIEW;
+        }
+        return super.getItemViewType(position);
     }
+
+    @Override
+    public int getItemCount() {
+        return deliveryDetailsEntities.size()  > 0 ? deliveryDetailsEntities.size() : 1;
+    }
+
 
     private void showAlertDialog(final String order) {
         //test
@@ -236,6 +256,13 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<DeliveredListAdap
                     showPopup(view,deliveryDetailsEntities.get(getAdapterPosition()));
                 }
             });
+
+        }
+    }
+
+    class  EmptyViewHolder extends RecyclerView.ViewHolder{
+        public EmptyViewHolder(View view){
+            super(view);
 
         }
     }

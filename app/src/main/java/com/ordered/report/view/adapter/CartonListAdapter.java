@@ -25,11 +25,12 @@ import java.util.List;
  * Created by Nithish on 24/02/18.
  */
 
-public class CartonListAdapter extends RecyclerView.Adapter<CartonListAdapter.CartonListViewHolder> {
+public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<CartonDetailsJson> cartonItemModels;
     private OrderDetailsActivity orderDetailsActivity;
     private CartonListAdapterCallBack cartonListAdapterCallBack;
+    private static final int EMPTY_VIEW = -1;
 
     public CartonListAdapter(Context context, List<CartonDetailsJson> cartonItemModels) {
         orderDetailsActivity = (OrderDetailsActivity) context;
@@ -38,36 +39,57 @@ public class CartonListAdapter extends RecyclerView.Adapter<CartonListAdapter.Ca
     }
 
     @Override
-    public CartonListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(orderDetailsActivity).inflate(R.layout.adapter_cartonnumber_list, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == EMPTY_VIEW){
+            View view = LayoutInflater.from(orderDetailsActivity).inflate(R.layout.adapter_cartonnumber_list_empty, parent, false);
+            return new EmptyViewHolder(view);
+        }else {
+            View view = LayoutInflater.from(orderDetailsActivity).inflate(R.layout.adapter_cartonnumber_list, parent, false);
+            return new CartonListViewHolder(view);
+        }
 
-        return new CartonListViewHolder(view);
     }
 
+
+
     @Override
-    public void onBindViewHolder(CartonListViewHolder holder, int position) {
-        final CartonDetailsJson cartonItemModel = cartonItemModels.get(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        if(viewHolder instanceof CartonListViewHolder){
+            CartonListViewHolder holder = (CartonListViewHolder)viewHolder;
 
-        holder.cartonNumber.setText("Carton Number:"+cartonItemModel.getCartonNumber());
-        holder.noOfProducts.setText("No of Products:"+cartonItemModel.getOrderDetailsListViewModels().size()+"");
+            final CartonDetailsJson cartonItemModel = cartonItemModels.get(position);
 
-        holder.cartonCreatedBy.setText(cartonItemModel.getCreatedBy());
-        holder.cartonCreatedDate.setText(formatDate(cartonItemModel.getCreatedDateTime()));
-        if(orderDetailsActivity.getView().equals(Constants.VIEW_PACKING)){
-            holder.weightLayout.setVisibility(View.VISIBLE);
-            if(cartonItemModel.getTotalWeight() == null){
-                holder.cartonWeightStatus.setText("Add Weight");
-                holder.cartonTotalWeight.setText("Net Weight: 0kg");
-                holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.redDark));
-            }else{
-                holder.cartonTotalWeight.setText("Net Weight: "+cartonItemModel.getTotalWeight());
-                holder.cartonWeightStatus.setText("Change");
-                holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.colorBlack));
+            holder.cartonNumber.setText("Carton Number:"+cartonItemModel.getCartonNumber());
+            holder.noOfProducts.setText("No of Products:"+cartonItemModel.getOrderDetailsListViewModels().size()+"");
+
+            holder.cartonCreatedBy.setText(cartonItemModel.getCreatedBy());
+            holder.cartonCreatedDate.setText(formatDate(cartonItemModel.getCreatedDateTime()));
+            if(orderDetailsActivity.getView().equals(Constants.VIEW_PACKING)){
+                holder.weightLayout.setVisibility(View.VISIBLE);
+                if(cartonItemModel.getTotalWeight() == null){
+                    holder.cartonWeightStatus.setText("Add Weight");
+                    holder.cartonTotalWeight.setText("Net Weight: 0kg");
+                    holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.redDark));
+                }else{
+                    holder.cartonTotalWeight.setText("Net Weight: "+cartonItemModel.getTotalWeight());
+                    holder.cartonWeightStatus.setText("Change");
+                    holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.colorBlack));
+                }
+
             }
 
         }
 
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (cartonItemModels.size() == 0) {
+            return EMPTY_VIEW;
+        }
+        return super.getItemViewType(position);
+    }
+
 
 
 
@@ -120,7 +142,7 @@ public class CartonListAdapter extends RecyclerView.Adapter<CartonListAdapter.Ca
 
     @Override
     public int getItemCount() {
-        return cartonItemModels.size();
+        return cartonItemModels.size() > 0 ? cartonItemModels.size() : 1;
     }
 
 
@@ -164,6 +186,13 @@ public class CartonListAdapter extends RecyclerView.Adapter<CartonListAdapter.Ca
                     showAlertDialog(getAdapterPosition());
                 }
             });
+        }
+    }
+
+    class  EmptyViewHolder extends RecyclerView.ViewHolder{
+        public EmptyViewHolder(View view){
+            super(view);
+
         }
     }
 

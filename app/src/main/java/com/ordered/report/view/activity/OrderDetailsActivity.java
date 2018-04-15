@@ -7,6 +7,8 @@ import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -95,13 +97,13 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
     private void showShippingDetailsFragment(){
         ShippingDetailsFragment shippingDetailsFragment = new ShippingDetailsFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.order_details_container, shippingDetailsFragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.order_details_container, shippingDetailsFragment).addToBackStack("shippingDetails").commit();
     }
 
 
     private void showCartonListFragment(){
         CartonListFragment cartonListFragment = new CartonListFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.order_details_container, cartonListFragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.order_details_container, cartonListFragment).addToBackStack("cartonList").commit();
     }
 
 
@@ -121,7 +123,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.ORDER_DETAILS_POS, pos);
         captureCartonDetailsFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container,captureCartonDetailsFragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container,captureCartonDetailsFragment).addToBackStack("captureCarton").commit();
     }
 
     @Override
@@ -133,8 +135,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
     @Override
     public void viewFragment(int options) {
         if(!flag){
+            removeAllStack();
             CartonListFragment cartonListFragment = new CartonListFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonListFragment).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonListFragment).addToBackStack("cartonList").commit();
         }else{
             showProductDetailsListFragment();
         }
@@ -145,15 +148,21 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
     }
 
 
+    private void removeAllStack(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+
     private void showCartonNumberPickerFragment(){
         CartonNumberPickerFragment cartonNumberPickerFragment = new CartonNumberPickerFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonNumberPickerFragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonNumberPickerFragment).addToBackStack(cartonNumberPickerFragment.getClass().getName()).commit();
     }
 
 
     private void showProductNameListFragment(){
         ProductNameListFragment productNameListFragment = new ProductNameListFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productNameListFragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productNameListFragment).addToBackStack("productNameList").commit();
     }
 
     private boolean flag = false;
@@ -196,7 +205,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
             case R.id.order_details_done:
                 flag = false;
                 CartonListFragment cartonListFragment = new CartonListFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonListFragment).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonListFragment).addToBackStack("cartonList").commit();
                 break;
         }
     }
@@ -215,16 +224,38 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
     @Override
     public void showProductDetailsListFragment() {
         ProductDetailsListFragment productDetailsListFragment = new ProductDetailsListFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productDetailsListFragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, productDetailsListFragment).addToBackStack("productDetailsList").commit();
     }
 
     @Override
     public void onBackPressed() {
-        finish();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        int count = fragmentManager.getBackStackEntryCount();
+
+        if (count == 0) {
+            finish();
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            super.onBackPressed();
+        } else {
+            List<Fragment> fragmentList = fragmentManager.getFragments();
+            if(count == 1 && fragmentList.get(0) instanceof CartonListFragment){
+                finish();
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                super.onBackPressed();
+            }else{
+                fragmentManager.popBackStack();
+            }
+
+        }
+    }
+       /* finish();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         super.onBackPressed();
     }
+    */
 
     public OrderedService getOrderedService() {
         return orderedService;

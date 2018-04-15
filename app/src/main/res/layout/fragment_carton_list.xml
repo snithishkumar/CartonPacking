@@ -5,12 +5,25 @@
     android:background="@color/colorBorder"
     tools:context=".view.activity.OrderDetailsActivity"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/noOfCartonsId"
+        android:layout_height="25dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Remaning Cartons:"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/colorWhite"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/carton_list"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_below="@+id/noOfCartonsId"
         android:layout_above="@+id/carton_footer_bar"
         tools:listitem="@layout/adapter_cartonnumber_list"
         android:layout_height="match_parent"/>

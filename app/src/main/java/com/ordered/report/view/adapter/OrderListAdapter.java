@@ -25,10 +25,11 @@ import java.util.List;
  * Created by Nithish on 24/02/18.
  */
 
-public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrderedListViewHolder> {
+public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<OrderEntity> orderEntities;
     private HomeActivity homeActivity;
+    private static final int EMPTY_VIEW = -1;
 
     public OrderListAdapter(Context context, List<OrderEntity> orderEntities) {
         homeActivity = (HomeActivity) context;
@@ -36,23 +37,34 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     }
 
     @Override
-    public OrderedListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(homeActivity).inflate(R.layout.adapter_order_list, parent, false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == EMPTY_VIEW){
+            View view = LayoutInflater.from(homeActivity).inflate(R.layout.adapt_order_list_empty, parent, false);
 
-        return new OrderedListViewHolder(view);
+            return new EmptyViewHolder(view);
+        }else {
+            View view = LayoutInflater.from(homeActivity).inflate(R.layout.adapter_order_list, parent, false);
+            return new OrderedListViewHolder(view);
+        }
+
+
     }
 
     @Override
-    public void onBindViewHolder(OrderedListViewHolder holder, int position) {
-        final OrderEntity orderEntity = orderEntities.get(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        if(viewHolder instanceof  OrderedListViewHolder){
+            OrderedListViewHolder holder = (OrderedListViewHolder)viewHolder;
+            final OrderEntity orderEntity = orderEntities.get(position);
 
-        holder.orderTitle.setText(orderEntity.getOrderId());
-        holder.clientName.setText(orderEntity.getClientName());
-        holder.createdBy.setText(orderEntity.getCreatedBy());
-        int orderCount = getOrderItemsCount(orderEntity);
-        holder.orderItemsCount.setText(String.valueOf(orderCount));
-        holder.orderImage.setImageResource(R.drawable.order_icon_1);
-        holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
+            holder.orderTitle.setText(orderEntity.getOrderId());
+            holder.clientName.setText(orderEntity.getClientName());
+            holder.createdBy.setText(orderEntity.getCreatedBy());
+            int orderCount = getOrderItemsCount(orderEntity);
+            holder.orderItemsCount.setText(String.valueOf(orderCount));
+            holder.orderImage.setImageResource(R.drawable.order_icon_1);
+            holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
+        }
+
 
     }
 
@@ -73,8 +85,16 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if (orderEntities.size() == 0) {
+            return EMPTY_VIEW;
+        }
+        return super.getItemViewType(position);
+    }
+
+    @Override
     public int getItemCount() {
-        return orderEntities.size();
+        return orderEntities.size()  > 0 ? orderEntities.size() : 1;
     }
 
     private void showAlertDialog(final String order) {
@@ -109,6 +129,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         // show it
         alertDialog.show();
         //end
+    }
+
+    class  EmptyViewHolder extends RecyclerView.ViewHolder{
+        public EmptyViewHolder(View view){
+            super(view);
+
+        }
     }
 
     public class OrderedListViewHolder extends RecyclerView.ViewHolder {
