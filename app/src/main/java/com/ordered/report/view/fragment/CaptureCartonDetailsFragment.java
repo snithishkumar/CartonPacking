@@ -91,11 +91,11 @@ public class CaptureCartonDetailsFragment extends Fragment {
         availabilityS = view.findViewById(R.id.availability_s);
         availabilityXs = view.findViewById(R.id.availability_xs);
         availabilityX = view.findViewById(R.id.capture_carton_product_name);
-        availabilityM = view.findViewById(R.id.capture_carton_product_name);
-        availabilityL = view.findViewById(R.id.capture_carton_product_name);
-        availabilityXl = view.findViewById(R.id.capture_carton_product_name);
-        availabilityXxl = view.findViewById(R.id.capture_carton_product_name);
-        availabilityXxxl = view.findViewById(R.id.capture_carton_product_name);
+        availabilityM = view.findViewById(R.id.availability_m);
+        availabilityL = view.findViewById(R.id.availability_l);
+        availabilityXl = view.findViewById(R.id.availability_xl);
+        availabilityXxl = view.findViewById(R.id.availability_xxl);
+        availabilityXxxl = view.findViewById(R.id.availability_xxxl);
 
 
 
@@ -116,7 +116,7 @@ public class CaptureCartonDetailsFragment extends Fragment {
 
 
     private void setAvailability(String text ,String val,TextView textView){
-        availabilityOneSize.setText(text+"->"+val);
+        textView.setText(text+"->"+val);
     }
 
 

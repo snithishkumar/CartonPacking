@@ -224,6 +224,12 @@ public class OrderedService {
 
     }
 
+    public void calcAvailableCount(List<OrderDetailsListViewModel> orderDetailsListViewModelList,List<CartonDetailsJson> cartonDetailsJsonsList){
+        for(OrderDetailsListViewModel orderDetailsListViewModel : orderDetailsListViewModelList){
+            calcAvailableCount(orderDetailsListViewModel,cartonDetailsJsonsList);
+        }
+    }
+
 
     public void calcAvailableCount(OrderDetailsListViewModel orderDetailsListViewModel,List<CartonDetailsJson> cartonDetailsJsonsList){
         List<ProductDetailsEntity> productDetailsEntityList = cartonbookDao.getOrderItem(orderDetailsListViewModel.getOrderItemGuid());
@@ -262,14 +268,14 @@ public class OrderedService {
                 }
             }
         }
-        orderDetailsListViewModel.setOrderItemOneSize(calculate(orderDetailsListViewModel.getOrderItemOneSize() , oneSize));
-        orderDetailsListViewModel.setOrderItemS(calculate(orderDetailsListViewModel.getOrderItemS() , s));
-        orderDetailsListViewModel.setOrderItemM(calculate(orderDetailsListViewModel.getOrderItemM() , m));
-        orderDetailsListViewModel.setOrderItemL(calculate(orderDetailsListViewModel.getOrderItemL() , l));
-        orderDetailsListViewModel.setOrderItemXS(calculate(orderDetailsListViewModel.getOrderItemXS() , xs));
-        orderDetailsListViewModel.setOrderItemXl(calculate(orderDetailsListViewModel.getOrderItemXl() , xl));
-        orderDetailsListViewModel.setOrderItemXxl(calculate(orderDetailsListViewModel.getOrderItemXxl() , xxl));
-        orderDetailsListViewModel.setOrderItemXxxl(calculate(orderDetailsListViewModel.getOrderItemXxxl() , xxxl));
+        orderDetailsListViewModel.setRemainingOneSize(calculate(orderDetailsListViewModel.getOrderItemOneSize() , oneSize));
+        orderDetailsListViewModel.setRemainingS(calculate(orderDetailsListViewModel.getOrderItemS() , s));
+        orderDetailsListViewModel.setRemainingM(calculate(orderDetailsListViewModel.getOrderItemM() , m));
+        orderDetailsListViewModel.setRemainingL(calculate(orderDetailsListViewModel.getOrderItemL() , l));
+        orderDetailsListViewModel.setRemainingXS(calculate(orderDetailsListViewModel.getOrderItemXS() , xs));
+        orderDetailsListViewModel.setRemainingXl(calculate(orderDetailsListViewModel.getOrderItemXl() , xl));
+        orderDetailsListViewModel.setRemainingXxl(calculate(orderDetailsListViewModel.getOrderItemXxl() , xxl));
+        orderDetailsListViewModel.setRemainingXxxl(calculate(orderDetailsListViewModel.getOrderItemXxxl() , xxxl));
 
     }
 

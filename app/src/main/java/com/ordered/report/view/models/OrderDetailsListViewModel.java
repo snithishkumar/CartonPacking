@@ -41,6 +41,17 @@ public class OrderDetailsListViewModel {
     private String productXxxl = "0";
     private long productCreatedDateTime;
 
+
+
+    private String remainingOneSize;
+    private String remainingXS;
+    private String remainingS;
+    private String remainingM;
+    private String remainingL;
+    private String remainingXl;
+    private String remainingXxl;
+    private String remainingXxxl;
+
     private boolean isEdited = false;
 
 
@@ -85,6 +96,70 @@ public class OrderDetailsListViewModel {
         this.orderItemCategory = orderDetailsJson.getProductCategory();
     }
 
+
+    public String getRemainingOneSize() {
+        return remainingOneSize;
+    }
+
+    public void setRemainingOneSize(String remainingOneSize) {
+        this.remainingOneSize = remainingOneSize;
+    }
+
+    public String getRemainingXS() {
+        return remainingXS;
+    }
+
+    public void setRemainingXS(String remainingXS) {
+        this.remainingXS = remainingXS;
+    }
+
+    public String getRemainingS() {
+        return remainingS;
+    }
+
+    public void setRemainingS(String remainingS) {
+        this.remainingS = remainingS;
+    }
+
+    public String getRemainingM() {
+        return remainingM;
+    }
+
+    public void setRemainingM(String remainingM) {
+        this.remainingM = remainingM;
+    }
+
+    public String getRemainingL() {
+        return remainingL;
+    }
+
+    public void setRemainingL(String remainingL) {
+        this.remainingL = remainingL;
+    }
+
+    public String getRemainingXl() {
+        return remainingXl;
+    }
+
+    public void setRemainingXl(String remainingXl) {
+        this.remainingXl = remainingXl;
+    }
+
+    public String getRemainingXxl() {
+        return remainingXxl;
+    }
+
+    public void setRemainingXxl(String remainingXxl) {
+        this.remainingXxl = remainingXxl;
+    }
+
+    public String getRemainingXxxl() {
+        return remainingXxxl;
+    }
+
+    public void setRemainingXxxl(String remainingXxxl) {
+        this.remainingXxxl = remainingXxxl;
+    }
 
     public String getProductGuid() {
         return productGuid;

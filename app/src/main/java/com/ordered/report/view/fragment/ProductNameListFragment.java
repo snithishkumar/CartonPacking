@@ -49,6 +49,7 @@ public class ProductNameListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         List<OrderDetailsListViewModel>  orderDetailsListViewModels =  orderDetailsActivity.getOrderedService().getOrderDetailsListViewModels(orderDetailsActivity.getOrderGuid());
         ProductNameListAdapter productNameListAdapter = new ProductNameListAdapter(orderDetailsActivity,orderDetailsListViewModels);
+        orderDetailsActivity.getOrderedService().calcAvailableCount(orderDetailsListViewModels, orderDetailsActivity.getCartonDetailsJsonList());
         recyclerView.setAdapter(productNameListAdapter);
         return view;
     }

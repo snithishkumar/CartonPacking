@@ -109,18 +109,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_one_size_count"
-                        android:text="One Size -> 10" />
+                        android:text="OS -> 10 of 10" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_l_count"
-                        android:text="L -> 10" />
+                        android:text="L -> 10 of 10" />
 
                 </LinearLayout>
 
@@ -135,18 +135,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_xs_count"
-                        android:text="XS -> 10" />
+                        android:text="XS -> 10 of 10" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_xl_count"
-                        android:text="XL -> 10" />
+                        android:text="XL -> 10 of 10" />
 
                 </LinearLayout>
 
@@ -160,18 +160,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_s_count"
-                        android:text="S -> 10" />
+                        android:text="S -> 10 of 10" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_xxxl_count"
-                        android:text="XXXL -> 10" />
+                        android:text="XXXL -> 10 of 10" />
 
                 </LinearLayout>
 
@@ -186,7 +186,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_m_count"
                         android:text="M -> 10" />
@@ -194,7 +194,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_xxl_count"
                         android:text="XXL -> 10" />
