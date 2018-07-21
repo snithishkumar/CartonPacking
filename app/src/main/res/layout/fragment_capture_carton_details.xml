@@ -101,88 +101,89 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="30dp"
                     android:layout_height="wrap_content">
 
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:id="@+id/availability_one_size"
-                        android:text="One Size -> 10"
-                        android:textColor="@android:color/black"/>
+                        android:orientation="vertical"
+                        android:layout_marginStart="35dp"
+                        android:id="@+id/ordered_size_count_layout_1"
+                        android:layout_height="wrap_content">
 
-                    <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/availability_one_size"
+                            android:text="OS -> 10 of 10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/availability_s"
+                            android:text="S -> 10 of 10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/availability_l"
+                            android:text="L -> 10 of 10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/availability_xxl"
+                            android:text="XXL -> 10" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:id="@+id/availability_xs"
-                        android:text="XS -> 10"
-                        android:textColor="@android:color/black"/>
+                        android:orientation="vertical"
+                        android:layout_marginStart="50dp"
+                        android:id="@+id/ordered_size_count_layout_2"
+                        android:layout_toRightOf="@+id/ordered_size_count_layout_1"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="S -> 10"
-                        android:id="@+id/availability_s"
-                        android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/availability_xs"
+                            android:text="XS -> 10 of 10" />
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="M -> 10"
-                        android:id="@+id/availability_m"
-                        android:textColor="@android:color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/availability_m"
+                            android:text="M -> 10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/availability_xl"
+                            android:text="XL -> 10 of 10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/availability_xxxl"
+                            android:text="XXXL -> 10 of 10" />
+
+                    </LinearLayout>
 
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="30dp"
-                    android:layout_height="wrap_content">
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="l -> 10"
-                        android:id="@+id/availability_l"
-                        android:textColor="@android:color/black"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="xl -> 10"
-                        android:id="@+id/availability_xl"
-                        android:textColor="@android:color/black"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="xxl-> 10"
-                        android:id="@+id/availability_xxl"
-                        android:textColor="@android:color/black"/>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Xxxl -> 10"
-                        android:id="@+id/availability_xxxl"
-                        android:textColor="@android:color/black"/>
-
-
-                </LinearLayout>
 
                 <View
                     android:id="@+id/divider1"

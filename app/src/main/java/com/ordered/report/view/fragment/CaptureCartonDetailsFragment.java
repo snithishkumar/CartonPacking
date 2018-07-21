@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.ordered.report.R;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.view.MaxValueFilter;
 import com.ordered.report.view.activity.OrderDetailsActivity;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
@@ -78,6 +80,7 @@ public class CaptureCartonDetailsFragment extends Fragment {
         vProductName = view.findViewById(R.id.capture_carton_product_name);
         vProductGroup = view.findViewById(R.id.capture_carton_product_group);
         vOneSize = view.findViewById(R.id.capture_oneSize);
+
         vXS = view.findViewById(R.id.capture_xs);
         vS = view.findViewById(R.id.capture_small);
         vM = view.findViewById(R.id.capture_medium);
@@ -104,19 +107,30 @@ public class CaptureCartonDetailsFragment extends Fragment {
         orderDetailsActivity.getOrderedService().calcAvailableCount(orderDetailsListViewModel,orderDetailsActivity.getCartonDetailsJsonList());
         vProductName.setText(orderDetailsListViewModel.getOrderItemName());
         vProductGroup.setText(orderDetailsListViewModel.getOrderItemGroup());
-        setAvailability("One Size",orderDetailsListViewModel.getOrderItemOneSize(),availabilityOneSize);
-        setAvailability("XS",orderDetailsListViewModel.getOrderItemXS(),availabilityXs);
-        setAvailability("S",orderDetailsListViewModel.getOrderItemS(),availabilityS);
-        setAvailability("M",orderDetailsListViewModel.getOrderItemM(),availabilityM);
-        setAvailability("l",orderDetailsListViewModel.getOrderItemL(),availabilityL);
-        setAvailability("xl",orderDetailsListViewModel.getOrderItemXl(),availabilityXl);
-        setAvailability("xxl",orderDetailsListViewModel.getOrderItemXxl(),availabilityXxl);
-        setAvailability("xxxl",orderDetailsListViewModel.getOrderItemXxl(),availabilityXxxl);
+        setAvailability("One Size",orderDetailsListViewModel.getOrderItemOneSize(),availabilityOneSize,orderDetailsListViewModel.getRemainingOneSize(),vOneSize);
+
+        setAvailability("XS",orderDetailsListViewModel.getOrderItemXS(),availabilityXs,orderDetailsListViewModel.getRemainingXS(),vXS);
+        setAvailability("S",orderDetailsListViewModel.getOrderItemS(),availabilityS,orderDetailsListViewModel.getRemainingS(),vS);
+        setAvailability("M",orderDetailsListViewModel.getOrderItemM(),availabilityM,orderDetailsListViewModel.getRemainingM(),vM);
+        setAvailability("l",orderDetailsListViewModel.getOrderItemL(),availabilityL,orderDetailsListViewModel.getRemainingL(),vL);
+        setAvailability("xl",orderDetailsListViewModel.getOrderItemXl(),availabilityXl,orderDetailsListViewModel.getRemainingXl(),vXL);
+        setAvailability("xxl",orderDetailsListViewModel.getOrderItemXxl(),availabilityXxl,orderDetailsListViewModel.getRemainingXxl(),vXXL);
+        setAvailability("xxxl",orderDetailsListViewModel.getOrderItemXxl(),availabilityXxxl,orderDetailsListViewModel.getRemainingXxxl(),vXXXL);
     }
 
 
-    private void setAvailability(String text ,String val,TextView textView){
-        textView.setText(text+"->"+val);
+    private void setAvailability(String text ,String totalVal,TextView textView,String remainingVal,EditText editText){
+        if(totalVal == null || totalVal.isEmpty()){
+            totalVal = "0";
+        }
+
+        if(remainingVal == null || remainingVal.isEmpty()){
+            remainingVal = "0";
+        }
+
+        editText.setFilters(new InputFilter[]{new MaxValueFilter(remainingVal)});
+
+        textView.setText(text+" --> "+remainingVal+" of "+totalVal);
     }
 
 

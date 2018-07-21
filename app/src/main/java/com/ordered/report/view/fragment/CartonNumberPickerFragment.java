@@ -17,6 +17,7 @@ import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.activity.OrderDetailsActivity;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -77,13 +78,18 @@ public class CartonNumberPickerFragment extends Fragment {
 
 
     public void populateCartonDetails(){
+        List<CartonDetailsJson> cartonDetailsJsonList = orderDetailsActivity.getCartonDetailsJsonList();
         CartonDetailsJson cartonDetailsJson = new CartonDetailsJson();
         cartonDetailsJson.setCartonGuid(UUID.randomUUID().toString());
         cartonDetailsJson.setCartonNumber(cartonNumberVal);
         cartonDetailsJson.setCreatedDateTime(System.currentTimeMillis());
         cartonDetailsJson.setCreatedBy(Constants.getLoginUser());
+        /*int pos = cartonDetailsJsonList.indexOf(cartonDetailsJson);
+        if(pos != -1){
+            cartonDetailsJson = cartonDetailsJsonList.get(pos);
+        }*/
         cartonDetailsJson.setLastModifiedBy(Constants.getLoginUser());
-        cartonDetailsJson.setLastModifiedTime(cartonDetailsJson.getCreatedDateTime());
+        cartonDetailsJson.setLastModifiedTime(System.currentTimeMillis());
         //orderDetailsActivity.getCartonDetailsJsonList().add(cartonDetailsJson);
         orderDetailsActivity.setCartonDetailsJson(cartonDetailsJson);
     }

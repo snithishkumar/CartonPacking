@@ -10,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ordered.report.R;
-import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.eventBus.AppBus;
 import com.ordered.report.json.models.ResponseData;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
-import com.ordered.report.view.adapter.DeliveredListAdapter;
 import com.ordered.report.view.adapter.PackingListAdapter;
 import com.squareup.otto.Subscribe;
 

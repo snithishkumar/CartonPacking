@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.ordered.report.view.fragment.DeliveredFragment;
+import com.ordered.report.view.fragment.HistoryFragment;
 import com.ordered.report.view.fragment.OrderedFragment;
 import com.ordered.report.view.fragment.PackingFragment;
 
@@ -27,7 +27,7 @@ public class CustomFragmentPageAdapter extends FragmentPagerAdapter {
             case 1:
                 return new PackingFragment();
             case 2:
-                return new DeliveredFragment();
+                return new HistoryFragment();
         }
         return null;
     }

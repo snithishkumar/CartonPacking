@@ -14,71 +14,73 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/carton_main_layout"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_alignParentStart="true"
-            android:layout_margin="10dp"
-            android:id="@+id/carton_icons"
-            android:src="@drawable/carton_icon"
-            android:layout_height="50dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="Carton Number: 1"
-            android:id="@+id/carton_number"
-            android:layout_marginTop="15dp"
-            android:layout_toRightOf="@id/carton_icons"
-            android:textStyle="bold"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="No Of Products: 10"
-            android:id="@+id/products_count_carton_number"
-            android:layout_toRightOf="@id/carton_icons"
-            android:layout_below="@+id/carton_number"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="26/02/18 6:00"
-            android:layout_marginTop="10dp"
-            android:id="@+id/carton_created_date"
-            android:layout_alignParentEnd="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="admin"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/carton_created_date"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="wrap_content" />
-
-
-    </RelativeLayout>
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/carton_main_layout"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:id="@+id/carton_icons"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_margin="10dp"
+                android:src="@drawable/carton_icon" />
+
+            <TextView
+                android:id="@+id/carton_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@id/carton_icons"
+                android:text="Carton Number: 1"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/products_count_carton_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/carton_number"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/carton_icons"
+                android:text="No Of Products: 10"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/carton_created_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="26/02/18 6:00" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/carton_created_date"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:text="admin" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/weight_layout"
-            android:visibility="gone"
-            android:layout_height="match_parent">
+            android:id="@+id/packing_layout"
+            android:visibility="gone">
 
             <View
                 android:id="@+id/divider2"
@@ -88,39 +90,56 @@
                 android:layout_marginRight="10dp"
                 android:background="#ebebeb" />
 
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="5dp"
-                    android:src="@drawable/weight_icon" />
-                <!-- https://www.flaticon.com/free-icons/scale -->
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:text="Net Weight:50kg"
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/carton_net_weight_text"
-                    android:gravity="center"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weight_layout"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/weight_icon" />
+                    <!-- https://www.flaticon.com/free-icons/scale -->
+                    <TextView
+                        android:id="@+id/carton_net_weight_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:text="Net Weight:50kg" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/carton_net_weight_status"
+                        android:src="@drawable/edit_weight_48x" />
+
+
+                </LinearLayout>
 
                 <TextView
+                    android:id="@+id/carton_net_shipping_status"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center|end"
+
+                    android:text="Add"
                     android:layout_marginRight="10dp"
-                    android:id="@+id/carton_net_weight_status"
-                    android:gravity="center|right"
-                    android:textColor="@color/redDark"
-                    android:text="Change" />
+                    android:textColor="@color/redDark" />
 
             </LinearLayout>
+
 
         </LinearLayout>
 

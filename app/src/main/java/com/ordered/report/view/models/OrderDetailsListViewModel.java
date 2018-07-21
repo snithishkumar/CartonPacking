@@ -78,6 +78,28 @@ public class OrderDetailsListViewModel {
     }
 
 
+    public boolean isCheckAvailable(){
+       int val =  stringToNumber(remainingOneSize) + stringToNumber(remainingXS) +
+               + stringToNumber(remainingS) +
+               + stringToNumber(remainingM) +
+               + stringToNumber(remainingL) +
+               + stringToNumber(remainingXl) +
+               + stringToNumber(remainingXxl) +
+               + stringToNumber(remainingXxxl);
+       return val > 0;
+
+    }
+
+
+    private int stringToNumber(String val){
+        if(val == null || val.trim().isEmpty()){
+            return 0;
+
+        }
+        return  Integer.valueOf(val);
+    }
+
+
     public void loadOrderItemsDetails(OrderCreationDetailsJson orderDetailsJson) {
         this.orderItemName = orderDetailsJson.getProductStyle();
         this.orderItemGroup = orderDetailsJson.getProductGroup();

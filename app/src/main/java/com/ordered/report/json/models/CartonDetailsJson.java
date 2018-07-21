@@ -5,6 +5,7 @@ import com.ordered.report.view.models.OrderDetailsListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Nithish on 24/02/18.
@@ -127,6 +128,20 @@ public class CartonDetailsJson {
 
     public void setOrderDetailsListViewModels(List<OrderDetailsListViewModel> orderDetailsListViewModels) {
         this.orderDetailsListViewModels = orderDetailsListViewModels;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartonDetailsJson that = (CartonDetailsJson) o;
+        return Objects.equals(cartonNumber, that.cartonNumber);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(cartonNumber);
     }
 
     @Override

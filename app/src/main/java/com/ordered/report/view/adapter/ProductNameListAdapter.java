@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ordered.report.R;
 import com.ordered.report.models.OrderEntity;
@@ -51,24 +52,27 @@ public class ProductNameListAdapter extends RecyclerView.Adapter<ProductNameList
         formDateTime(orderDetailsListViewModel.getOrderItemCreatedDateTime(),holder.createDateTime);
         formDateTime(orderDetailsListViewModel.getOrderItemCreatedDateTime(),holder.lastModifiedDateTime);
 
-        setProductVal(holder.orderedOneSize,"OneSize",orderDetailsListViewModel.getOrderItemOneSize());
-        setProductVal(holder.orderedXS,"XS",orderDetailsListViewModel.getOrderItemXS());
-        setProductVal(holder.orderedSmall,"S",orderDetailsListViewModel.getOrderItemS());
-        setProductVal(holder.orderedMedium,"M",orderDetailsListViewModel.getOrderItemM());
-        setProductVal(holder.orderedLarge,"L",orderDetailsListViewModel.getOrderItemL());
-        setProductVal(holder.orderedXl,"XL",orderDetailsListViewModel.getOrderItemXl());
-        setProductVal(holder.orderedXxl,"XXL",orderDetailsListViewModel.getOrderItemXxl());
-        setProductVal(holder.orderedXxxl,"XXXL",orderDetailsListViewModel.getOrderItemXxxl());
+        setProductVal(holder.orderedOneSize,"OneSize",orderDetailsListViewModel.getOrderItemOneSize(),orderDetailsListViewModel.getRemainingOneSize());
+        setProductVal(holder.orderedXS,"XS",orderDetailsListViewModel.getOrderItemXS(),orderDetailsListViewModel.getRemainingXS());
+        setProductVal(holder.orderedSmall,"S",orderDetailsListViewModel.getOrderItemS(),orderDetailsListViewModel.getRemainingS());
+        setProductVal(holder.orderedMedium,"M",orderDetailsListViewModel.getOrderItemM(),orderDetailsListViewModel.getRemainingM());
+        setProductVal(holder.orderedLarge,"L",orderDetailsListViewModel.getOrderItemL(),orderDetailsListViewModel.getRemainingL());
+        setProductVal(holder.orderedXl,"XL",orderDetailsListViewModel.getOrderItemXl(),orderDetailsListViewModel.getRemainingXl());
+        setProductVal(holder.orderedXxl,"XXL",orderDetailsListViewModel.getOrderItemXxl(),orderDetailsListViewModel.getRemainingXxl());
+        setProductVal(holder.orderedXxxl,"XXXL",orderDetailsListViewModel.getOrderItemXxxl(),orderDetailsListViewModel.getRemainingXxxl());
 
     }
 
 
-    private void setProductVal(TextView textView,String key,String val){
-        if(val != null && !val.isEmpty()){
-            textView.setText(key+" --> "+val);
-        }else{
-            textView.setText(key+" --> 0");
+    private void setProductVal(TextView textView,String key,String totalVal,String remainingVal){
+        if(remainingVal == null || remainingVal.trim().isEmpty()){
+            remainingVal = "0";
         }
+
+        if(totalVal == null || totalVal.trim().isEmpty()){
+            totalVal = "0";
+        }
+        textView.setText(key+" --> "+remainingVal+" of "+totalVal);
     }
 
 
@@ -118,9 +122,13 @@ public class ProductNameListAdapter extends RecyclerView.Adapter<ProductNameList
                 @Override
                 public void onClick(View view) {
                     OrderDetailsListViewModel orderDetailsListViewModel =  orderDetailsListViewModels.get(getAdapterPosition());
-                    orderDetailsActivity.setOrderDetailsListViewModel(orderDetailsListViewModel);
-                    productNameListAdapterCallBack.callBack();
-                    return;
+                    if(orderDetailsListViewModel.isCheckAvailable()){
+                        orderDetailsActivity.setOrderDetailsListViewModel(orderDetailsListViewModel);
+                        productNameListAdapterCallBack.callBack();
+                        return;
+                    }
+                    Toast.makeText(orderDetailsActivity,"No more data to capture.",Toast.LENGTH_LONG).show();
+
                 }
             });
 

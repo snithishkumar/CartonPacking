@@ -11,6 +11,26 @@
         android:id="@+id/noOfCartonsId"
         android:layout_height="25dp">
 
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:orientation="horizontal"
+          android:layout_height="wrap_content">
+          <ImageView
+              android:layout_width="36dp"
+              android:src="@drawable/add_cart_96x"
+              android:layout_gravity="center"
+              android:layout_marginLeft="10dp"
+              android:layout_marginBottom="10dp"
+              android:layout_height="36dp" />
+          <TextView
+              android:layout_width="wrap_content"
+              android:text="10"
+              android:layout_marginLeft="10dp"
+              android:textColor="@color/colorWhite"
+              android:layout_height="wrap_content" />
+
+      </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:text="Remaning Cartons:"

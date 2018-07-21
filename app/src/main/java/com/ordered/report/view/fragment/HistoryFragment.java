@@ -12,19 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ordered.report.R;
-import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.eventBus.AppBus;
 import com.ordered.report.json.models.ResponseData;
 import com.ordered.report.models.DeliveryDetailsEntity;
-import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
-import com.ordered.report.view.adapter.DeliveredListAdapter;
+import com.ordered.report.view.adapter.HistoryListAdapter;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeliveredFragment extends Fragment {
+public class HistoryFragment extends Fragment {
     private List<DeliveryDetailsEntity> deliveryDetailsEntities = new ArrayList<>();
     private OrderedService orderedService = null;
     RecyclerView recyclerView = null;
@@ -34,14 +32,14 @@ public class DeliveredFragment extends Fragment {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private ProgressDialog progressDialog = null;
-    DeliveredListAdapter mAdapter = null;
+    HistoryListAdapter mAdapter = null;
 
-    public DeliveredFragment() {
+    public HistoryFragment() {
         // Required empty public constructor
     }
 
-    public static DeliveredFragment newInstance(String param1, String param2) {
-        DeliveredFragment fragment = new DeliveredFragment();
+    public static HistoryFragment newInstance(String param1, String param2) {
+        HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -68,7 +66,7 @@ public class DeliveredFragment extends Fragment {
         List<DeliveryDetailsEntity> deliveryDetailsEntityList =  getDeliveredOrdersList();
         this.deliveryDetailsEntities.clear();
         this.deliveryDetailsEntities.addAll(deliveryDetailsEntityList);
-        mAdapter = new DeliveredListAdapter(getActivity(),deliveryDetailsEntities);
+        mAdapter = new HistoryListAdapter(getActivity(),deliveryDetailsEntities);
         recyclerView.setAdapter(mAdapter);
         return view;
     }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,14 +66,14 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.cartonCreatedBy.setText(cartonItemModel.getCreatedBy());
             holder.cartonCreatedDate.setText(formatDate(cartonItemModel.getCreatedDateTime()));
             if(orderDetailsActivity.getView().equals(Constants.VIEW_PACKING)){
-                holder.weightLayout.setVisibility(View.VISIBLE);
-                if(cartonItemModel.getTotalWeight() == null){
-                    holder.cartonWeightStatus.setText("Add Weight");
+                holder.packingLayout.setVisibility(View.VISIBLE);
+                if(cartonItemModel.getTotalWeight() == null || cartonItemModel.getTotalWeight().trim().isEmpty() || cartonItemModel.getTotalWeight().equals("0")){
+                    holder.weightStatus.setImageDrawable(orderDetailsActivity.getDrawable(R.drawable.add_weight_48x));
                     holder.cartonTotalWeight.setText("Net Weight: 0kg");
                     holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.redDark));
                 }else{
                     holder.cartonTotalWeight.setText("Net Weight: "+cartonItemModel.getTotalWeight());
-                    holder.cartonWeightStatus.setText("Change");
+                    holder.weightStatus.setImageDrawable(orderDetailsActivity.getDrawable(R.drawable.edit_weight_48x));
                     holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.colorBlack));
                 }
 
@@ -153,10 +154,13 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public TextView cartonCreatedBy;
         public TextView cartonCreatedDate;
         public LinearLayout weightLayout;
+        public LinearLayout packingLayout;
         public RelativeLayout mainLayout;
 
+        public ImageView weightStatus;
+
         public TextView cartonTotalWeight;
-        public TextView cartonWeightStatus;
+        public TextView cartonShippingStatus;
 
 
         public CartonListViewHolder(View itemView) {
@@ -166,11 +170,14 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             noOfProducts =  itemView.findViewById(R.id.products_count_carton_number);
             cartonCreatedBy =  itemView.findViewById(R.id.carton_created_date);
             cartonCreatedDate =  itemView.findViewById(R.id.carton_created_date);
+            weightStatus = itemView.findViewById(R.id.carton_net_weight_status);
 
+            //
             cartonTotalWeight =  itemView.findViewById(R.id.carton_net_weight_text);
-            cartonWeightStatus =  itemView.findViewById(R.id.carton_net_weight_status);
+            cartonShippingStatus =  itemView.findViewById(R.id.carton_net_shipping_status);
 
             weightLayout = itemView.findViewById(R.id.weight_layout);
+            packingLayout = itemView.findViewById(R.id.packing_layout);
             mainLayout = itemView.findViewById(R.id.carton_main_layout);
             mainLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

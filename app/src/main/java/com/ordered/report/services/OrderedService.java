@@ -280,7 +280,7 @@ public class OrderedService {
     }
 
     private int intValueOf(String value){
-        if(value != null){
+        if(value != null && !value.trim().isEmpty()){
            return Integer.valueOf(value);
         }
         return 0;

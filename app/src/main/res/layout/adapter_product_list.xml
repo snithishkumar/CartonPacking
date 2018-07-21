@@ -103,13 +103,13 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginStart="35dp"
                     android:id="@+id/ordered_size_count_layout_1"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_one_size_count"
                         android:text="OS -> 10 of 10" />
@@ -117,50 +117,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_l_count"
-                        android:text="L -> 10 of 10" />
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:id="@+id/ordered_size_count_layout_2"
-                    android:layout_toRightOf="@+id/ordered_size_count_layout_1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_xs_count"
-                        android:text="XS -> 10 of 10" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_xl_count"
-                        android:text="XL -> 10 of 10" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:id="@+id/ordered_size_count_layout_3"
-                    android:layout_toRightOf="@+id/ordered_size_count_layout_2"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_s_count"
                         android:text="S -> 10 of 10" />
@@ -168,10 +124,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_xxxl_count"
-                        android:text="XXXL -> 10 of 10" />
+                        android:id="@+id/ordered_l_count"
+                        android:text="L -> 10 of 10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_xxl_count"
+                        android:text="XXL -> 10" />
 
                 </LinearLayout>
 
@@ -179,14 +141,22 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/ordered_size_count_layout_4"
-                    android:layout_toRightOf="@+id/ordered_size_count_layout_3"
+                    android:layout_marginStart="50dp"
+                    android:id="@+id/ordered_size_count_layout_2"
+                    android:layout_toRightOf="@+id/ordered_size_count_layout_1"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_xs_count"
+                        android:text="XS -> 10 of 10" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:id="@+id/ordered_m_count"
                         android:text="M -> 10" />
@@ -194,13 +164,18 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_xxl_count"
-                        android:text="XXL -> 10" />
+                        android:id="@+id/ordered_xl_count"
+                        android:text="XL -> 10 of 10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/ordered_xxxl_count"
+                        android:text="XXXL -> 10 of 10" />
 
                 </LinearLayout>
-
 
 
 

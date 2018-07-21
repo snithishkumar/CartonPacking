@@ -14,13 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.ordered.report.R;
-import com.ordered.report.enumeration.OrderStatus;
-import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.json.models.CartonInvoiceSummary;
 import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
@@ -28,15 +25,13 @@ import com.ordered.report.services.PdfService;
 import com.ordered.report.services.PdfServiceReport;
 import com.ordered.report.utils.Utils;
 import com.ordered.report.view.activity.HomeActivity;
-import com.ordered.report.view.fragment.DeliveredFragment;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DeliveredListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private List<DeliveryDetailsEntity> deliveryDetailsEntities;
@@ -44,7 +39,7 @@ public class DeliveredListAdapter extends RecyclerView.Adapter<RecyclerView.View
     private boolean isPopupShow = false;
     private static final int EMPTY_VIEW = -1;
 
-    public DeliveredListAdapter(Context context, List<DeliveryDetailsEntity> deliveryDetailsEntities) {
+    public HistoryListAdapter(Context context, List<DeliveryDetailsEntity> deliveryDetailsEntities) {
         this.context = context;
         this.deliveryDetailsEntities = deliveryDetailsEntities;
         homeActivity = (HomeActivity) context;

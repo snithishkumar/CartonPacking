@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public enum ServiceAPI {
     INSTANCE;
 
-    private  final String SERVER_URL = "http://192.168.0.102:8080/";
+    private  final String SERVER_URL = "http://192.168.0.101:8080/";
 //   private  final String SERVER_URL = "http://18.218.188.18:8080/global/";
 
     private SyncServiceApi syncServiceApi = null;

@@ -193,7 +193,15 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
                 break;
 
             case R.id.carton_number_picking:
-                getCartonDetailsJsonList().add(cartonDetailsJson);
+
+                int pos = cartonDetailsJsonList.indexOf(cartonDetailsJson);
+                if(pos != -1){
+                    cartonDetailsJson = cartonDetailsJsonList.get(pos);
+                }else{
+                    getCartonDetailsJsonList().add(cartonDetailsJson);
+                }
+
+
                 showProductNameListFragment();
                 break;
 
