@@ -12,10 +12,11 @@
         android:layout_height="match_parent">
         <RadioButton
             android:layout_width="wrap_content"
-            android:layout_margin="10dp"
             android:text="Carton Number : 1"
+            android:layout_margin="10dp"
             android:id="@+id/packing_order_delivery_carton_no"
             android:layout_height="wrap_content" />
+
 
 
         <View

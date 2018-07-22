@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.ordered.report.view.fragment.DeliveryListFragment;
 import com.ordered.report.view.fragment.HistoryFragment;
 import com.ordered.report.view.fragment.OrderedFragment;
 import com.ordered.report.view.fragment.PackingFragment;
@@ -13,7 +14,7 @@ public class CustomFragmentPageAdapter extends FragmentPagerAdapter {
 
     private static final String TAG = CustomFragmentPageAdapter.class.getSimpleName();
 
-    private static final int FRAGMENT_COUNT = 3;
+    private static final int FRAGMENT_COUNT = 4;
 
     public CustomFragmentPageAdapter(FragmentManager fm) {
         super(fm);
@@ -26,7 +27,10 @@ public class CustomFragmentPageAdapter extends FragmentPagerAdapter {
                 return new OrderedFragment();
             case 1:
                 return new PackingFragment();
+
             case 2:
+                return new DeliveryListFragment();
+            case 3:
                 return new HistoryFragment();
         }
         return null;
@@ -46,6 +50,8 @@ public class CustomFragmentPageAdapter extends FragmentPagerAdapter {
                 return "PACKING";
             case 2:
                 return "DELIVERED";
+            case 3:
+                return "HISTORY";
         }
         return null;
     }

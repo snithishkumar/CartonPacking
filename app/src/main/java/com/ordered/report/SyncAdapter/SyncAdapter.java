@@ -159,7 +159,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         for(DeliveryDetailsEntity deliveryDetailsEntity : deliveryDetailsEntityList){
             DeliveryDetailsEntity dbDeliveryDetailsEntity=   cartonbookDao.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
             if(dbDeliveryDetailsEntity == null){
-                deliveryDetailsEntity.setOrderEntity(orderEntity);
+               // deliveryDetailsEntity.setOrderEntity(orderEntity);
                 cartonbookDao.createDeliveryDetailsEntity(deliveryDetailsEntity);
             }
         }
@@ -205,7 +205,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 List<DeliveryDetailsEntity> deliveryDetailsEntityList = cartonbookDao.getDeliveryDetailsEntity(orderEntity);
                 for(DeliveryDetailsEntity deliveryDetailsEntity : deliveryDetailsEntityList){
-                    deliveryDetailsEntity.setOrderEntity(null);
+                    //deliveryDetailsEntity.setOrderEntity(null);
                     orderDetailsJson.getDeliveryDetailsList().add(deliveryDetailsEntity);
 
                 }

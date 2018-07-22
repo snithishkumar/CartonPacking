@@ -29,7 +29,7 @@
 
 
         <TextView
-            android:id="@+id/order_details_pro_name"
+            android:id="@+id/delivery_list_deliver_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/order_details_carton_no"
@@ -43,11 +43,11 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/order_details_pro_group"
+            android:id="@+id/delivery_list_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/order_details_pro_name"
-            android:layout_below="@+id/order_details_pro_name"
+            android:layout_alignStart="@+id/delivery_list_deliver_id"
+            android:layout_below="@+id/delivery_list_deliver_id"
             android:layout_marginBottom="10dp"
             android:text="Graphic Designer"
             android:textColor="#827f93" />

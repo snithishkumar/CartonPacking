@@ -83,7 +83,7 @@ public class PdfService {
 
 
     public CartonInvoiceSummary getCartonInvoiceSummary(DeliveryDetailsEntity deliveryDetailsEntity) {
-        String orderDetails = deliveryDetailsEntity.getOrderEntity().getOrderedItems();
+        String orderDetails = "";//deliveryDetailsEntity.getOrderEntity().getOrderedItems();
         Type listType = new TypeToken<List<OrderCreationDetailsJson>>() {
         }.getType();
         List<OrderCreationDetailsJson> cottonItemEntities = gson.fromJson(orderDetails, listType);

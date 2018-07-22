@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +24,10 @@ import com.ordered.report.enumeration.PaymentStatus;
 import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
-import com.ordered.report.utils.Constants;
 import com.ordered.report.utils.UtilService;
+import com.ordered.report.view.activity.DeliveryListActivity;
 import com.ordered.report.view.activity.HomeActivity;
-import com.ordered.report.view.activity.OrderDetailsActivity;
-import com.ordered.report.view.adapter.CartonListAdapter;
-import com.ordered.report.view.adapter.DeliverOrderListAdapter;
+import com.ordered.report.view.adapter.DeliverOrderCartonListAdapter;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,7 +38,7 @@ import java.util.UUID;
 
 public class ShippingDetailsFragment  extends Fragment {
 
-    OrderDetailsActivity orderDetailsActivity;
+    DeliveryListActivity deliveryListActivity;
     private EditText placeOfLoading;
     private EditText placeOfDelivery;
     private EditText portOfDischarge;
@@ -104,20 +100,19 @@ public class ShippingDetailsFragment  extends Fragment {
                 break;
 
         }
-
-        OrderEntity orderEntity = orderDetailsActivity.getOrderedService().getOrderEntityByGuid(orderDetailsActivity.getOrderGuid());
-        deliveryDetailsEntity.setOrderEntity(orderEntity);
-        showDialog(deliveryDetailsEntity,orderEntity);
+        deliveryListActivity.getOrderedService().createDelivery(deliveryDetailsEntity);
+        deliveryListActivity.finish();
+        //showDialog(deliveryDetailsEntity,orderEntity);
 
     }
 
 
     private void saveDeliveryDetails(DeliveryDetailsEntity deliveryDetailsEntity,OrderEntity orderEntity){
-        orderDetailsActivity.getOrderedService().createDelivery(deliveryDetailsEntity);
+        deliveryListActivity.getOrderedService().createDelivery(deliveryDetailsEntity);
 
         for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList){
             if(cartonDetailsEntity.getDeliveryDetails() != null){
-                orderDetailsActivity.getOrderedService().updateCartonDetailsEntity(cartonDetailsEntity);
+                deliveryListActivity.getOrderedService().updateCartonDetailsEntity(cartonDetailsEntity);
             }
         }
 
@@ -125,10 +120,10 @@ public class ShippingDetailsFragment  extends Fragment {
         orderEntity.setPaymentStatus(PaymentStatus.NOT_PAIED);
         orderEntity.setLastModifiedDate(System.currentTimeMillis());
         orderEntity.setSync(false);
-        orderDetailsActivity.getOrderedService().updateOrderUpdates(orderEntity);
-        Intent intent = new Intent(orderDetailsActivity, HomeActivity.class);
+        deliveryListActivity.getOrderedService().updateOrderUpdates(orderEntity);
+        Intent intent = new Intent(deliveryListActivity, HomeActivity.class);
         startActivity(intent);
-        orderDetailsActivity.finish();
+        deliveryListActivity.finish();
         alertDialog.dismiss();
     }
 
@@ -178,14 +173,14 @@ public class ShippingDetailsFragment  extends Fragment {
         dialog.setTitle("List of Cartons");
         //dialog.setCancelable(true);
 
-        View view = orderDetailsActivity.getLayoutInflater().inflate(R.layout.order_list_delivery_list_view, null);
+        View view = deliveryListActivity.getLayoutInflater().inflate(R.layout.order_list_delivery_list_view, null);
 
         ListView list = (ListView) view.findViewById(R.id.ListLikersList);
-        cartonDetailsEntityList = orderDetailsActivity.getOrderedService().getUnDeliveryCartonDetailsEntity(orderEntity);
+        cartonDetailsEntityList = deliveryListActivity.getOrderedService().getUnDeliveryCartonDetailsEntity(orderEntity);
 
 
-        DeliverOrderListAdapter deliverOrderListAdapter = new DeliverOrderListAdapter(orderDetailsActivity,cartonDetailsEntityList,deliveryDetailsEntity);
-        list.setAdapter(deliverOrderListAdapter);
+        DeliverOrderCartonListAdapter deliverOrderCartonListAdapter = new DeliverOrderCartonListAdapter(deliveryListActivity,cartonDetailsEntityList,deliveryDetailsEntity);
+        list.setAdapter(deliverOrderCartonListAdapter);
 
 
         dialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
@@ -227,7 +222,7 @@ public class ShippingDetailsFragment  extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        orderDetailsActivity = (OrderDetailsActivity) context;
+        deliveryListActivity = (DeliveryListActivity) context;
 
     }
 

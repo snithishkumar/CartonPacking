@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBorder"
+    tools:context=".view.activity.OrderDetailsActivity">
+
+
+    <ListView
+        android:id="@+id/delivery_carton_list"
+        android:layout_margin="10dp"
+        tools:listitem="@layout/adapter_carton_list_deliver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_cartons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:src="@drawable/plus_math_48"
+        app:elevation="4dp" />
+
+</RelativeLayout>

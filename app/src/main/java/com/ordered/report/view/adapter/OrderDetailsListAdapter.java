@@ -138,8 +138,8 @@ public class OrderDetailsListAdapter extends RecyclerView.Adapter<OrderDetailsLi
         public OrderDetailsViewHolder(View v) {
             super(v);
 
-            productName= v.findViewById(R.id.order_details_pro_name);
-            productGroupName =  v.findViewById(R.id.order_details_pro_group);
+            productName= v.findViewById(R.id.delivery_list_deliver_id);
+            productGroupName =  v.findViewById(R.id.delivery_list_type);
             oneSize =  v.findViewById(R.id.order_details_one_size);
             xs =  v.findViewById(R.id.order_details_xs);
             small =  v.findViewById(R.id.order_details_s);

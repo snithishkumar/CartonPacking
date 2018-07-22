@@ -68,20 +68,23 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
            holder.deliverId.setText(deliveryDetailsEntity.getDeliveryId());
            OrderEntity orderEntity = deliveryDetailsEntity.getOrderEntity();
-           holder.orderTitle.setText(orderEntity.getOrderId());
-           holder.clientName.setText(orderEntity.getClientName());
-           holder.createdBy.setText(orderEntity.getCreatedBy());
-           int orderCount = getOrderItemsCount(orderEntity);
-           holder.orderItemsCount.setText(String.valueOf(orderCount));
+           if(orderEntity != null){
+               holder.orderTitle.setText(orderEntity.getOrderId());
+               holder.clientName.setText(orderEntity.getClientName());
+               holder.createdBy.setText(orderEntity.getCreatedBy());
+               int orderCount = getOrderItemsCount(orderEntity);
+               holder.orderItemsCount.setText(String.valueOf(orderCount));
 
-           holder.reportPopUp.setVisibility(View.VISIBLE);
-           holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
-           holder.orderImage.setImageResource(R.drawable.delivery_icon_1x);
-           String date = null;
-           if (orderEntity.getOrderedDate() != 0) {
-               date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
-               //   holder.productColor.setText(date);
+               holder.reportPopUp.setVisibility(View.VISIBLE);
+               holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
+               holder.orderImage.setImageResource(R.drawable.delivery_icon_1x);
+               String date = null;
+               if (orderEntity.getOrderedDate() != 0) {
+                   date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
+                   //   holder.productColor.setText(date);
+               }
            }
+
        }
 
 

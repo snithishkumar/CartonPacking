@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="5dp"
+    card_view:cardCornerRadius="4dp"
+    android:background="@android:color/white"
+    tools:context=".view.activity.OrderDetailsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:id="@+id/order_details_carton_no"
+            android:src="@drawable/transit_100"
+            android:layout_margin="20dp"
+            android:layout_height="60dp"
+            />
+
+
+
+
+        <TextView
+            android:id="@+id/delivery_list_deliver_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/order_details_carton_no"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/order_details_carton_no"
+            android:text="Delivery Id"
+            android:textColor="#827f93"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/delivery_list_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/delivery_list_deliver_id"
+            android:layout_below="@+id/delivery_list_deliver_id"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="Delivery Type:"
+            android:textColor="#827f93" />
+
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/order_details_carton_no"
+
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#ebebeb" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/divider2"
+            android:id="@+id/order_items_size_details"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:src="@drawable/ic_place_black_24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Shipping Details:"
+                    android:layout_marginLeft="5dp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="35dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Place Of Loading :"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Place Of Deliver :" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Port Of Discharge :"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="left"
+                        android:text="Place Of Loading:"
+                        android:id="@+id/delivery_place_of_loading"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="left"
+                        android:gravity="end"
+                        android:id="@+id/delivery_place_of_delivery"
+                        android:text="Place Of Deliver:" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="left"
+                        android:text="Port Of Discharge:"
+                        android:id="@+id/delivery_port_of_discharge"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/order_items_size_details"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
+            android:background="#ebebeb" />
+
+
+        <TextView
+            android:id="@+id/text_likes_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:text="Created On:"
+            android:textColor="#827f93"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/delivery_list_created_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_likes_count"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="17/2/2018 3:45 PM"
+            android:textColor="#827f93"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/delivery_list_lastmodified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider"
+            android:layout_alignEnd="@+id/divider"
+            android:text="Modified On:"
+            android:layout_marginTop="15dp"
+            android:textColor="#827f93"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/delivery_list_lastmodified_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/delivery_list_lastmodified"
+            android:layout_alignEnd="@+id/divider"
+            android:text="17/2/2018 3:45 PM"
+            android:textColor="#827f93"
+            android:textSize="12sp" />
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
+

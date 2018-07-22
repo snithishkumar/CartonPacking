@@ -63,13 +63,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         Toolbar toolbar = (Toolbar) findViewById(R.id.order_Details_toolbar);
         setSupportActionBar(toolbar);
         init();
-        if(view != null && view.equals(Constants.VIEW_PACKING) && nextView != null && nextView.equals(Constants.VIEW_DELIVERY)){
-            showShippingDetailsFragment();
-        }else{
-            showCartonListFragment();
-        }
-
-       // showFragment();
+        showCartonListFragment();
 
     }
 
@@ -95,10 +89,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
     }
 
-    private void showShippingDetailsFragment(){
-        ShippingDetailsFragment shippingDetailsFragment = new ShippingDetailsFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.order_details_container, shippingDetailsFragment).addToBackStack("shippingDetails").commit();
-    }
+
 
 
     private void showCartonListFragment(){
@@ -215,6 +206,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
                 CartonListFragment cartonListFragment = new CartonListFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.order_details_container, cartonListFragment).addToBackStack("cartonList").commit();
                 break;
+
+
         }
     }
 

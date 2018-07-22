@@ -42,6 +42,7 @@ import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.utils.NumberToWord;
 import com.ordered.report.utils.UtilService;
+import com.ordered.report.view.adapter.DeliveryListAdapter;
 import com.ordered.report.view.adapter.OrderDetailsListAdapter;
 import com.ordered.report.view.adapter.OrderListAdapter;
 import com.ordered.report.view.adapter.PackingListAdapter;
@@ -64,7 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterCallBack{
+public class HomeActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterCallBack, DeliveryListAdapter.DeliveryListAdapterCallBack{
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -141,6 +142,13 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         intent.putExtra("view",Constants.VIEW_ORDER);
         startActivity(intent);
 
+    }
+
+
+    private void showDeliveryDetailsActivity(String view){
+        Intent intent = new Intent(this, DeliveryListActivity.class);
+        intent.putExtra("view",view);
+        startActivity(intent);
     }
 
 
@@ -237,10 +245,22 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         }
     }
 
-
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.add_delivery_details:
+                showDeliveryDetailsActivity(Constants.VIEW_ADD_SHIPPING);
+                break;
+        }
+    }
 
     @Override
     public void showPackingDetails(String orderGuid,String nextView) {
         showPackingDetailsList(orderGuid,nextView);
+    }
+
+    @Override
+    public void showOrderList(String nextView) {
+        showDeliveryDetailsActivity(nextView);
+
     }
 }

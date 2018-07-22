@@ -32,8 +32,11 @@ public class DeliveryDetailsEntity {
     @DatabaseField(columnName = "PortOfDischarge")
     private String portOfDischarge;
 
-    @DatabaseField(columnName = "OrderId", foreign = true, foreignAutoRefresh = true)
-    private OrderEntity orderEntity;
+
+    public OrderEntity getOrderEntity(){
+        return null;
+    }
+
 
     public String getDeliveryUUID() {
         return deliveryUUID;
@@ -83,13 +86,9 @@ public class DeliveryDetailsEntity {
         this.portOfDischarge = portOfDischarge;
     }
 
-    public OrderEntity getOrderEntity() {
-        return orderEntity;
-    }
 
-    public void setOrderEntity(OrderEntity orderEntity) {
-        this.orderEntity = orderEntity;
-    }
+
+
 
     public String getDeliveryId() {
         return deliveryId;
@@ -109,7 +108,6 @@ public class DeliveryDetailsEntity {
                 ", placeOfLoading='" + placeOfLoading + '\'' +
                 ", placeOfDelivery='" + placeOfDelivery + '\'' +
                 ", portOfDischarge='" + portOfDischarge + '\'' +
-                ", orderEntity=" + orderEntity +
                 '}';
     }
 }

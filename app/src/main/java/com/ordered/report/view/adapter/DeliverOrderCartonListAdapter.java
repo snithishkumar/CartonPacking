@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -22,14 +21,14 @@ import java.util.List;
  * Created by Nithish on 24/02/18.
  */
 
-public class DeliverOrderListAdapter extends ArrayAdapter<CartonDetailsEntity> {
+public class DeliverOrderCartonListAdapter extends ArrayAdapter<CartonDetailsEntity> {
 
     private List<CartonDetailsEntity> cartonDetailsEntityList;
     private OrderDetailsActivity orderDetailsActivity;
     private DeliveryDetailsEntity deliveryDetailsEntity;
 
-    public DeliverOrderListAdapter(Context context, List<CartonDetailsEntity> cartonItemModels, DeliveryDetailsEntity deliveryDetailsEntity){
-        super(context, R.layout.adapter_order_list_deliver, cartonItemModels);
+    public DeliverOrderCartonListAdapter(Context context, List<CartonDetailsEntity> cartonItemModels, DeliveryDetailsEntity deliveryDetailsEntity){
+        super(context, R.layout.adapter_order_carton_list_deliver, cartonItemModels);
         orderDetailsActivity = (OrderDetailsActivity) context;
         this.cartonDetailsEntityList = cartonItemModels;
         this.deliveryDetailsEntity = deliveryDetailsEntity;
@@ -50,7 +49,7 @@ public class DeliverOrderListAdapter extends ArrayAdapter<CartonDetailsEntity> {
 
             viewHolder = new DeliverOrderListViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.adapter_order_list_deliver, parent, false);
+            convertView = inflater.inflate(R.layout.adapter_order_carton_list_deliver, parent, false);
 
             viewHolder.cartonNumber =  convertView.findViewById(R.id.packing_order_delivery_carton_no);
             viewHolder.noOfProducts =  convertView.findViewById(R.id.packing_order_delivery_no_products);
@@ -90,7 +89,7 @@ public class DeliverOrderListAdapter extends ArrayAdapter<CartonDetailsEntity> {
     private OrderDetailsActivity orderDetailsActivity;
     private DeliveryDetailsEntity deliveryDetailsEntity;
 
-    public DeliverOrderListAdapter(Context context, List<CartonDetailsEntity> cartonItemModels, DeliveryDetailsEntity deliveryDetailsEntity) {
+    public DeliverOrderCartonListAdapter(Context context, List<CartonDetailsEntity> cartonItemModels, DeliveryDetailsEntity deliveryDetailsEntity) {
         orderDetailsActivity = (OrderDetailsActivity) context;
         this.cartonDetailsEntityList = cartonItemModels;
         this.deliveryDetailsEntity = deliveryDetailsEntity;
@@ -98,7 +97,7 @@ public class DeliverOrderListAdapter extends ArrayAdapter<CartonDetailsEntity> {
 
     @Override
     public DeliverOrderListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(orderDetailsActivity).inflate(R.layout.adapter_order_list_deliver, parent, false);
+        View view = LayoutInflater.from(orderDetailsActivity).inflate(R.layout.adapter_order_carton_list_deliver, parent, false);
 
         return new DeliverOrderListViewHolder(view);
     }
