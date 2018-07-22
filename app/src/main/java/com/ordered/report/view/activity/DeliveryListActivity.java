@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.ordered.report.R;
 import com.ordered.report.services.OrderedService;
@@ -58,6 +59,18 @@ public class DeliveryListActivity extends AppCompatActivity {
     private void showCartonListFragment(){
         DeliveryCartonListFragment deliveryCartonListFragment = new DeliveryCartonListFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.delivery_details_container, deliveryCartonListFragment).addToBackStack("shippingDetails").commit();
+    }
+
+
+    //
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.add_cartons:
+                DeliveryOrderListFragment deliveryOrderListFragment = new DeliveryOrderListFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.delivery_details_container, deliveryOrderListFragment).addToBackStack("shippingDetails").commit();
+                break;
+        }
     }
 
 

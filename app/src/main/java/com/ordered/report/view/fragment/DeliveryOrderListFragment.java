@@ -51,7 +51,7 @@ public class DeliveryOrderListFragment extends Fragment {
 
 
     public List<OrderEntity> getOrderedCartonBookList() {
-        List<OrderEntity> cartonbookEntities = orderedService.getOrdersList();
+        List<OrderEntity> cartonbookEntities = orderedService.getPackingOrdersList();
         return cartonbookEntities;
     }
 

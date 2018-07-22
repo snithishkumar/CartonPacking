@@ -73,7 +73,7 @@
         <activity
             android:name=".view.activity.DeliveryListActivity"
             android:label="@string/title_activity_music"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.ActionBar"></activity>
     </application>
 
 </manifest>

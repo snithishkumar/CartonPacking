@@ -47,8 +47,8 @@ public class DeliveryOrderListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        if(viewHolder instanceof OrderListAdapter.OrderedListViewHolder){
-            OrderListAdapter.OrderedListViewHolder holder = (OrderListAdapter.OrderedListViewHolder)viewHolder;
+        if(viewHolder instanceof DeliveryOrderedListViewHolder){
+            DeliveryOrderedListViewHolder holder = (DeliveryOrderedListViewHolder)viewHolder;
             final OrderEntity orderEntity = orderEntities.get(position);
 
             holder.orderTitle.setText(orderEntity.getOrderId());
