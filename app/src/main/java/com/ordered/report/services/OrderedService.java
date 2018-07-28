@@ -9,6 +9,7 @@ import com.ordered.report.SyncAdapter.SyncServiceApi;
 import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
+import com.ordered.report.enumeration.Status;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.json.models.LoginEvent;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
@@ -96,6 +97,11 @@ public class OrderedService {
     public List<CartonDetailsEntity> getCartonDetailsEntities(int deliveryId){
         DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(deliveryId);
         return  cartonbookDao.getCartonDetailsList(deliveryDetailsEntity);
+    }
+
+    public DeliveryDetailsEntity getDeliveryDetailsEntity(int deliveryId){
+        DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(deliveryId);
+        return deliveryDetailsEntity;
     }
 
     public List<OrderEntity> getCartonBookEntityByType(OrderStatus orderType) {
@@ -283,6 +289,30 @@ public class OrderedService {
         orderDetailsListViewModel.setRemainingXxl(calculate(orderDetailsListViewModel.getOrderItemXxl() , xxl));
         orderDetailsListViewModel.setRemainingXxxl(calculate(orderDetailsListViewModel.getOrderItemXxxl() , xxxl));
 
+    }
+
+
+    public void addDelivery(List<Integer> cartonsIds, int deliveryId, Status status){
+        try{
+           DeliveryDetailsEntity deliveryDetailsEntity =  cartonbookDao.getDeliveryDetailsEntity(deliveryId);
+           for(Integer cartonsId : cartonsIds){
+               CartonDetailsEntity cartonDetailsEntity = cartonbookDao.getCartonDetailsEntity(cartonsId);
+               cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
+               cartonDetailsEntity.setLastModifiedTime(System.currentTimeMillis());
+               cartonbookDao.updateCartonDetailsEntity(cartonDetailsEntity);
+
+               cartonDetailsEntity.getOrderEntity().setLastModifiedDate(cartonDetailsEntity.getLastModifiedTime());
+               cartonDetailsEntity.getOrderEntity().setSync(false);
+               cartonbookDao.updateCortonbookEntity(cartonDetailsEntity.getOrderEntity());
+
+           }
+            deliveryDetailsEntity.setStatus(status);
+            deliveryDetailsEntity.setLastModifiedDateTime(System.currentTimeMillis());
+            deliveryDetailsEntity.setSync(false);
+            cartonbookDao.updateDeliveryDetailsEntity(deliveryDetailsEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private int intValueOf(String value){

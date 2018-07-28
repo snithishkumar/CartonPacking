@@ -44,7 +44,7 @@ public class DeliveryCartonListAdapter extends ArrayAdapter<CartonDetailsEntity>
 
             viewHolder = new DeliverOrderListViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.adapter_order_carton_list_deliver, parent, false);
+            convertView = inflater.inflate(R.layout.adapter_carton_list_deliver, parent, false);
 
             viewHolder.cartonNumber =  convertView.findViewById(R.id.packing_order_delivery_carton_no);
             viewHolder.noOfProducts =  convertView.findViewById(R.id.packing_order_delivery_no_products);

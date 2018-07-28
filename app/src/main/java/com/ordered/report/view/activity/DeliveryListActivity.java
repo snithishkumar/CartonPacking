@@ -7,17 +7,26 @@ import android.util.Log;
 import android.view.View;
 
 import com.ordered.report.R;
+import com.ordered.report.enumeration.Status;
+import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.utils.Constants;
+import com.ordered.report.view.adapter.DeliveryOrderListAdapter;
 import com.ordered.report.view.fragment.DeliveryCartonListFragment;
+import com.ordered.report.view.fragment.DeliveryOrderCartonListFragment;
 import com.ordered.report.view.fragment.DeliveryOrderListFragment;
 import com.ordered.report.view.fragment.ShippingDetailsFragment;
 
-public class DeliveryListActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DeliveryListActivity extends AppCompatActivity implements DeliveryOrderListAdapter.DeliveryOrderListAdapterCallBack{
 
     private OrderedService orderedService;
     private int deliveryId;
     private String currentView = null;
+    private OrderEntity orderEntity = null;
+    private List<Integer> selectedCartonList = new ArrayList<>();
 
     public final String LOG_TAG = DeliveryListActivity.class.getSimpleName();
 
@@ -34,7 +43,6 @@ public class DeliveryListActivity extends AppCompatActivity {
             showCartonListFragment();
         }
 
-
     }
 
 
@@ -47,12 +55,6 @@ public class DeliveryListActivity extends AppCompatActivity {
             Log.e(LOG_TAG,"Error in init",e);
         }
 
-    }
-
-
-    private void showDeliveryOrderListFragment(){
-        DeliveryOrderListFragment deliveryOrderListFragment = new DeliveryOrderListFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.delivery_details_container, deliveryOrderListFragment).addToBackStack("shippingDetails").commit();
     }
 
 
@@ -70,6 +72,20 @@ public class DeliveryListActivity extends AppCompatActivity {
                 DeliveryOrderListFragment deliveryOrderListFragment = new DeliveryOrderListFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.delivery_details_container, deliveryOrderListFragment).addToBackStack("shippingDetails").commit();
                 break;
+            case R.id.delivery_order_complete:
+                orderedService.addDelivery(selectedCartonList,deliveryId, Status.IN_PROGRESS);
+                finish();
+                break;
+
+            case R.id.add_order_cartons:
+                deliveryOrderListFragment = new DeliveryOrderListFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.delivery_details_container, deliveryOrderListFragment).addToBackStack("shippingDetails").commit();
+                break;
+
+            case R.id.move_report:
+                orderedService.addDelivery(selectedCartonList,deliveryId,Status.COMPLETED);
+                finish();
+                break;
         }
     }
 
@@ -85,5 +101,20 @@ public class DeliveryListActivity extends AppCompatActivity {
 
     public int getDeliveryId() {
         return deliveryId;
+    }
+
+    public OrderEntity getOrderEntity() {
+        return orderEntity;
+    }
+
+    public List<Integer> getSelectedCartonList() {
+        return selectedCartonList;
+    }
+
+    @Override
+    public void showOrderList(OrderEntity orderEntity) {
+        this.orderEntity = orderEntity;
+        DeliveryOrderCartonListFragment deliveryOrderCartonListFragment = new DeliveryOrderCartonListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.delivery_details_container, deliveryOrderCartonListFragment).addToBackStack("shippingDetails").commit();
     }
 }

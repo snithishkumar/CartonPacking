@@ -4,6 +4,7 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.ordered.report.enumeration.DeliveringType;
+import com.ordered.report.enumeration.Status;
 
 /**
  * Created by Nithish on 05/03/18.
@@ -14,6 +15,10 @@ public class DeliveryDetailsEntity {
     public static final String DELIVERY_DETAILS_ID = "DeliveryDetailsId";
     public static final String DELIVERY_UUID = "DeliveryUUID";
     public static final String ORDER_ID = "OrderId";
+    public static final String STATUS = "Status";
+    public static final String LAST_MODIFIED_DATE_TIME = "LastModifiedDateTime";
+    public static final String IS_SYNC = "IsSync";
+
 
     @DatabaseField(columnName = "DeliveryDetailsId", generatedId = true)
     private int deliveryDetailsId;
@@ -32,6 +37,40 @@ public class DeliveryDetailsEntity {
     @DatabaseField(columnName = "PortOfDischarge")
     private String portOfDischarge;
 
+    @DatabaseField(columnName = "Status", dataType = DataType.ENUM_INTEGER)
+    private Status status;
+
+
+    @DatabaseField(columnName = "LastModifiedDateTime")
+    private long lastModifiedDateTime;
+
+    @DatabaseField(columnName = "IsSync")
+    private boolean isSync;
+
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public long getLastModifiedDateTime() {
+        return lastModifiedDateTime;
+    }
+
+    public void setLastModifiedDateTime(long lastModifiedDateTime) {
+        this.lastModifiedDateTime = lastModifiedDateTime;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setSync(boolean sync) {
+        isSync = sync;
+    }
 
     public OrderEntity getOrderEntity(){
         return null;

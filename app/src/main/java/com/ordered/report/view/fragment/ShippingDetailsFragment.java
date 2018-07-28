@@ -167,41 +167,7 @@ public class ShippingDetailsFragment  extends Fragment {
     }
 
 
-    public void showDialog(final DeliveryDetailsEntity deliveryDetailsEntity, final OrderEntity orderEntity){
-        AlertDialog.Builder  dialog = new AlertDialog.Builder(getContext());
 
-        dialog.setTitle("List of Cartons");
-        //dialog.setCancelable(true);
-
-        View view = deliveryListActivity.getLayoutInflater().inflate(R.layout.order_list_delivery_list_view, null);
-
-        ListView list = (ListView) view.findViewById(R.id.ListLikersList);
-        cartonDetailsEntityList = deliveryListActivity.getOrderedService().getUnDeliveryCartonDetailsEntity(orderEntity);
-
-
-        DeliverOrderCartonListAdapter deliverOrderCartonListAdapter = new DeliverOrderCartonListAdapter(deliveryListActivity,cartonDetailsEntityList,deliveryDetailsEntity);
-        list.setAdapter(deliverOrderCartonListAdapter);
-
-
-        dialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                processDeliveryDetails(deliveryDetailsEntity,orderEntity);
-            }
-        });
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-        dialog.setView(view);
-        alertDialog = dialog.create();
-        alertDialog.show();
-    }
 
 
     private void initView(View view){

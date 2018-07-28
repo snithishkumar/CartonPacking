@@ -103,6 +103,16 @@ public class CartonbookDao {
     }
 
 
+    public CartonDetailsEntity getCartonDetailsEntity(Integer cartonNumberId){
+        try {
+            return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.CARTON_ID, cartonNumberId).queryForFirst();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
 
     public List<OrderEntity> getUnSyncedOrderDetails() {
@@ -367,6 +377,16 @@ public class CartonbookDao {
     public void createDeliveryDetailsEntity(DeliveryDetailsEntity deliveryDetailsEntity){
         try{
             deliveryDetailsDao.create(deliveryDetailsEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void updateDeliveryDetailsEntity(DeliveryDetailsEntity deliveryDetailsEntity){
+        try{
+            deliveryDetailsDao.update(deliveryDetailsEntity);
         }catch (Exception e){
             e.printStackTrace();
         }

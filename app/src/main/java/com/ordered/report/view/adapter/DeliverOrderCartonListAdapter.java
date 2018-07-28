@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.ordered.report.R;
 import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.DeliveryDetailsEntity;
+import com.ordered.report.view.activity.DeliveryListActivity;
 import com.ordered.report.view.activity.OrderDetailsActivity;
 
 import java.text.SimpleDateFormat;
@@ -24,12 +25,12 @@ import java.util.List;
 public class DeliverOrderCartonListAdapter extends ArrayAdapter<CartonDetailsEntity> {
 
     private List<CartonDetailsEntity> cartonDetailsEntityList;
-    private OrderDetailsActivity orderDetailsActivity;
+    private DeliveryListActivity deliveryListActivity;
     private DeliveryDetailsEntity deliveryDetailsEntity;
 
-    public DeliverOrderCartonListAdapter(Context context, List<CartonDetailsEntity> cartonItemModels, DeliveryDetailsEntity deliveryDetailsEntity){
+    public DeliverOrderCartonListAdapter(Context context, List<CartonDetailsEntity> cartonItemModels){
         super(context, R.layout.adapter_order_carton_list_deliver, cartonItemModels);
-        orderDetailsActivity = (OrderDetailsActivity) context;
+        deliveryListActivity = (DeliveryListActivity) context;
         this.cartonDetailsEntityList = cartonItemModels;
         this.deliveryDetailsEntity = deliveryDetailsEntity;
     }
@@ -60,13 +61,15 @@ public class DeliverOrderCartonListAdapter extends ArrayAdapter<CartonDetailsEnt
             viewHolder.cartonNumber.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(radioButton.isChecked() && cartonDetailsEntity.getDeliveryDetails() == null){
-                        cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
-                    }else{
+                    int cartronId = cartonDetailsEntity.getCartonId();
+                    if(deliveryListActivity.getSelectedCartonList().contains(cartronId)){
+                        deliveryListActivity.getSelectedCartonList().remove(cartronId);
                         radioButton.setChecked(false);
-                        cartonDetailsEntity.setDeliveryDetails(null);
-                       // notifyDataSetChanged();
+                    }else{
+                        deliveryListActivity.getSelectedCartonList().add(cartronId);
+                        radioButton.setChecked(true);
                     }
+                    notifyDataSetChanged();
                 }
             });
             convertView.setTag(viewHolder);

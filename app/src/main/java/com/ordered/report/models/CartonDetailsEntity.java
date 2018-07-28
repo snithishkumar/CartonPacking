@@ -10,6 +10,7 @@ import com.ordered.report.json.models.CartonDetailsJson;
 @DatabaseTable(tableName = "CartonDetails")
 public class CartonDetailsEntity {
 
+    public static final String CARTON_ID = "CartonId";
     public static final String CARTON_GUID = "CartonGuid";
     public static final String ORDER_ENTITY = "OrderId";
     public static final String DELIVERY_DETAILS_ENTITY = "DeliveryDetailsId";

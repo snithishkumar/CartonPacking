@@ -6,26 +6,17 @@
     android:background="@color/colorBorder"
     tools:context=".view.activity.DeliveryListActivity">
 
-
-    <ListView
-        android:id="@+id/delivery_carton_list"
-        android:layout_margin="10dp"
-        tools:listitem="@layout/adapter_carton_list_deliver"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        tools:listitem="@layout/adapter_order_list"
+        android:orientation="vertical"
+        android:scrollbars="none" />
+
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/move_report"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/delivery_carton_list"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp"
-        app:elevation="4dp"
-        android:src="@drawable/move_48" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_cartons"
+        android:id="@+id/delivery_order_complete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -34,7 +25,8 @@
         android:layout_marginRight="10dp"
         android:clickable="true"
         android:onClick="onClick"
-        android:src="@drawable/plus_math_48"
+        android:src="@drawable/done_48"
         app:elevation="4dp" />
 
 </RelativeLayout>
+

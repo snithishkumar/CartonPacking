@@ -123,7 +123,8 @@ public class DeliveryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    deliveryListAdapterCallBack.showOrderList(Constants.VIEW_CARTON_LIST);
+                    DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsEntities.get(getAdapterPosition());
+                    deliveryListAdapterCallBack.showOrderList(Constants.VIEW_CARTON_LIST,deliveryDetailsEntity.getDeliveryDetailsId());
                 }
             });
 
@@ -139,7 +140,7 @@ public class DeliveryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     public interface DeliveryListAdapterCallBack{
-        void showOrderList(String nextView);
+        void showOrderList(String nextView,int deliveryId);
     }
 
 }

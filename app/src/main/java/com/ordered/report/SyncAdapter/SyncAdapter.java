@@ -157,7 +157,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void processDeliveryDetails(OrderDetailsJson orderDetailsJson, OrderEntity orderEntity ){
         List<DeliveryDetailsEntity> deliveryDetailsEntityList = orderDetailsJson.getDeliveryDetailsList();
         for(DeliveryDetailsEntity deliveryDetailsEntity : deliveryDetailsEntityList){
-            DeliveryDetailsEntity dbDeliveryDetailsEntity=   cartonbookDao.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
+            DeliveryDetailsEntity dbDeliveryDetailsEntity =   cartonbookDao.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
             if(dbDeliveryDetailsEntity == null){
                // deliveryDetailsEntity.setOrderEntity(orderEntity);
                 cartonbookDao.createDeliveryDetailsEntity(deliveryDetailsEntity);

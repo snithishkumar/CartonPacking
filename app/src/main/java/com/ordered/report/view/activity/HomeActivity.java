@@ -145,9 +145,12 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
     }
 
 
-    private void showDeliveryDetailsActivity(String view){
+    private void showDeliveryDetailsActivity(String view,int deliveryId){
         Intent intent = new Intent(this, DeliveryListActivity.class);
         intent.putExtra("view",view);
+        if(deliveryId > 0){
+            intent.putExtra("deliveryId",deliveryId);
+        }
         startActivity(intent);
     }
 
@@ -248,7 +251,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_delivery_details:
-                showDeliveryDetailsActivity(Constants.VIEW_ADD_SHIPPING);
+                showDeliveryDetailsActivity(Constants.VIEW_ADD_SHIPPING,0);
                 break;
         }
     }
@@ -259,8 +262,8 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
     }
 
     @Override
-    public void showOrderList(String nextView) {
-        showDeliveryDetailsActivity(nextView);
+    public void showOrderList(String nextView,int deliveryId) {
+        showDeliveryDetailsActivity(nextView,deliveryId);
 
     }
 }

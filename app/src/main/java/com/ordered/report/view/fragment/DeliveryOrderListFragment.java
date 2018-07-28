@@ -34,7 +34,7 @@ public class DeliveryOrderListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ordered, container, false);
+        View view = inflater.inflate(R.layout.fragment_delivery_ordered, container, false);
         orderedService = new OrderedService(getActivity());
         getActivity().setTitle("Order List");
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);

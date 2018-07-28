@@ -23,10 +23,12 @@ public class DeliveryOrderListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private List<OrderEntity> orderEntities;
     private DeliveryListActivity deliveryListActivity;
+    private DeliveryOrderListAdapterCallBack deliveryOrderListAdapterCallBack;
     private static final int EMPTY_VIEW = -1;
 
     public DeliveryOrderListAdapter(Context context, List<OrderEntity> orderEntities) {
         deliveryListActivity = (DeliveryListActivity) context;
+        deliveryOrderListAdapterCallBack = deliveryListActivity;
         this.orderEntities = orderEntities;
     }
 
@@ -124,9 +126,16 @@ public class DeliveryOrderListAdapter extends RecyclerView.Adapter<RecyclerView.
                 @Override
                 public void onClick(View view) {
                     OrderEntity orderEntity =  orderEntities.get(getAdapterPosition());
+                    deliveryOrderListAdapterCallBack.showOrderList(orderEntity);
+                    return;
                 }
             });
         }
+    }
+
+
+    public interface DeliveryOrderListAdapterCallBack{
+        void showOrderList(OrderEntity orderEntity);
     }
 
 }
