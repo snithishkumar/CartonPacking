@@ -134,7 +134,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center|end"
 
-                    android:text="Add"
+                    android:text="Delivered"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/redDark" />
 

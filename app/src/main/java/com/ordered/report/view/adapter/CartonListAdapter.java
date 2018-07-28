@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ordered.report.R;
 import com.ordered.report.json.models.CartonDetailsJson;
@@ -63,6 +64,8 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             holder.cartonNumber.setText("Carton Number:"+cartonItemModel.getCartonNumber());
             holder.noOfProducts.setText("No of Products:"+cartonItemModel.getOrderDetailsListViewModels().size()+"");
 
+
+
             holder.cartonCreatedBy.setText(cartonItemModel.getCreatedBy());
             holder.cartonCreatedDate.setText(formatDate(cartonItemModel.getCreatedDateTime()));
             if(orderDetailsActivity.getView().equals(Constants.VIEW_PACKING)){
@@ -70,11 +73,16 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if(cartonItemModel.getTotalWeight() == null || cartonItemModel.getTotalWeight().trim().isEmpty() || cartonItemModel.getTotalWeight().equals("0")){
                     holder.weightStatus.setImageDrawable(orderDetailsActivity.getDrawable(R.drawable.add_weight_48x));
                     holder.cartonTotalWeight.setText("Net Weight: 0kg");
+                    holder.cartonShippingStatus.setVisibility(View.INVISIBLE);
                     holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.redDark));
                 }else{
                     holder.cartonTotalWeight.setText("Net Weight: "+cartonItemModel.getTotalWeight());
                     holder.weightStatus.setImageDrawable(orderDetailsActivity.getDrawable(R.drawable.edit_weight_48x));
                     holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.colorBlack));
+
+                    if(cartonItemModel.getDeliverDetailsGuid() != null){
+                        holder.cartonShippingStatus.setVisibility(View.VISIBLE);
+                    }
                 }
 
             }
@@ -182,15 +190,27 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mainLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    orderDetailsActivity.setCartonDetailsJson(cartonItemModels.get(getAdapterPosition()));
-                    cartonListAdapterCallBack.showProductDetailsListFragment();
+                   CartonDetailsJson cartonDetailsJson = cartonItemModels.get(getAdapterPosition());
+                   if(cartonDetailsJson.getDeliverDetailsGuid() != null){
+                       Toast.makeText(orderDetailsActivity,"You cannot view this. Already delivered.",Toast.LENGTH_LONG).show();
+                   }else{
+                       orderDetailsActivity.setCartonDetailsJson(cartonDetailsJson);
+                       cartonListAdapterCallBack.showProductDetailsListFragment();
+                   }
+
                 }
             });
 
             weightLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showAlertDialog(getAdapterPosition());
+                    CartonDetailsJson cartonDetailsJson = cartonItemModels.get(getAdapterPosition());
+                    if(cartonDetailsJson.getDeliverDetailsGuid() != null){
+                        Toast.makeText(orderDetailsActivity,"You cannot add or edit. Already delivered.",Toast.LENGTH_LONG).show();
+                    }else{
+                        showAlertDialog(getAdapterPosition());
+                    }
+
                 }
             });
         }

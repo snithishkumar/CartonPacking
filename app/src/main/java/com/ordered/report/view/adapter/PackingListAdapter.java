@@ -70,9 +70,6 @@ public class PackingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
            holder.orderItemsCount.setText(String.valueOf(orderCount));
            holder.orderImage.setImageResource(R.drawable.order_packing);
            holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
-           if(orderEntity.getOrderStatus().toString().equals(OrderStatus.PACKING.toString()) ||orderEntity.getOrderStatus().toString().equals(OrderStatus.PARTIAL_DELIVERED.toString())  ){
-               holder.deliveryView.setVisibility(View.VISIBLE);
-           }
        }
 
 
@@ -147,14 +144,6 @@ public class PackingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
             });
 
-            deliveryView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    OrderEntity orderEntity =  orderEntities.get(getAdapterPosition());
-                    packingListAdapterCallBack.showPackingDetails(orderEntity.getOrderGuid(), Constants.VIEW_DELIVERY);
-                    return;
-                }
-            });
         }
     }
 

@@ -11,25 +11,7 @@
         android:id="@+id/noOfCartonsId"
         android:layout_height="25dp">
 
-      <LinearLayout
-          android:layout_width="wrap_content"
-          android:orientation="horizontal"
-          android:layout_height="wrap_content">
-          <ImageView
-              android:layout_width="36dp"
-              android:src="@drawable/add_cart_96x"
-              android:layout_gravity="center"
-              android:layout_marginLeft="10dp"
-              android:layout_marginBottom="10dp"
-              android:layout_height="36dp" />
-          <TextView
-              android:layout_width="wrap_content"
-              android:text="10"
-              android:layout_marginLeft="10dp"
-              android:textColor="@color/colorWhite"
-              android:layout_height="wrap_content" />
 
-      </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -86,6 +68,40 @@
             android:text="Done"
             android:onClick="onClick"
             android:id="@+id/carton_footer_done"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/packing_list_complete_footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:weightSum="2">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Cancel"
+            android:id="@+id/packing_list_complete_cancel"
+            android:layout_marginLeft="2dp"
+            android:onClick="onClick"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:text="Close"
+            android:onClick="onClick"
+            android:id="@+id/packing_list_complete_close"
             android:layout_marginRight="2dp"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"/>

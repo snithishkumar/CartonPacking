@@ -16,8 +16,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ordered.report.R;
+import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
@@ -167,7 +169,26 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
             case R.id.carton_footer_done:
                 if(cartonDetailsJsonList.size() > 0){
-                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList,this.view);
+                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList, OrderStatus.PACKING);
+                    finish();
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    startActivity(intent);
+                }else{
+                    showAlert();
+                }
+
+                break;
+
+            case R.id.packing_list_complete_close:
+
+                if(cartonDetailsJsonList.size() > 0){
+                    for(CartonDetailsJson cartonDetailsJson :  cartonDetailsJsonList){
+                        if(cartonDetailsJson.getTotalWeight().equals("0")){
+                            Toast.makeText(this,"Please add weight to cartons",Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList, OrderStatus.DELIVERED);
                     finish();
                     Intent intent = new Intent(this, HomeActivity.class);
                     startActivity(intent);
@@ -178,6 +199,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
                 break;
 
             case R.id.carton_footer_cancel:
+            case R.id.packing_list_complete_cancel:
                 finish();
                 Intent  intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);

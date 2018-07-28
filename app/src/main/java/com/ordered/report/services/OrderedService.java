@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.j256.ormlite.field.DatabaseField;
 import com.ordered.report.SyncAdapter.SyncServiceApi;
 import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.enumeration.OrderStatus;
@@ -13,7 +12,6 @@ import com.ordered.report.enumeration.Status;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.json.models.LoginEvent;
 import com.ordered.report.json.models.OrderCreationDetailsJson;
-import com.ordered.report.json.models.ProductDetailsJson;
 import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by Admin on 1/1/2018.
@@ -61,7 +58,7 @@ public class OrderedService {
     }
 
     public OrderEntity getOrderEntityByGuid(String orderGuid) {
-        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
         return orderEntity;
     }
 
@@ -120,7 +117,7 @@ public class OrderedService {
 
 
     public Map<String,List> getOrderItems(String orderGuid){
-        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
        String orderedItems = orderEntity.getOrderedItems();
         Type listType = new TypeToken<ArrayList<OrderCreationDetailsJson>>() {
         }.getType();
@@ -139,7 +136,7 @@ public class OrderedService {
 
 
     public List<OrderDetailsListViewModel> getOrderDetailsListViewModels(String cartonbookGuid) {
-        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(cartonbookGuid);
+        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(cartonbookGuid);
         String orderedItems = orderEntity.getOrderedItems();
         Type listType = new TypeToken<ArrayList<OrderCreationDetailsJson>>() {
         }.getType();
@@ -155,7 +152,7 @@ public class OrderedService {
 
 
     public List<CartonDetailsJson> getCartonDetailsJson(String cartonbookGuid){
-        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(cartonbookGuid);
+        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(cartonbookGuid);
        String orderItems =  orderEntity.getOrderedItems();
         List<OrderCreationDetailsJson>  orderCreationDetailsJsons =  getOrderedItems(orderItems);
         List<CartonDetailsEntity> cartonDetailsEntityList =  cartonbookDao.getCartonDetailsList(orderEntity);
@@ -192,8 +189,8 @@ public class OrderedService {
     }
 
 
-    public boolean saveProductDetails(String orderGuid,List<CartonDetailsJson> cartonDetailsJsonList,String view){
-        OrderEntity orderEntity = cartonbookDao.getCartonBookEntityByGuid(orderGuid);
+    public boolean saveProductDetails(String orderGuid,List<CartonDetailsJson> cartonDetailsJsonList,OrderStatus orderStatus){
+        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
         boolean isEdited = false;
        for(CartonDetailsJson cartonDetailsJson : cartonDetailsJsonList){
            CartonDetailsEntity cartonDetailsEntity =  cartonbookDao.getCartonDetailsEntity(cartonDetailsJson.getCartonGuid());
@@ -228,7 +225,7 @@ public class OrderedService {
             orderEntity.setSync(false);
             orderEntity.setCartonCounts(cartonDetailsJsonList.size()+"");
             orderEntity.setLastModifiedDate(System.currentTimeMillis());
-            orderEntity.setOrderStatus(OrderStatus.PACKING);
+            orderEntity.setOrderStatus(orderStatus);
 
             cartonbookDao.updateCortonbookEntity(orderEntity);
         }
@@ -240,6 +237,61 @@ public class OrderedService {
         for(OrderDetailsListViewModel orderDetailsListViewModel : orderDetailsListViewModelList){
             calcAvailableCount(orderDetailsListViewModel,cartonDetailsJsonsList);
         }
+    }
+
+    public boolean checkAvailability(List<CartonDetailsJson> cartonDetailsJsonsList,String orderGuid){
+        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+        String orderItems = orderEntity.getOrderedItems();
+        List<OrderCreationDetailsJson> creationDetailsJsonList =  getOrderedItems(orderItems);
+       // List<ProductDetailsEntity> productDetailsEntityList = cartonbookDao.getProductEntityList(orderEntity);
+        int oneSizeOrder = 0;
+        int xsOrder = 0;
+        int sOrder = 0;
+        int mOrder = 0;
+        int lOrder = 0;
+        int xlOrder = 0;
+        int xxlOrder = 0;
+        int xxxlOrder = 0;
+        for(OrderCreationDetailsJson orderCreationDetailsJson : creationDetailsJsonList){
+            oneSizeOrder = oneSizeOrder + intValueOf(orderCreationDetailsJson.getOneSize());
+            xsOrder = xsOrder + intValueOf(orderCreationDetailsJson.getXs());
+            sOrder = sOrder + intValueOf(orderCreationDetailsJson.getS());
+            mOrder = mOrder + intValueOf(orderCreationDetailsJson.getM());
+            lOrder = lOrder + intValueOf(orderCreationDetailsJson.getL());
+            xlOrder = xlOrder + intValueOf(orderCreationDetailsJson.getXl());
+            xxlOrder = xxlOrder + intValueOf(orderCreationDetailsJson.getXxl());
+            xxxlOrder = xxxlOrder + intValueOf(orderCreationDetailsJson.getXxxl());
+        }
+        int totalOrder = oneSizeOrder + xsOrder + sOrder + mOrder + lOrder + xlOrder +xxlOrder + xxxlOrder;
+
+        int oneSizeCaptured = 0;
+        int xsCaptured = 0;
+        int sCaptured = 0;
+        int mCaptured = 0;
+        int lCaptured = 0;
+        int xlCaptured = 0;
+        int xxlCaptured = 0;
+        int xxxlCaptured = 0;
+
+
+
+
+        for(CartonDetailsJson cartonDetailsJson : cartonDetailsJsonsList) {
+            List<OrderDetailsListViewModel> orderDetailsListViewModelList = cartonDetailsJson.getOrderDetailsListViewModels();
+            for (OrderDetailsListViewModel detailsListViewModel : orderDetailsListViewModelList) {
+                oneSizeCaptured = oneSizeCaptured + intValueOf(detailsListViewModel.getProductOneSize());
+                xsCaptured = xsCaptured + intValueOf(detailsListViewModel.getProductXS());
+                sCaptured = sCaptured + intValueOf(detailsListViewModel.getProductS());
+                mCaptured = mCaptured + intValueOf(detailsListViewModel.getProductM());
+                lCaptured = lCaptured + intValueOf(detailsListViewModel.getProductL());
+                xlCaptured = xlCaptured + intValueOf(detailsListViewModel.getProductXl());
+                xxlCaptured = xxlCaptured + intValueOf(detailsListViewModel.getProductXxl());
+                xxxlCaptured = xxxlCaptured + intValueOf(detailsListViewModel.getProductXxxl());
+            }
+        }
+
+        int totalCaptured = oneSizeCaptured + xsCaptured + sCaptured + mCaptured + lCaptured + xlCaptured +xxlCaptured + xxxlCaptured;
+        return  totalCaptured  != totalOrder;
     }
 
 

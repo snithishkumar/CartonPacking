@@ -86,14 +86,14 @@ public class CartonbookDao {
 
     public List<ProductDetailsEntity> getProductEntityList(OrderEntity orderEntity) {
         try {
-           // return productDao.queryBuilder().where().eq(ProductDetailsEntity.PRODICT_ID,orderEntity).query();
+            return productDao.queryBuilder().where().eq(ProductDetailsEntity.ORDER_ENTITY,orderEntity).query();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new ArrayList<>();
     }
 
-    public OrderEntity getCartonBookEntityByGuid(String cartonbookGuid) {
+    public OrderEntity getOrderEntityByGuid(String cartonbookGuid) {
         try {
             return orderDao.queryBuilder().where().eq(OrderEntity.ORDER_GUID, cartonbookGuid).queryForFirst();
         } catch (Exception e) {

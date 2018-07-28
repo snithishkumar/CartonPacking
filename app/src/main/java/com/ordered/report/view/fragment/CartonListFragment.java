@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ordered.report.R;
@@ -28,6 +29,10 @@ public class CartonListFragment extends Fragment {
     private OrderDetailsActivity orderDetailsActivity;
     TextView remaningCartonCount = null;
 
+    LinearLayout inProgressFooter = null;
+    LinearLayout completedFooter = null;
+
+
     public CartonListFragment(){
 
     }
@@ -45,7 +50,8 @@ public class CartonListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_carton_list, container, false);
         remaningCartonCount = view.findViewById(R.id.remaning_carton_count);
-
+        inProgressFooter = view.findViewById(R.id.carton_footer_bar);
+        completedFooter = view.findViewById(R.id.packing_list_complete_footer);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.carton_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -58,9 +64,23 @@ public class CartonListFragment extends Fragment {
         //ProductNameListAdapter productNameListAdapter = new ProductNameListAdapter(orderDetailsActivity,orderDetailsListViewModels);
         recyclerView.setAdapter(cartonListAdapter);
 
-
+        checkAvailability();
         return view;
     }
+
+
+    private void checkAvailability(){
+        boolean res = orderDetailsActivity.getOrderedService().checkAvailability(orderDetailsActivity.getCartonDetailsJsonList(),orderDetailsActivity.getOrderGuid());
+        if(res){
+            inProgressFooter.setVisibility(View.VISIBLE);
+            completedFooter.setVisibility(View.GONE);
+        }else{
+            inProgressFooter.setVisibility(View.GONE);
+            completedFooter.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //checkAvailability
 
     @Override
     public void onAttach(Context context) {
