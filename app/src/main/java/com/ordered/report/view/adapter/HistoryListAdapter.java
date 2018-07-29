@@ -67,23 +67,18 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
            final DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsEntities.get(position);
 
            holder.deliverId.setText(deliveryDetailsEntity.getDeliveryId());
-           OrderEntity orderEntity = deliveryDetailsEntity.getOrderEntity();
-           if(orderEntity != null){
-               holder.orderTitle.setText(orderEntity.getOrderId());
-               holder.clientName.setText(orderEntity.getClientName());
-               holder.createdBy.setText(orderEntity.getCreatedBy());
-               int orderCount = getOrderItemsCount(orderEntity);
-               holder.orderItemsCount.setText(String.valueOf(orderCount));
+           holder.deliverType.setText(deliveryDetailsEntity.getDeliveringType().toString());
+           holder.totalOrderCount.setText("100");
+           holder.totalCartonCount.setText("250");
+           holder.totalProductCount.setText("4000");
+           holder.placeOfLoading.setText(deliveryDetailsEntity.getPlaceOfLoading());
+           holder.placeOfDelivery.setText(deliveryDetailsEntity.getPlaceOfDelivery());
+           holder.placeOfDischarge.setText(deliveryDetailsEntity.getPortOfDischarge());
+           holder.createdOn.setText(deliveryDetailsEntity.getDeliveryId());
+           holder.modifiedOn.setText(deliveryDetailsEntity.getDeliveryId());
 
-               holder.reportPopUp.setVisibility(View.VISIBLE);
-               holder.createdDate.setText(formatDate(orderEntity.getOrderedDate()));
-               holder.orderImage.setImageResource(R.drawable.delivery_icon_1x);
-               String date = null;
-               if (orderEntity.getOrderedDate() != 0) {
-                   date = Utils.convertMiliToDate(new Date(Long.valueOf(orderEntity.getOrderedDate())));
-                   //   holder.productColor.setText(date);
-               }
-           }
+
+
 
        }
 
@@ -224,31 +219,44 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public class DeliveredListViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView orderTitle;
         public TextView deliverId;
-        public TextView clientName;
-        public TextView createdDate;
-        public TextView createdBy;
-        public TextView orderItemsCount;
-        public TextView report;
-        public ImageView orderImage;
+        public TextView deliverType;
+        public TextView totalOrderCount;
+        public TextView totalCartonCount;
+        public TextView totalProductCount;
+        public TextView placeOfLoading;
+        public TextView placeOfDelivery;
+        public TextView placeOfDischarge;
+        public TextView createdOn;
+        public TextView modifiedOn;
         public View view;
-        public ImageView reportPopUp;
 
 
 
         public DeliveredListViewHolder(View itemView) {
             super(itemView);
             view = itemView;
-            orderTitle = (TextView) itemView.findViewById(R.id.ordered_list_order_id);
-            deliverId = itemView.findViewById(R.id.ordered_list_deliver_id);
-            clientName = (TextView) itemView.findViewById(R.id.ordered_list_client_name);
-            createdDate = (TextView) itemView.findViewById(R.id.ordered_list_order_date);
-            createdBy = (TextView) itemView.findViewById(R.id.ordered_list_created_by);
-            orderItemsCount = (TextView) itemView.findViewById(R.id.ordered_list_ordered_items);
-            orderImage = (ImageView) itemView.findViewById(R.id.order_image);
-            reportPopUp = itemView.findViewById(R.id.ordered_list_reports);
-            reportPopUp.setOnClickListener(new View.OnClickListener() {
+            //report_list_deliver_id
+            //report_list_type
+            //report_list_order_count
+            //report_list_carton_count
+            //report_list_prod_count
+            //report_list_place_of_loading
+            //report_list_place_of_delivery
+            //report_list_port_of_discharge
+            //report_list_created_on
+            //report_list_lastmodified_val
+            deliverId = (TextView) itemView.findViewById(R.id.report_list_deliver_id);
+            deliverType = itemView.findViewById(R.id.report_list_type);
+            totalOrderCount = (TextView) itemView.findViewById(R.id.report_list_order_count);
+            totalCartonCount = (TextView) itemView.findViewById(R.id.report_list_carton_count);
+            totalProductCount = (TextView) itemView.findViewById(R.id.report_list_prod_count);
+            placeOfLoading = (TextView) itemView.findViewById(R.id.report_list_place_of_loading);
+            placeOfDelivery = (TextView) itemView.findViewById(R.id.report_list_place_of_delivery);
+            placeOfDischarge = (TextView) itemView.findViewById(R.id.report_list_port_of_discharge);
+            createdOn = (TextView) itemView.findViewById(R.id.report_list_created_on);
+            modifiedOn = (TextView) itemView.findViewById(R.id.report_list_lastmodified_val);
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     showPopup(view,deliveryDetailsEntities.get(getAdapterPosition()));

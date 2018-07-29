@@ -341,13 +341,13 @@ public class CartonbookDao {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new ArrayList<>();
     }
 
 
     public List<DeliveryDetailsEntity> getDeliveryDetailsEntity(OrderEntity orderEntity){
         try {
-            return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.ORDER_ID, orderEntity).query();
+            //return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.ORDER_ID, orderEntity).query();
             //return orderDao.queryBuilder().query();
         } catch (Exception e) {
             e.printStackTrace();
