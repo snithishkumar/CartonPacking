@@ -3,6 +3,8 @@ package com.ordered.report.services;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.ordered.report.SyncAdapter.SyncServiceApi;
 import com.ordered.report.dao.CartonbookDao;
@@ -361,6 +363,7 @@ public class OrderedService {
     public void addDelivery(List<Integer> cartonsIds, int deliveryId, Status status){
         try{
            DeliveryDetailsEntity deliveryDetailsEntity =  cartonbookDao.getDeliveryDetailsEntity(deliveryId);
+            JsonArray orderGuids = new JsonArray();
            for(Integer cartonsId : cartonsIds){
                CartonDetailsEntity cartonDetailsEntity = cartonbookDao.getCartonDetailsEntity(cartonsId);
                cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
@@ -370,8 +373,17 @@ public class OrderedService {
                cartonDetailsEntity.getOrderEntity().setLastModifiedDate(cartonDetailsEntity.getLastModifiedTime());
                cartonDetailsEntity.getOrderEntity().setSync(false);
                cartonbookDao.updateCortonbookEntity(cartonDetailsEntity.getOrderEntity());
+               orderGuids.add(cartonDetailsEntity.getOrderEntity().getOrderGuid());
 
            }
+            String orderIds = deliveryDetailsEntity.getOrderGuids();
+            JsonParser jsonParser = new JsonParser();
+           if(orderIds != null){
+             JsonArray jsonArray =   (JsonArray)jsonParser.parse(orderIds);
+               orderGuids.addAll(jsonArray);
+           }
+
+            deliveryDetailsEntity.setOrderGuids(orderGuids.getAsString());
             deliveryDetailsEntity.setStatus(status);
             deliveryDetailsEntity.setLastModifiedDateTime(System.currentTimeMillis());
             deliveryDetailsEntity.setSync(false);

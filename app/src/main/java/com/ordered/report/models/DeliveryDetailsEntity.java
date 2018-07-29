@@ -14,8 +14,8 @@ public class DeliveryDetailsEntity {
 
     public static final String DELIVERY_DETAILS_ID = "DeliveryDetailsId";
     public static final String DELIVERY_UUID = "DeliveryUUID";
-    public static final String ORDER_ID = "OrderId";
     public static final String STATUS = "Status";
+    public static final String ORDER_GUIDS = "OrderGuids";
     public static final String LAST_MODIFIED_DATE_TIME = "LastModifiedDateTime";
     public static final String IS_SYNC = "IsSync";
 
@@ -47,6 +47,16 @@ public class DeliveryDetailsEntity {
     @DatabaseField(columnName = "IsSync")
     private boolean isSync;
 
+    @DatabaseField(columnName = "OrderGuids",dataType = DataType.LONG_STRING)
+    private String orderGuids;
+
+    public String getOrderGuids() {
+        return orderGuids;
+    }
+
+    public void setOrderGuids(String orderGuids) {
+        this.orderGuids = orderGuids;
+    }
 
     public Status getStatus() {
         return status;
@@ -147,6 +157,10 @@ public class DeliveryDetailsEntity {
                 ", placeOfLoading='" + placeOfLoading + '\'' +
                 ", placeOfDelivery='" + placeOfDelivery + '\'' +
                 ", portOfDischarge='" + portOfDischarge + '\'' +
+                ", status=" + status +
+                ", lastModifiedDateTime=" + lastModifiedDateTime +
+                ", isSync=" + isSync +
+                ", orderGuids='" + orderGuids + '\'' +
                 '}';
     }
 }
