@@ -202,6 +202,7 @@ public class OrderedService {
                cartonDetailsEntity.setLastModifiedBy(cartonDetailsJson.getLastModifiedBy());
                cartonDetailsEntity.setLastModifiedTime(cartonDetailsJson.getLastModifiedTime());
                cartonDetailsEntity.setTotalWeight(cartonDetailsJson.getTotalWeight());
+               cartonbookDao.updateCartonDetailsEntity(cartonDetailsEntity);
            }
            List<OrderDetailsListViewModel> orderDetailsListViewModels = cartonDetailsJson.getOrderDetailsListViewModels();
            for(OrderDetailsListViewModel orderDetailsListViewModel : orderDetailsListViewModels){
@@ -225,7 +226,7 @@ public class OrderedService {
             orderEntity.setSync(false);
             orderEntity.setCartonCounts(cartonDetailsJsonList.size()+"");
             orderEntity.setLastModifiedDate(System.currentTimeMillis());
-            orderEntity.setOrderStatus(orderStatus);
+            orderEntity.setOrderStatus(OrderStatus.PACKING);
 
             cartonbookDao.updateCortonbookEntity(orderEntity);
         }

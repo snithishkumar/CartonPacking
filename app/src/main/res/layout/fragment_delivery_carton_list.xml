@@ -9,7 +9,6 @@
 
     <ListView
         android:id="@+id/delivery_carton_list"
-        android:layout_margin="10dp"
         tools:listitem="@layout/adapter_carton_list_deliver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -20,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/delivery_carton_list"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="75dp"
+        android:layout_marginRight="10dp"
         app:elevation="4dp"
         android:src="@drawable/move_48" />
 

@@ -68,6 +68,7 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             holder.cartonCreatedBy.setText(cartonItemModel.getCreatedBy());
             holder.cartonCreatedDate.setText(formatDate(cartonItemModel.getCreatedDateTime()));
+            holder.cartonShippingStatus.setVisibility(View.INVISIBLE);
             if(orderDetailsActivity.getView().equals(Constants.VIEW_PACKING)){
                 holder.packingLayout.setVisibility(View.VISIBLE);
                 if(cartonItemModel.getTotalWeight() == null || cartonItemModel.getTotalWeight().trim().isEmpty() || cartonItemModel.getTotalWeight().equals("0")){

@@ -51,8 +51,8 @@ public class DeliveryCartonListAdapter extends ArrayAdapter<CartonDetailsEntity>
             viewHolder.cartonTotalWeights =  convertView.findViewById(R.id.packing_order_delivery_total_weights);
             viewHolder.orderId = convertView.findViewById(R.id.delivery_carton_list_order_id);
             viewHolder.cartonCreatedDate =  convertView.findViewById(R.id.packing_order_delivery_last_modified_time);
-            final RadioButton radioButton = viewHolder.cartonNumber;
-            radioButton.setChecked(false);
+           /* final RadioButton radioButton = viewHolder.cartonNumber;
+            radioButton.setChecked(true);*/
             convertView.setTag(viewHolder);
 
         } else {

@@ -161,10 +161,18 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
     private boolean flag = false;
 
 
+
+
+
     public void onClick(View view){
         switch (view.getId()){
             case R.id.carton_footer_add:
-                showCartonNumberPickerFragment();
+                if(totalNoOfCartons != null && Integer.valueOf(totalNoOfCartons)  == cartonDetailsJsonList.size()){
+                    showCartonCountAlert();
+                }else{
+                    showCartonNumberPickerFragment();
+                }
+
                 break;
 
             case R.id.carton_footer_done:
@@ -210,6 +218,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
                 int pos = cartonDetailsJsonList.indexOf(cartonDetailsJson);
                 if(pos != -1){
                     cartonDetailsJson = cartonDetailsJsonList.get(pos);
+                    if(cartonDetailsJson.getDeliverDetailsGuid() != null){
+                        Toast.makeText(this,"This Carton has already delivered. Please try another carton",Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }else{
                     getCartonDetailsJsonList().add(cartonDetailsJson);
                 }
@@ -347,6 +359,34 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         alertDialog.show();
     }
 
+
+
+    private void showCartonCountAlert(){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Info");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("You have reached max number of cartons. Are you sure want to add one more carton?");
+//            alertDialog.setIcon(R.drawable.tick);
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                totalNoOfCartons =  String.valueOf(Integer.valueOf(totalNoOfCartons) + 1);
+                showCartonNumberPickerFragment();
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
