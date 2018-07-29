@@ -86,6 +86,19 @@ public class OrderedService {
     }
 
 
+    public List<OrderEntity> getDeliveryOrdersList(){
+        List<OrderEntity> orderList = new ArrayList<>();
+        List<OrderEntity> orderEntityList = cartonbookDao.getPackingOrders();
+        for(OrderEntity orderEntity : orderEntityList){
+            List<CartonDetailsEntity> detailsEntities =  cartonbookDao.getUnDeliveredCartonDetailsList(orderEntity);
+            if(detailsEntities.size() > 0){
+                orderList.add(orderEntity);
+            }
+        }
+        return orderList;
+    }
+
+
     public List<DeliveryDetailsEntity> getDeliveredOrdersList(){
         return cartonbookDao.getDeliveryDetailsEntity();
     }

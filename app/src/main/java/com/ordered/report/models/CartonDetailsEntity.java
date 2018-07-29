@@ -14,6 +14,7 @@ public class CartonDetailsEntity {
     public static final String CARTON_GUID = "CartonGuid";
     public static final String ORDER_ENTITY = "OrderId";
     public static final String DELIVERY_DETAILS_ENTITY = "DeliveryDetailsId";
+    public static final String TOTAL_WEIGHT = "TotalWeight";
 
     @DatabaseField(columnName = "CartonId", generatedId = true)
     private int cartonId;

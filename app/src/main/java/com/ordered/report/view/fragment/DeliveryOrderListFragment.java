@@ -3,6 +3,7 @@ package com.ordered.report.view.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,12 +47,18 @@ public class DeliveryOrderListFragment extends Fragment {
         this.orderEntityList.addAll(orderEntityList);
         mAdapter = new DeliveryOrderListAdapter(getActivity(), this.orderEntityList);
         recyclerView.setAdapter(mAdapter);
+        if(orderEntityList.size() == 0){
+            FloatingActionButton floatingActionButton =  view.findViewById(R.id.delivery_order_complete);
+            floatingActionButton.setVisibility(View.INVISIBLE);
+        }
+
+        //delivery_order_complete
         return view;
     }
 
 
     public List<OrderEntity> getOrderedCartonBookList() {
-        List<OrderEntity> cartonbookEntities = orderedService.getPackingOrdersList();
+        List<OrderEntity> cartonbookEntities = orderedService.getDeliveryOrdersList();
         return cartonbookEntities;
     }
 
