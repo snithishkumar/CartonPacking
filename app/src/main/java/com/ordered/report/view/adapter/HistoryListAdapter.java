@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -68,9 +69,24 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
            holder.deliverId.setText(deliveryDetailsEntity.getDeliveryId());
            holder.deliverType.setText(deliveryDetailsEntity.getDeliveringType().toString());
-           holder.totalOrderCount.setText("100");
-           holder.totalCartonCount.setText("250");
-           holder.totalProductCount.setText("4000");
+
+
+           String orderGuids = deliveryDetailsEntity.getOrderGuids();
+           int totalOrderCount = 0;
+           if(orderGuids != null){
+               JsonParser jsonParser = new JsonParser();
+               JsonArray orderGuidsOrderList = (JsonArray)jsonParser.parse(orderGuids);
+               totalOrderCount = orderGuidsOrderList.size();
+           }
+
+           Map<String,Long> countDetails =  homeActivity.getOrderedService().getCartonCount(deliveryDetailsEntity);
+
+           String cartonCounts = String.valueOf(countDetails.get("cartonCounts"));
+           String productCounts = String.valueOf(countDetails.get("productCounts"));
+
+           holder.totalOrderCount.setText(String.valueOf(totalOrderCount));
+           holder.totalCartonCount.setText(cartonCounts);
+           holder.totalProductCount.setText(productCounts);
            holder.placeOfLoading.setText(deliveryDetailsEntity.getPlaceOfLoading());
            holder.placeOfDelivery.setText(deliveryDetailsEntity.getPlaceOfDelivery());
            holder.placeOfDischarge.setText(deliveryDetailsEntity.getPortOfDischarge());

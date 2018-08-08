@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ordered.report.R;
 import com.ordered.report.enumeration.Status;
@@ -83,8 +84,15 @@ public class DeliveryListActivity extends AppCompatActivity implements DeliveryO
                 break;
 
             case R.id.move_report:
-                orderedService.addDelivery(selectedCartonList,deliveryId,Status.COMPLETED);
-                finish();
+                if(selectedCartonList.size() > 0){
+                    orderedService.addDelivery(selectedCartonList,deliveryId,Status.COMPLETED);
+                    finish();
+                }else{
+                    Toast.makeText(this,"Carton list not selected.",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+
                 break;
         }
     }

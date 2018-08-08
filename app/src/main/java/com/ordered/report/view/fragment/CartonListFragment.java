@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.ordered.report.R;
 import com.ordered.report.json.models.CartonDetailsJson;
+import com.ordered.report.utils.Constants;
 import com.ordered.report.view.activity.OrderDetailsActivity;
 import com.ordered.report.view.adapter.CartonListAdapter;
 import com.ordered.report.view.adapter.ProductNameListAdapter;
@@ -63,8 +64,10 @@ public class CartonListFragment extends Fragment {
         CartonListAdapter  cartonListAdapter = new CartonListAdapter(orderDetailsActivity,orderDetailsActivity.getCartonDetailsJsonList());
         //ProductNameListAdapter productNameListAdapter = new ProductNameListAdapter(orderDetailsActivity,orderDetailsListViewModels);
         recyclerView.setAdapter(cartonListAdapter);
+        if(!orderDetailsActivity.getView().equals(Constants.VIEW_ORDER)){
+            checkAvailability();
+        }
 
-        checkAvailability();
         return view;
     }
 

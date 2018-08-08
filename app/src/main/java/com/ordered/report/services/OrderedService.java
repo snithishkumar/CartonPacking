@@ -106,6 +106,11 @@ public class OrderedService {
     }
 
 
+    public List<DeliveryDetailsEntity> getCompletedDeliveryDetailsEntity(){
+        return cartonbookDao.getCompletedDeliveryDetailsEntity();
+    }
+
+
     public List<CartonDetailsEntity> getCartonDetailsEntities(int deliveryId){
         DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(deliveryId);
         return  cartonbookDao.getCartonDetailsList(deliveryDetailsEntity);
@@ -378,10 +383,10 @@ public class OrderedService {
            }
             String orderIds = deliveryDetailsEntity.getOrderGuids();
             JsonParser jsonParser = new JsonParser();
-           if(orderIds != null){
+            if(orderIds != null){
              JsonArray jsonArray =   (JsonArray)jsonParser.parse(orderIds);
                orderGuids.addAll(jsonArray);
-           }
+            }
 
             deliveryDetailsEntity.setOrderGuids(orderGuids.getAsString());
             deliveryDetailsEntity.setStatus(status);
@@ -391,6 +396,20 @@ public class OrderedService {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    public Map<String,Long> getCartonCount(DeliveryDetailsEntity deliveryDetailsEntity){
+        List<CartonDetailsEntity> cartonDetailsEntities =  cartonbookDao.getCartonDetailsList(deliveryDetailsEntity);
+        long productCounts = 0;
+        for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntities){
+            productCounts = productCounts + cartonbookDao.getProductDetailsCount(cartonDetailsEntity);
+        }
+        long cartonCounts= cartonDetailsEntities.size();
+        Map<String,Long> countDetails = new HashMap<>();
+        countDetails.put("productCounts",productCounts);
+        countDetails.put("cartonCounts",cartonCounts);
+        return countDetails;
     }
 
     private int intValueOf(String value){

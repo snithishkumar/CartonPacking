@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.ordered.report.R;
 import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.utils.Constants;
@@ -59,6 +61,8 @@ public class DeliveryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.placeOfDelivery.setText(deliveryDetailsEntity.getPlaceOfDelivery());
             holder.placeOfLoading.setText(deliveryDetailsEntity.getPlaceOfLoading());
             holder.portOfDischarge.setText(deliveryDetailsEntity.getPortOfDischarge());
+
+
 
             holder.createdBy.setText("admin");
 

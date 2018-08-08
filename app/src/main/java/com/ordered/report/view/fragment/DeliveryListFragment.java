@@ -87,6 +87,7 @@ public class DeliveryListFragment extends Fragment {
     @Override
     public void onResume(){
         AppBus.getInstance().register(this);
+        orderResponse(null);
         super.onResume();
     }
 

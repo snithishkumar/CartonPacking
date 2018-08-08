@@ -7,6 +7,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.ordered.report.db.DatabaseHelper;
 import com.ordered.report.enumeration.OrderStatus;
+import com.ordered.report.enumeration.Status;
 import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.ClientDetailsEntity;
 import com.ordered.report.models.DeliveryDetailsEntity;
@@ -256,6 +257,19 @@ public class CartonbookDao {
 
 
 
+    public long getProductDetailsCount(CartonDetailsEntity cartonDetailsEntity){
+        try{
+            QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
+            queryBuilder.where().eq(ProductDetailsEntity.CARTON_NUMBER, cartonDetailsEntity);
+            return queryBuilder.countOf();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+
 
 
 
@@ -336,8 +350,19 @@ public class CartonbookDao {
 
     public List<DeliveryDetailsEntity> getDeliveryDetailsEntity(){
         try {
-            return deliveryDetailsDao.queryForAll();
-            //return orderDao.queryBuilder().query();
+           // return deliveryDetailsDao.queryForAll();
+            return deliveryDetailsDao.queryBuilder().where().ne(DeliveryDetailsEntity.STATUS, Status.COMPLETED).query();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
+    public List<DeliveryDetailsEntity> getCompletedDeliveryDetailsEntity(){
+        try {
+             return deliveryDetailsDao.queryForAll();
+           // return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.STATUS, Status.COMPLETED).query();
         } catch (Exception e) {
             e.printStackTrace();
         }

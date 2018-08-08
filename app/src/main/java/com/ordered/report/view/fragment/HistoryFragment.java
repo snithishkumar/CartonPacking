@@ -83,7 +83,7 @@ public class HistoryFragment extends Fragment {
     }
 
     public List<DeliveryDetailsEntity> getDeliveredOrdersList() {
-        return orderedService.getDeliveredOrdersList();
+        return orderedService.getCompletedDeliveryDetailsEntity();
     }
 
 
