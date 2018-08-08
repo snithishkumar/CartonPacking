@@ -387,8 +387,8 @@ public class OrderedService {
              JsonArray jsonArray =   (JsonArray)jsonParser.parse(orderIds);
                orderGuids.addAll(jsonArray);
             }
-
-            deliveryDetailsEntity.setOrderGuids(orderGuids.getAsString());
+            String orderGuidsTemp = orderGuids.toString();
+            deliveryDetailsEntity.setOrderGuids(orderGuidsTemp);
             deliveryDetailsEntity.setStatus(status);
             deliveryDetailsEntity.setLastModifiedDateTime(System.currentTimeMillis());
             deliveryDetailsEntity.setSync(false);

@@ -72,7 +72,7 @@ public class PdfServiceReport {
             gson = new Gson();
             cartonbookDao = new CartonbookDao(context);
             this.homeActivity = (HomeActivity)context;
-this.deliveryDetailsEntity = deliveryDetailsEntity;
+            this.deliveryDetailsEntity = deliveryDetailsEntity;
         }catch (Exception e){
             e.printStackTrace();
         }

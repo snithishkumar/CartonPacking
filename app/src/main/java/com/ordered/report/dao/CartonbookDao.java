@@ -351,7 +351,7 @@ public class CartonbookDao {
     public List<DeliveryDetailsEntity> getDeliveryDetailsEntity(){
         try {
            // return deliveryDetailsDao.queryForAll();
-            return deliveryDetailsDao.queryBuilder().where().ne(DeliveryDetailsEntity.STATUS, Status.COMPLETED).query();
+            return deliveryDetailsDao.queryBuilder().where().ne(DeliveryDetailsEntity.STATUS, Status.COMPLETED).or().isNull(DeliveryDetailsEntity.STATUS).query();
         } catch (Exception e) {
             e.printStackTrace();
         }

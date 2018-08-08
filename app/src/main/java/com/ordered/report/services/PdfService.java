@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -83,12 +85,18 @@ public class PdfService {
 
 
     public CartonInvoiceSummary getCartonInvoiceSummary(DeliveryDetailsEntity deliveryDetailsEntity) {
-        String orderDetails = "";//deliveryDetailsEntity.getOrderEntity().getOrderedItems();
+       String orderGuids =  deliveryDetailsEntity.getOrderGuids();
+        JsonParser jsonParser = new JsonParser();
+        JsonArray  orderGuidsList = (JsonArray)jsonParser.parse(orderGuids);
+       String orderGuid =  orderGuidsList.get(0).getAsString();
+       OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+
+        String orderDetails = orderEntity.getOrderedItems();
         Type listType = new TypeToken<List<OrderCreationDetailsJson>>() {
         }.getType();
         List<OrderCreationDetailsJson> cottonItemEntities = gson.fromJson(orderDetails, listType);
         InvoiceReportJson invoiceReportJson = new InvoiceReportJson();
-        List<CartonDetailsEntity> cartonDetailsEntities = cartonbookDao.getCartonDetailsList(deliveryDetailsEntity.getOrderEntity(),deliveryDetailsEntity);
+        List<CartonDetailsEntity> cartonDetailsEntities = cartonbookDao.getCartonDetailsList(orderEntity,deliveryDetailsEntity);
         List<ProductDetailsEntity> categoryNamesList = cartonbookDao.getCategoryList(cartonDetailsEntities);
 
         for(ProductDetailsEntity categoryName : categoryNamesList){
@@ -124,15 +132,15 @@ public class PdfService {
 
         }
 
-       ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(deliveryDetailsEntity.getOrderEntity());
+       ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
 
         String clientAddress = clientDetailsEntity.getExporterDetails();
         CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();
         cartonInvoiceSummary.setInvoiceReportJson(invoiceReportJson);
-        cartonInvoiceSummary.setCartonCount(Integer.parseInt(deliveryDetailsEntity.getOrderEntity().getCartonCounts()));
+        cartonInvoiceSummary.setCartonCount(Integer.parseInt(orderEntity.getCartonCounts()));
         cartonInvoiceSummary.setExporterAddress("Exporter\n "+clientDetailsEntity.getExporterDetails());
         cartonInvoiceSummary.setConsigneAddress("Consignee\n" + clientAddress);
-        cartonInvoiceSummary.setOrderNo("Buyer Order No.& Date\n" + "ORDER No:"+deliveryDetailsEntity.getOrderEntity().getOrderId()+"\n Date:"+UtilService.formatDateTime(deliveryDetailsEntity.getOrderEntity().getOrderedDate()));
+        cartonInvoiceSummary.setOrderNo("Buyer Order No.& Date\n" + "ORDER No:"+orderEntity.getOrderId()+"\n Date:"+UtilService.formatDateTime(orderEntity.getOrderedDate()));
         cartonInvoiceSummary.setTermsAndConditions("Terms of Delivery and payment\t\n" + "Accept");
         cartonInvoiceSummary.setTintNo("TIN NO. \t" + clientDetailsEntity.getTinNumber());
         cartonInvoiceSummary.setVessels("Vessel/Flight No.\n" + deliveryDetailsEntity.getDeliveringType().toString());
@@ -286,7 +294,7 @@ public class PdfService {
             insertCell(cartonTable, "Rate \n GBP", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
             insertCell(cartonTable, "Amount \nGBP ", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
             cartonTable.setHeaderRows(1);
-           InvoiceReportJson invoiceReportJson = cartonInvoiceSummary.getInvoiceReportJson();
+            InvoiceReportJson invoiceReportJson = cartonInvoiceSummary.getInvoiceReportJson();
             List<InvoiceReportCategoryDetailsJson> invoiceReportCategoryDetailsJsons =  invoiceReportJson.getInvoiceReportCategoryDetailsJsons();
 
             PdfPCell cartoncelx = getInsertCell("Carton 0 - " + cartonInvoiceSummary.getCartonCount(), Element.ALIGN_LEFT, 5, bf12);
