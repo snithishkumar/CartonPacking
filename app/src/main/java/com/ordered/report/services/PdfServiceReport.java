@@ -11,6 +11,8 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -80,22 +82,37 @@ public class PdfServiceReport {
     }
 
     public CartonInvoiceSummary getCartonInvoiceSummary() {
-       clientDetailsEntity = cartonbookDao.getClientDetailsEntity(deliveryDetailsEntity.getOrderEntity());
+        List<CartonInvoiceSummary> cartonInvoiceSummaryList = new ArrayList<>();
 
 
-        String clientAddress = clientDetailsEntity.getExporterDetails();
-        CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();
-        cartonInvoiceSummary.setCartonCount(Integer.parseInt(deliveryDetailsEntity.getOrderEntity().getCartonCounts()));
+        String orderGuids =  deliveryDetailsEntity.getOrderGuids();
+        JsonParser jsonParser = new JsonParser();
+        JsonArray orderGuidsList = (JsonArray)jsonParser.parse(orderGuids);
+        int size = orderGuidsList.size();
+        for(int i =0; i< size; i++) {
+            String orderGuid = orderGuidsList.get(0).getAsString();
+            OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
 
-        cartonInvoiceSummary.setExporterAddress(clientDetailsEntity.getExporterDetails());
-        cartonInvoiceSummary.setConsigneAddress("Consignee\n" + clientAddress);
-        cartonInvoiceSummary.setOrderNo("Buyer Order No.& Date\n" + "ORDER No:"+deliveryDetailsEntity.getOrderEntity().getOrderId()+" \nDate:"+UtilService.formatDateTime(deliveryDetailsEntity.getOrderEntity().getOrderedDate()));
-        cartonInvoiceSummary.setTermsAndConditions("Terms of Delivery and payment\t\n" + "Accept");
-        cartonInvoiceSummary.setTintNo("TIN NO: \t" + clientDetailsEntity.getTinNumber());
-        cartonInvoiceSummary.setVessels("Vessel/Flight No.\n" + deliveryDetailsEntity.getDeliveringType().toString());
-        cartonInvoiceSummary.setExporteRef("Exporter Ref.\t\n IE CODE: 0410033006\n");
-        cartonInvoiceSummary.setInvoiceWithDate("Invoice No.& Date\t\t\n" + "CREA2342345" + "/DATE-" + UtilService.formatDateTime(new Date().getTime()));
-        return cartonInvoiceSummary;
+            clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
+
+
+            String clientAddress = clientDetailsEntity.getExporterDetails();
+            CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();
+            cartonInvoiceSummary.setCartonCount(Integer.parseInt(orderEntity.getCartonCounts()));
+
+            cartonInvoiceSummary.setExporterAddress(clientDetailsEntity.getExporterDetails());
+            cartonInvoiceSummary.setConsigneAddress("Consignee\n" + clientAddress);
+            cartonInvoiceSummary.setOrderNo("Buyer Order No.& Date\n" + "ORDER No:"+orderEntity.getOrderId()+" \nDate:"+UtilService.formatDateTime(orderEntity.getOrderedDate()));
+            cartonInvoiceSummary.setTermsAndConditions("Terms of Delivery and payment\t\n" + "Accept");
+            cartonInvoiceSummary.setTintNo("TIN NO: \t" + clientDetailsEntity.getTinNumber());
+            cartonInvoiceSummary.setVessels("Vessel/Flight No.\n" + deliveryDetailsEntity.getDeliveringType().toString());
+            cartonInvoiceSummary.setExporteRef("Exporter Ref.\t\n IE CODE: 0410033006\n");
+            cartonInvoiceSummary.setInvoiceWithDate("Invoice No.& Date\t\t\n" + "CREA2342345" + "/DATE-" + UtilService.formatDateTime(new Date().getTime()));
+            return cartonInvoiceSummary;
+
+        }
+
+
     }
 
     private void loadRowHeader(PdfPTable table,Font bfBold12 ){

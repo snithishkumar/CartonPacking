@@ -84,69 +84,74 @@ public class PdfService {
     }
 
 
-    public CartonInvoiceSummary getCartonInvoiceSummary(DeliveryDetailsEntity deliveryDetailsEntity) {
-       String orderGuids =  deliveryDetailsEntity.getOrderGuids();
+    public List<CartonInvoiceSummary> getCartonInvoiceSummary(DeliveryDetailsEntity deliveryDetailsEntity) {
+       List<CartonInvoiceSummary> cartonInvoiceSummaryList = new ArrayList<>();
+        String orderGuids =  deliveryDetailsEntity.getOrderGuids();
         JsonParser jsonParser = new JsonParser();
         JsonArray  orderGuidsList = (JsonArray)jsonParser.parse(orderGuids);
-       String orderGuid =  orderGuidsList.get(0).getAsString();
-       OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+        int size = orderGuidsList.size();
+        for(int i =0; i< size; i++){
+            String orderGuid =  orderGuidsList.get(0).getAsString();
+            OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
 
-        String orderDetails = orderEntity.getOrderedItems();
-        Type listType = new TypeToken<List<OrderCreationDetailsJson>>() {
-        }.getType();
-        List<OrderCreationDetailsJson> cottonItemEntities = gson.fromJson(orderDetails, listType);
-        InvoiceReportJson invoiceReportJson = new InvoiceReportJson();
-        List<CartonDetailsEntity> cartonDetailsEntities = cartonbookDao.getCartonDetailsList(orderEntity,deliveryDetailsEntity);
-        List<ProductDetailsEntity> categoryNamesList = cartonbookDao.getCategoryList(cartonDetailsEntities);
+            String orderDetails = orderEntity.getOrderedItems();
+            Type listType = new TypeToken<List<OrderCreationDetailsJson>>() {
+            }.getType();
+            List<OrderCreationDetailsJson> cottonItemEntities = gson.fromJson(orderDetails, listType);
+            InvoiceReportJson invoiceReportJson = new InvoiceReportJson();
+            List<CartonDetailsEntity> cartonDetailsEntities = cartonbookDao.getCartonDetailsList(orderEntity,deliveryDetailsEntity);
+            List<ProductDetailsEntity> categoryNamesList = cartonbookDao.getCategoryList(cartonDetailsEntities);
 
-        for(ProductDetailsEntity categoryName : categoryNamesList){
-            InvoiceReportCategoryDetailsJson invoiceReportCategoryDetailsJson = new InvoiceReportCategoryDetailsJson();
-            invoiceReportCategoryDetailsJson.setCategoryName(categoryName.getProductCategory());
-            invoiceReportJson.getInvoiceReportCategoryDetailsJsons().add(invoiceReportCategoryDetailsJson);
-            List<ProductDetailsEntity> productDetailsEntityList =  cartonbookDao.getProductDetailsByCategory(categoryName.getProductCategory(),cartonDetailsEntities);
-           for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList) {
-               InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson = new InvoiceReportOrderDetailsJson();
-               invoiceReportCategoryDetailsJson.getInvoiceReportOrder().add(invoiceReportOrderDetailsJson);
-               invoiceReportOrderDetailsJson.setProductName(productDetailsEntity.getProductName());
-               int quantity = parseInt(productDetailsEntity.getOneSize()) + parseInt(productDetailsEntity.getL()) +
-                       parseInt(productDetailsEntity.getM()) + parseInt(productDetailsEntity.getS()) +
-                       parseInt(productDetailsEntity.getXl()) + parseInt(productDetailsEntity.getXs()) +
-                       parseInt(productDetailsEntity.getXxl()) + parseInt(productDetailsEntity.getXxxl());
-               invoiceReportOrderDetailsJson.setQuantity(String.valueOf(quantity));
+            for(ProductDetailsEntity categoryName : categoryNamesList){
+                InvoiceReportCategoryDetailsJson invoiceReportCategoryDetailsJson = new InvoiceReportCategoryDetailsJson();
+                invoiceReportCategoryDetailsJson.setCategoryName(categoryName.getProductCategory());
+                invoiceReportJson.getInvoiceReportCategoryDetailsJsons().add(invoiceReportCategoryDetailsJson);
+                List<ProductDetailsEntity> productDetailsEntityList =  cartonbookDao.getProductDetailsByCategory(categoryName.getProductCategory(),cartonDetailsEntities);
+                for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList) {
+                    InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson = new InvoiceReportOrderDetailsJson();
+                    invoiceReportCategoryDetailsJson.getInvoiceReportOrder().add(invoiceReportOrderDetailsJson);
+                    invoiceReportOrderDetailsJson.setProductName(productDetailsEntity.getProductName());
+                    int quantity = parseInt(productDetailsEntity.getOneSize()) + parseInt(productDetailsEntity.getL()) +
+                            parseInt(productDetailsEntity.getM()) + parseInt(productDetailsEntity.getS()) +
+                            parseInt(productDetailsEntity.getXl()) + parseInt(productDetailsEntity.getXs()) +
+                            parseInt(productDetailsEntity.getXxl()) + parseInt(productDetailsEntity.getXxxl());
+                    invoiceReportOrderDetailsJson.setQuantity(String.valueOf(quantity));
 
-               OrderCreationDetailsJson orderCreationDetailsJsonTemp = new OrderCreationDetailsJson();
-               orderCreationDetailsJsonTemp.setOrderItemGuid(productDetailsEntity.getOrderItemGuid());
-               int pos = cottonItemEntities.indexOf(orderCreationDetailsJsonTemp);
-               if (pos != -1) {
-                   OrderCreationDetailsJson orderCreationDetailsJson = cottonItemEntities.get(pos);
-                   double rate = orderCreationDetailsJson.getUnitPrice();
-                   invoiceReportOrderDetailsJson.setRate(rate+"");
-                   double totalAmount = rate * quantity;
-                   invoiceReportOrderDetailsJson.setAmount(totalAmount+"");
-                   invoiceReportJson.setTotalQuantity(invoiceReportJson.getTotalQuantity() + quantity);
-                   invoiceReportJson.setTotalAmount(invoiceReportJson.getTotalAmount() + totalAmount);
-                   invoiceReportOrderDetailsJson.setAmount(String.valueOf(totalAmount));
-               }
+                    OrderCreationDetailsJson orderCreationDetailsJsonTemp = new OrderCreationDetailsJson();
+                    orderCreationDetailsJsonTemp.setOrderItemGuid(productDetailsEntity.getOrderItemGuid());
+                    int pos = cottonItemEntities.indexOf(orderCreationDetailsJsonTemp);
+                    if (pos != -1) {
+                        OrderCreationDetailsJson orderCreationDetailsJson = cottonItemEntities.get(pos);
+                        double rate = orderCreationDetailsJson.getUnitPrice();
+                        invoiceReportOrderDetailsJson.setRate(rate+"");
+                        double totalAmount = rate * quantity;
+                        invoiceReportOrderDetailsJson.setAmount(totalAmount+"");
+                        invoiceReportJson.setTotalQuantity(invoiceReportJson.getTotalQuantity() + quantity);
+                        invoiceReportJson.setTotalAmount(invoiceReportJson.getTotalAmount() + totalAmount);
+                        invoiceReportOrderDetailsJson.setAmount(String.valueOf(totalAmount));
+                    }
 
-           }
+                }
 
+            }
+
+            ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
+
+            String clientAddress = clientDetailsEntity.getExporterDetails();
+            CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();
+            cartonInvoiceSummary.setInvoiceReportJson(invoiceReportJson);
+            cartonInvoiceSummary.setCartonCount(Integer.parseInt(orderEntity.getCartonCounts()));
+            cartonInvoiceSummary.setExporterAddress("Exporter\n "+clientDetailsEntity.getExporterDetails());
+            cartonInvoiceSummary.setConsigneAddress("Consignee\n" + clientAddress);
+            cartonInvoiceSummary.setOrderNo("Buyer Order No.& Date\n" + "ORDER No:"+orderEntity.getOrderId()+"\n Date:"+UtilService.formatDateTime(orderEntity.getOrderedDate()));
+            cartonInvoiceSummary.setTermsAndConditions("Terms of Delivery and payment\t\n" + "Accept");
+            cartonInvoiceSummary.setTintNo("TIN NO. \t" + clientDetailsEntity.getTinNumber());
+            cartonInvoiceSummary.setVessels("Vessel/Flight No.\n" + deliveryDetailsEntity.getDeliveringType().toString());
+            cartonInvoiceSummary.setExporteRef("Exporter Ref.\t\n IE CODE: 0410033006\n");
+            cartonInvoiceSummary.setInvoiceWithDate("Invoice No.& Date\t\t\n" + "CREA2342345" + "/DATE-" + UtilService.formatDateTime(new Date().getTime()));
+            cartonInvoiceSummaryList.add(cartonInvoiceSummary);
         }
-
-       ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
-
-        String clientAddress = clientDetailsEntity.getExporterDetails();
-        CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();
-        cartonInvoiceSummary.setInvoiceReportJson(invoiceReportJson);
-        cartonInvoiceSummary.setCartonCount(Integer.parseInt(orderEntity.getCartonCounts()));
-        cartonInvoiceSummary.setExporterAddress("Exporter\n "+clientDetailsEntity.getExporterDetails());
-        cartonInvoiceSummary.setConsigneAddress("Consignee\n" + clientAddress);
-        cartonInvoiceSummary.setOrderNo("Buyer Order No.& Date\n" + "ORDER No:"+orderEntity.getOrderId()+"\n Date:"+UtilService.formatDateTime(orderEntity.getOrderedDate()));
-        cartonInvoiceSummary.setTermsAndConditions("Terms of Delivery and payment\t\n" + "Accept");
-        cartonInvoiceSummary.setTintNo("TIN NO. \t" + clientDetailsEntity.getTinNumber());
-        cartonInvoiceSummary.setVessels("Vessel/Flight No.\n" + deliveryDetailsEntity.getDeliveringType().toString());
-        cartonInvoiceSummary.setExporteRef("Exporter Ref.\t\n IE CODE: 0410033006\n");
-        cartonInvoiceSummary.setInvoiceWithDate("Invoice No.& Date\t\t\n" + "CREA2342345" + "/DATE-" + UtilService.formatDateTime(new Date().getTime()));
-        return cartonInvoiceSummary;
+       return cartonInvoiceSummaryList;
     }
 
 
@@ -187,7 +192,132 @@ public class PdfService {
         cartonTable.addCell(cartoncell5);
     }
 
-    public String createPdfReport(Context context, CartonInvoiceSummary cartonInvoiceSummary) {
+
+    private void populatePdf( CartonInvoiceSummary cartonInvoiceSummary,Font bfBold12,Font bf12,Font smallFornt,Document doc)throws Exception{
+        //create a paragraph
+        Paragraph paragraph = new Paragraph("");
+        Paragraph paragraph1 = new Paragraph();
+        //specify column widths
+        float[] columnWidths = {2.5f, 2.5f, 2.5f, 2.5f};
+        //create PDF table with the given widths
+        PdfPTable table = new PdfPTable(columnWidths);
+        // set table width a percentage of the page width
+        table.setWidthPercentage(100f);
+
+        //insert an empty row
+        insertCell(table, "INVOICE", Element.ALIGN_CENTER, 4, bfBold12, "normal");
+
+        //create section heading by cell merging
+        //firstCell
+        PdfPCell exporterCell = getInsertCell(cartonInvoiceSummary.getExporterAddress(), Element.ALIGN_LEFT, 2, bf12);
+        table.addCell(exporterCell);
+        //secondcell
+        PdfPCell cell = new PdfPCell(new Phrase("hi", bfBold12));
+        float[] secondCellWidths = {2.5f, 2.5f};
+        PdfPTable nestedTable = new PdfPTable(secondCellWidths);
+        cell.setColspan(2);
+        nestedTable.setWidthPercentage(100f);
+        PdfPCell nCell1 = getInsertCell(cartonInvoiceSummary.getInvoiceWithDate(), Element.ALIGN_LEFT, 1, smallFornt);
+        nCell1.setFixedHeight(35f);
+        nestedTable.addCell(nCell1);
+        PdfPCell nCell2 = getInsertCell(cartonInvoiceSummary.getExporteRef(), Element.ALIGN_LEFT, 1, smallFornt);
+        nCell2.setFixedHeight(45f);
+        nestedTable.addCell(nCell2);
+        PdfPCell nCell3 = getInsertCell(cartonInvoiceSummary.getOrderNo(), Element.ALIGN_LEFT, 2, smallFornt);
+        nCell3.setFixedHeight(45f);
+        nestedTable.addCell(nCell3);
+        PdfPCell nCell4 = getInsertCell(cartonInvoiceSummary.getTintNo(), Element.ALIGN_LEFT, 2, smallFornt);
+        nCell4.setFixedHeight(35f);
+        nestedTable.addCell(nCell4);
+        cell.addElement(nestedTable);
+        table.addCell(cell);
+
+        PdfPCell consigneCell = getInsertCell(cartonInvoiceSummary.getConsigneAddress(), Element.ALIGN_LEFT, 2, bf12);
+        table.addCell(consigneCell);
+        //thirdcell
+        PdfPCell buyerCell = new PdfPCell(new Phrase("hi", bfBold12));
+        float[] buyerWidths = {2.5f, 2.5f};
+        PdfPTable buyerTable = new PdfPTable(buyerWidths);
+        buyerCell.setColspan(2);
+        buyerTable.setWidthPercentage(100f);
+        PdfPCell buyerCell1 = getInsertCell("Buyer (If other than consignee)", Element.ALIGN_LEFT, 2, bf12);
+        buyerCell1.setFixedHeight(70f);
+        buyerTable.addCell(buyerCell1);
+        PdfPCell buyerCel3 = getInsertCell("Country of Origin of Goods \n INDIA", Element.ALIGN_LEFT, 1, bf12);
+        buyerCel3.setFixedHeight(35f);
+        buyerTable.addCell(buyerCel3);
+        PdfPCell buyerCel4 = getInsertCell("Country of final destination\n UK", Element.ALIGN_LEFT, 1, bf12);
+        buyerCel4.setFixedHeight(35f);
+        buyerTable.addCell(buyerCel4);
+        buyerCell.addElement(buyerTable);
+        table.addCell(buyerCell);
+
+        insertCell(table, cartonInvoiceSummary.getVessels(), Element.ALIGN_LEFT, 2, bfBold12, "ivno");
+        insertCell(table, cartonInvoiceSummary.getTermsAndConditions(), Element.ALIGN_LEFT, 2, bf12, "normal");
+        float[] cartonsWidths = {2f, 5f, 1f, 1f, 1f};
+        //create PDF table with the given widths
+        PdfPTable cartonTable = new PdfPTable(cartonsWidths);
+        // set table width a percentage of the page width
+        cartonTable.setWidthPercentage(100f);
+
+
+        insertCell(cartonTable, "Marks & Nos/\nContainer No.", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
+        insertCell(cartonTable, "No.&kinds of pkgs Description of Goods", Element.ALIGN_LEFT, 1, bfBold12, "normal");
+        insertCell(cartonTable, "Quantity", Element.ALIGN_LEFT, 1, bfBold12, "normal");
+        insertCell(cartonTable, "Rate \n GBP", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
+        insertCell(cartonTable, "Amount \nGBP ", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
+        cartonTable.setHeaderRows(1);
+        InvoiceReportJson invoiceReportJson = cartonInvoiceSummary.getInvoiceReportJson();
+        List<InvoiceReportCategoryDetailsJson> invoiceReportCategoryDetailsJsons =  invoiceReportJson.getInvoiceReportCategoryDetailsJsons();
+
+        PdfPCell cartoncelx = getInsertCell("Carton 0 - " + cartonInvoiceSummary.getCartonCount(), Element.ALIGN_LEFT, 5, bf12);
+        cartoncelx.setBorder(PdfPCell.LEFT);
+        cartonTable.addCell(cartoncelx);
+        for(InvoiceReportCategoryDetailsJson reportCategoryDetailsJson : invoiceReportCategoryDetailsJsons){
+            List<InvoiceReportOrderDetailsJson> invoiceReportOrderDetailsJsons =  reportCategoryDetailsJson.getInvoiceReportOrder();
+            populateCategoryDetails(reportCategoryDetailsJson,cartonTable,bfBold12,bf12);
+            for(InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson : invoiceReportOrderDetailsJsons){
+                populateOrderDetails(cartonTable,bf12,invoiceReportOrderDetailsJson);
+            }
+        }
+
+
+        PdfPCell pdfPCells[] = cartonTable.getRow(cartonTable.getRows().size() - 1).getCells();
+        for (PdfPCell pdfPCell : pdfPCells) {
+            pdfPCell.setBorder(PdfPCell.BOTTOM);
+        }
+        insertCell(cartonTable, "", Element.ALIGN_RIGHT, 2, bf12, "normal");
+        insertCell(cartonTable, "" + invoiceReportJson.getTotalQuantity(), Element.ALIGN_RIGHT, 1, bfBold12, "normal");
+        insertCell(cartonTable, "", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
+        insertCell(cartonTable, "£" + invoiceReportJson.getTotalAmount(), Element.ALIGN_RIGHT, 1, bfBold12, "normal");
+
+        PdfPCell cartonrPcs = getInsertCell("Pcs: " + NumberToWord.convert(invoiceReportJson.getTotalQuantity()), Element.ALIGN_LEFT, 5, bf12);
+        cartonrPcs.setBorder(PdfPCell.NO_BORDER);
+        cartonrPcs.setFixedHeight(30f);
+        cartonTable.addCell(cartonrPcs);
+        PdfPCell cartonrAmount = getInsertCell("AMOUNT: GBP " + NumberToWord.convert((int) invoiceReportJson.getTotalAmount()), Element.ALIGN_LEFT, 5, bf12);
+        cartonrAmount.setBorder(PdfPCell.NO_BORDER);
+        cartonrAmount.setFixedHeight(30f);
+        cartonTable.addCell(cartonrAmount);
+        PdfPCell cartonrDeclaration = getInsertCell("Declaration\n" +
+                "We declare that this Invoice shows the actual price of the\n" +
+                "goods described and that all particulars are true and correct\n", Element.ALIGN_LEFT, 2, bf12);
+        cartonrDeclaration.setBorder(PdfPCell.NO_BORDER);
+        cartonrDeclaration.setFixedHeight(50f);
+        cartonTable.addCell(cartonrDeclaration);
+        PdfPCell cartonrSign = getInsertCell("", Element.ALIGN_LEFT, 3, bf12);
+        cartonrSign.setFixedHeight(30f);
+        cartonTable.addCell(cartonrSign);
+        paragraph.add(table);
+        paragraph1.add(cartonTable);
+        // add the paragraph to the document
+        doc.add(paragraph);
+        doc.add(paragraph1);
+        LineSeparator ls = new LineSeparator();
+        doc.add(new Chunk(ls));
+    }
+
+    public String createPdfReport(Context context, List<CartonInvoiceSummary> cartonInvoiceSummaries) {
         Document doc = new Document(PageSize.A4);
         PdfWriter docWriter = null;
 
@@ -205,7 +335,7 @@ public class PdfService {
             //special font sizes
             Font bfBold12 = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, new BaseColor(0, 0, 0));
             Font bf12 = new Font(Font.FontFamily.TIMES_ROMAN, 12);
-            Font smallFornt = new Font(Font.FontFamily.TIMES_ROMAN, 10);
+            Font smallFont = new Font(Font.FontFamily.TIMES_ROMAN, 10);
 
             //file path
             docWriter = PdfWriter.getInstance(doc, new FileOutputStream(FILE));
@@ -221,131 +351,12 @@ public class PdfService {
             //open document
             doc.open();
 
-            for(int i = 0; i < 2; i++){
-                if(i == 1){
+           int totalCount = cartonInvoiceSummaries.size();
+            for(int i = 0; i < totalCount; i++){
+                if(i != 0){
                     doc.newPage();
                 }
-                //create a paragraph
-                Paragraph paragraph = new Paragraph("");
-                Paragraph paragraph1 = new Paragraph();
-                //specify column widths
-                float[] columnWidths = {2.5f, 2.5f, 2.5f, 2.5f};
-                //create PDF table with the given widths
-                PdfPTable table = new PdfPTable(columnWidths);
-                // set table width a percentage of the page width
-                table.setWidthPercentage(100f);
-
-                //insert an empty row
-                insertCell(table, "INVOICE", Element.ALIGN_CENTER, 4, bfBold12, "normal");
-
-                //create section heading by cell merging
-                //firstCell
-                PdfPCell exporterCell = getInsertCell(cartonInvoiceSummary.getExporterAddress(), Element.ALIGN_LEFT, 2, bf12);
-                table.addCell(exporterCell);
-                //secondcell
-                PdfPCell cell = new PdfPCell(new Phrase("hi", bfBold12));
-                float[] secondCellWidths = {2.5f, 2.5f};
-                PdfPTable nestedTable = new PdfPTable(secondCellWidths);
-                cell.setColspan(2);
-                nestedTable.setWidthPercentage(100f);
-                PdfPCell nCell1 = getInsertCell(cartonInvoiceSummary.getInvoiceWithDate(), Element.ALIGN_LEFT, 1, smallFornt);
-                nCell1.setFixedHeight(35f);
-                nestedTable.addCell(nCell1);
-                PdfPCell nCell2 = getInsertCell(cartonInvoiceSummary.getExporteRef(), Element.ALIGN_LEFT, 1, smallFornt);
-                nCell2.setFixedHeight(45f);
-                nestedTable.addCell(nCell2);
-                PdfPCell nCell3 = getInsertCell(cartonInvoiceSummary.getOrderNo(), Element.ALIGN_LEFT, 2, smallFornt);
-                nCell3.setFixedHeight(45f);
-                nestedTable.addCell(nCell3);
-                PdfPCell nCell4 = getInsertCell(cartonInvoiceSummary.getTintNo(), Element.ALIGN_LEFT, 2, smallFornt);
-                nCell4.setFixedHeight(35f);
-                nestedTable.addCell(nCell4);
-                cell.addElement(nestedTable);
-                table.addCell(cell);
-
-                PdfPCell consigneCell = getInsertCell(cartonInvoiceSummary.getConsigneAddress(), Element.ALIGN_LEFT, 2, bf12);
-                table.addCell(consigneCell);
-                //thirdcell
-                PdfPCell buyerCell = new PdfPCell(new Phrase("hi", bfBold12));
-                float[] buyerWidths = {2.5f, 2.5f};
-                PdfPTable buyerTable = new PdfPTable(buyerWidths);
-                buyerCell.setColspan(2);
-                buyerTable.setWidthPercentage(100f);
-                PdfPCell buyerCell1 = getInsertCell("Buyer (If other than consignee)", Element.ALIGN_LEFT, 2, bf12);
-                buyerCell1.setFixedHeight(70f);
-                buyerTable.addCell(buyerCell1);
-                PdfPCell buyerCel3 = getInsertCell("Country of Origin of Goods \n INDIA", Element.ALIGN_LEFT, 1, bf12);
-                buyerCel3.setFixedHeight(35f);
-                buyerTable.addCell(buyerCel3);
-                PdfPCell buyerCel4 = getInsertCell("Country of final destination\n UK", Element.ALIGN_LEFT, 1, bf12);
-                buyerCel4.setFixedHeight(35f);
-                buyerTable.addCell(buyerCel4);
-                buyerCell.addElement(buyerTable);
-                table.addCell(buyerCell);
-
-                insertCell(table, cartonInvoiceSummary.getVessels(), Element.ALIGN_LEFT, 2, bfBold12, "ivno");
-                insertCell(table, cartonInvoiceSummary.getTermsAndConditions(), Element.ALIGN_LEFT, 2, bf12, "normal");
-                float[] cartonsWidths = {2f, 5f, 1f, 1f, 1f};
-                //create PDF table with the given widths
-                PdfPTable cartonTable = new PdfPTable(cartonsWidths);
-                // set table width a percentage of the page width
-                cartonTable.setWidthPercentage(100f);
-
-
-                insertCell(cartonTable, "Marks & Nos/\nContainer No.", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
-                insertCell(cartonTable, "No.&kinds of pkgs Description of Goods", Element.ALIGN_LEFT, 1, bfBold12, "normal");
-                insertCell(cartonTable, "Quantity", Element.ALIGN_LEFT, 1, bfBold12, "normal");
-                insertCell(cartonTable, "Rate \n GBP", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
-                insertCell(cartonTable, "Amount \nGBP ", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
-                cartonTable.setHeaderRows(1);
-                InvoiceReportJson invoiceReportJson = cartonInvoiceSummary.getInvoiceReportJson();
-                List<InvoiceReportCategoryDetailsJson> invoiceReportCategoryDetailsJsons =  invoiceReportJson.getInvoiceReportCategoryDetailsJsons();
-
-                PdfPCell cartoncelx = getInsertCell("Carton 0 - " + cartonInvoiceSummary.getCartonCount(), Element.ALIGN_LEFT, 5, bf12);
-                cartoncelx.setBorder(PdfPCell.LEFT);
-                cartonTable.addCell(cartoncelx);
-                for(InvoiceReportCategoryDetailsJson reportCategoryDetailsJson : invoiceReportCategoryDetailsJsons){
-                    List<InvoiceReportOrderDetailsJson> invoiceReportOrderDetailsJsons =  reportCategoryDetailsJson.getInvoiceReportOrder();
-                    populateCategoryDetails(reportCategoryDetailsJson,cartonTable,bfBold12,bf12);
-                    for(InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson : invoiceReportOrderDetailsJsons){
-                        populateOrderDetails(cartonTable,bf12,invoiceReportOrderDetailsJson);
-                    }
-                }
-
-
-                PdfPCell pdfPCells[] = cartonTable.getRow(cartonTable.getRows().size() - 1).getCells();
-                for (PdfPCell pdfPCell : pdfPCells) {
-                    pdfPCell.setBorder(PdfPCell.BOTTOM);
-                }
-                insertCell(cartonTable, "", Element.ALIGN_RIGHT, 2, bf12, "normal");
-                insertCell(cartonTable, "" + invoiceReportJson.getTotalQuantity(), Element.ALIGN_RIGHT, 1, bfBold12, "normal");
-                insertCell(cartonTable, "", Element.ALIGN_RIGHT, 1, bfBold12, "normal");
-                insertCell(cartonTable, "£" + invoiceReportJson.getTotalAmount(), Element.ALIGN_RIGHT, 1, bfBold12, "normal");
-
-                PdfPCell cartonrPcs = getInsertCell("Pcs: " + NumberToWord.convert(invoiceReportJson.getTotalQuantity()), Element.ALIGN_LEFT, 5, bf12);
-                cartonrPcs.setBorder(PdfPCell.NO_BORDER);
-                cartonrPcs.setFixedHeight(30f);
-                cartonTable.addCell(cartonrPcs);
-                PdfPCell cartonrAmount = getInsertCell("AMOUNT: GBP " + NumberToWord.convert((int) invoiceReportJson.getTotalAmount()), Element.ALIGN_LEFT, 5, bf12);
-                cartonrAmount.setBorder(PdfPCell.NO_BORDER);
-                cartonrAmount.setFixedHeight(30f);
-                cartonTable.addCell(cartonrAmount);
-                PdfPCell cartonrDeclaration = getInsertCell("Declaration\n" +
-                        "We declare that this Invoice shows the actual price of the\n" +
-                        "goods described and that all particulars are true and correct\n", Element.ALIGN_LEFT, 2, bf12);
-                cartonrDeclaration.setBorder(PdfPCell.NO_BORDER);
-                cartonrDeclaration.setFixedHeight(50f);
-                cartonTable.addCell(cartonrDeclaration);
-                PdfPCell cartonrSign = getInsertCell("", Element.ALIGN_LEFT, 3, bf12);
-                cartonrSign.setFixedHeight(30f);
-                cartonTable.addCell(cartonrSign);
-                paragraph.add(table);
-                paragraph1.add(cartonTable);
-                // add the paragraph to the document
-                doc.add(paragraph);
-                doc.add(paragraph1);
-                LineSeparator ls = new LineSeparator();
-                doc.add(new Chunk(ls));
+                populatePdf(cartonInvoiceSummaries.get(i),bfBold12,bf12,smallFont,doc);
             }
 
 

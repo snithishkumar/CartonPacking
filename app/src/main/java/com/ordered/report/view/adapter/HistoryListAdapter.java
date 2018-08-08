@@ -114,8 +114,8 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     case R.id.mail_report:
                         PdfService pdfService = new PdfService(homeActivity);
-                        CartonInvoiceSummary cartonInvoiceSummary = pdfService.getCartonInvoiceSummary(deliveryDetailsEntity);
-                        pdfService.createPdfReport(homeActivity,cartonInvoiceSummary);
+                        List<CartonInvoiceSummary> cartonInvoiceSummaryList = pdfService.getCartonInvoiceSummary(deliveryDetailsEntity);
+                        pdfService.createPdfReport(homeActivity,cartonInvoiceSummaryList);
                         // homeActivity.showProgress();
                        /* CartonInvoiceSummary cartonInvoiceSummary = homeActivity.getCartonInvoiceSummary(orderEntity);
                         String pdfFile = homeActivity.createPdfReport(cartonInvoiceSummary);
