@@ -35,9 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_login);
         AppBus.getInstance().register(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //toolbar.setTitle("ProDelManager");
-        setSupportActionBar(toolbar);
         initService();
         loginBtn = (Button) findViewById(R.id.sign_in_button);
         userName = (EditText) findViewById(R.id.input_email);

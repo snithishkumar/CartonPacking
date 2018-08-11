@@ -29,7 +29,7 @@
     <string name="let_me_go">Let Me Go</string>
     <string name="login_now">LOGIN</string>
     <string name="password_hint">Password</string>
-    <string name="email_hint">Username</string>
+    <string name="email_hint">User Name</string>
     <string name="invalid_username">Please Enter the Valid Username</string>
     <string name="no_internet">NO_INTERNET</string>
     <string name="internal_server_error">Internal Server Error</string>
