@@ -39,7 +39,7 @@ public class DeliveryListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         orderedService = new OrderedService(getActivity());
-        getActivity().setTitle("DELIVERY");
+       // getActivity().setTitle("DELIVERY");
 
     }
 

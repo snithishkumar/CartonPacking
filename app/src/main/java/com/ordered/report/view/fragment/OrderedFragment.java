@@ -35,7 +35,7 @@ public class OrderedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ordered, container, false);
         orderedService = new OrderedService(getActivity());
-        getActivity().setTitle("ORDER");
+        //getActivity().setTitle("ORDER");
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);

@@ -62,7 +62,6 @@
 
         <activity
             android:name=".view.activity.HomeActivity"
-            android:label="@string/title_activity_music"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity

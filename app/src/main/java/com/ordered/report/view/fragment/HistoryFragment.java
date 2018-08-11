@@ -49,7 +49,7 @@ public class HistoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         orderedService = new OrderedService(getActivity());
-        getActivity().setTitle("ORDER");
+        //getActivity().setTitle("ORDER");
         if (getArguments() != null) {
         }
     }

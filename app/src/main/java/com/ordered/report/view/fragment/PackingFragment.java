@@ -33,7 +33,7 @@ public class PackingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_playlist, container, false);
         orderedService = new OrderedService(getActivity());
-        getActivity().setTitle("PACKING");
+        //getActivity().setTitle("PACKING");
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
