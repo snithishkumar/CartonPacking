@@ -2,23 +2,23 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorBorder"
+    android:background="@color/backgroundColor"
     tools:context=".view.activity.OrderDetailsActivity"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:background="@color/colorPrimaryDark"
         android:id="@+id/noOfCartonsId"
-        android:layout_height="25dp">
-
+        android:layout_height="50dp">
 
 
         <TextView
             android:layout_width="match_parent"
             android:text="Remaning Cartons:"
             android:id="@+id/remaning_carton_count"
-            android:gravity="right"
+            android:gravity="bottom|right"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/colorWhite"
             android:layout_height="match_parent" />
     </LinearLayout>

@@ -35,8 +35,8 @@ public class DeliveryListActivity extends AppCompatActivity implements DeliveryO
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.order_Details_toolbar);
-        setSupportActionBar(toolbar);
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.order_Details_toolbar);
+       // setSupportActionBar(toolbar);
         init();
         if(currentView.equals(Constants.VIEW_ADD_SHIPPING)){
             showShippingDetailsFragment();
