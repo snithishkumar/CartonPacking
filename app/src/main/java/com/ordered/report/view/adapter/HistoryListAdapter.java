@@ -136,8 +136,8 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     case R.id.package_report:
                         PdfServiceReport pdfServiceReport = new PdfServiceReport(homeActivity,deliveryDetailsEntity);
-                         cartonInvoiceSummary = pdfServiceReport.getCartonInvoiceSummary();
-                        pdfServiceReport.createPDF(cartonInvoiceSummary);
+                        List<CartonInvoiceSummary> cartonInvoiceSummaries = pdfServiceReport.getCartonInvoiceSummary();
+                        pdfServiceReport.createPDF(cartonInvoiceSummaries);
                         // homeActivity.generateReport(cottonBookListEntity);
 
                         break;
