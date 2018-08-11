@@ -24,15 +24,14 @@
          />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/np"
         android:id="@+id/carton_number_picking"
-        android:visibility="invisible"
-        android:text="Next"
-        android:onClick="onClick"
+        android:layout_width="170dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/np"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="20dp"
+        android:onClick="onClick"
+        android:text="Next"
+        android:visibility="invisible" />
 
 </RelativeLayout>
