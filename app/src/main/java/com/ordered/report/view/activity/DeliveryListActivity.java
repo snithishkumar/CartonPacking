@@ -1,5 +1,6 @@
 package com.ordered.report.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -108,6 +109,16 @@ public class DeliveryListActivity extends AppCompatActivity implements DeliveryO
     private void showShippingDetailsFragment(){
         ShippingDetailsFragment shippingDetailsFragment = new ShippingDetailsFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.delivery_details_container, shippingDetailsFragment).addToBackStack("shippingDetails").commit();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("currentTabPosition",currentTabPosition);
+        startActivity(intent);
+        super.onBackPressed();
     }
 
     public OrderedService getOrderedService() {

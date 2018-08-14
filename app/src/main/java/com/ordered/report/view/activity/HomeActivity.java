@@ -138,12 +138,14 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
 
 
     private void showDeliveryDetailsActivity(String view,int deliveryId){
+        tabPosition = DELIVERY_TAB_POS;
         Intent intent = new Intent(this, DeliveryListActivity.class);
         intent.putExtra("view",view);
+        intent.putExtra("currentTabPosition",tabPosition);
         if(deliveryId > 0){
             intent.putExtra("deliveryId",deliveryId);
         }
-        tabPosition = DELIVERY_TAB_POS;
+
         startActivity(intent);
     }
 
