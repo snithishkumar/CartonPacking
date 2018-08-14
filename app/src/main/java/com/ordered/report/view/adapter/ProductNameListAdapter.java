@@ -115,8 +115,8 @@ public class ProductNameListAdapter extends RecyclerView.Adapter<ProductNameList
         public ProductNameViewHolder(View itemView) {
             super(itemView);
             productName =  itemView.findViewById(R.id.product_name_sel);
-            productGroup = itemView.findViewById(R.id.product_group_sel);
-            productColor =  itemView.findViewById(R.id.product_color_sel);
+            productGroup = itemView.findViewById(R.id.product_group_sel_value);
+            productColor =  itemView.findViewById(R.id.product_color_sel_value);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

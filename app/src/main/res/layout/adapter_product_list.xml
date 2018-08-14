@@ -14,170 +14,204 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:text="Product Name"
             android:id="@+id/product_name_sel"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentLeft="true"
-            android:textSize="@dimen/_22sdp"
-            android:textStyle="bold"
-            android:layout_height="wrap_content" />
-
-        <TextView
             android:layout_width="wrap_content"
-            android:text="Product Group"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Product Name"
+            android:textSize="@dimen/_22sdp"
+            android:textStyle="bold" />
+
+        <LinearLayout
             android:id="@+id/product_group_sel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/product_name_sel"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="@dimen/_15sdp"
-            android:textStyle="bold"
-            android:layout_height="wrap_content" />
+            android:layout_marginLeft="5dp"
+            android:orientation="horizontal">
+
+            <!--<ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/user_icon_96" />-->
 
 
-        <TextView
+            <TextView
+                android:id="@+id/product_group_sel_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="2dp"
+                android:text="Product Group"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/product_color_sel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/product_group_sel"
             android:layout_alignBottom="@+id/product_group_sel"
             android:layout_alignEnd="@+id/divider2"
-            android:text="Product Color" />
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/icon_color_96" />
+
+
+            <TextView
+                android:id="@+id/product_color_sel_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Product Group"
+                android:textAllCaps="true"
+                android:layout_marginLeft="5dp"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
 
         <View
             android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="15dp"
             android:layout_below="@+id/product_group_sel"
-
             android:layout_marginLeft="16dp"
+
             android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
             android:background="#ebebeb" />
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_below="@+id/divider2"
             android:id="@+id/order_items_size_details"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider2"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:src="@drawable/ic_receipt_black_48dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_height="20dp" />
+                    android:src="@drawable/order_icon_96" />
 
                 <TextView
+                    android:id="@+id/size_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Order Details:"
-                    android:id="@+id/size_details"
                     android:layout_marginLeft="5dp"
-                    />
+                    android:layout_marginTop="10dp"
+                    android:text="Order Details:" />
 
             </LinearLayout>
 
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="35dp"
                     android:id="@+id/ordered_size_count_layout_1"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="35dp"
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/ordered_one_size_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_one_size_count"
                         android:text="OS -> 10 of 10" />
 
                     <TextView
+                        android:id="@+id/ordered_s_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_s_count"
                         android:text="S -> 10 of 10" />
 
                     <TextView
+                        android:id="@+id/ordered_l_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_l_count"
                         android:text="L -> 10 of 10" />
 
                     <TextView
+                        android:id="@+id/ordered_xxl_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_xxl_count"
                         android:text="XXL -> 10" />
 
                 </LinearLayout>
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="50dp"
                     android:id="@+id/ordered_size_count_layout_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
                     android:layout_toRightOf="@+id/ordered_size_count_layout_1"
-                    android:layout_height="wrap_content">
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/ordered_xs_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_xs_count"
                         android:text="XS -> 10 of 10" />
 
 
                     <TextView
+                        android:id="@+id/ordered_m_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_m_count"
                         android:text="M -> 10" />
 
                     <TextView
+                        android:id="@+id/ordered_xl_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_xl_count"
                         android:text="XL -> 10 of 10" />
 
                     <TextView
+                        android:id="@+id/ordered_xxxl_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_xxxl_count"
                         android:text="XXXL -> 10 of 10" />
 
                 </LinearLayout>
-
-
 
 
             </RelativeLayout>
@@ -196,21 +230,30 @@
             android:background="#ebebeb" />
 
 
-
-
-
-
-
-        <TextView
+        <LinearLayout
             android:id="@+id/text_likes_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/divider"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="20dp"
-            android:text="Created On:"
-            android:textColor="#827f93"
-            android:textSize="12sp" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/calendar_48" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/text_likes_created_on"
+                android:text="Created On:"
+                android:textColor="#827f93"
+                android:textSize="12sp" />
+        </LinearLayout>
 
 
         <TextView
@@ -218,35 +261,52 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_likes_count"
-            android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
             android:text="17/2/2018 3:45 PM"
             android:textColor="#827f93"
             android:textSize="12sp" />
 
 
-        <TextView
+        <LinearLayout
             android:id="@+id/order_details_lastmodified"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/divider"
             android:layout_alignEnd="@+id/divider"
-            android:text="Modified On:"
+            android:layout_below="@+id/divider"
+            android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
-            android:textColor="#827f93"
-            android:textSize="12sp" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/calendar_48" />
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Modified On:"
+                android:textColor="#827f93"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+
 
 
         <TextView
             android:id="@+id/order_details_lastmodified_val"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/order_details_lastmodified"
             android:layout_alignEnd="@+id/divider"
+            android:layout_below="@+id/order_details_lastmodified"
             android:text="17/2/2018 3:45 PM"
             android:textColor="#827f93"
             android:textSize="12sp" />
-
 
 
     </RelativeLayout>
