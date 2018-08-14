@@ -122,6 +122,7 @@ public class ShippingDetailsFragment  extends Fragment {
         orderEntity.setSync(false);
         deliveryListActivity.getOrderedService().updateOrderUpdates(orderEntity);
         Intent intent = new Intent(deliveryListActivity, HomeActivity.class);
+        intent.putExtra("currentTabPosition",deliveryListActivity.getCurrentTabPosition());
         startActivity(intent);
         deliveryListActivity.finish();
         alertDialog.dismiss();

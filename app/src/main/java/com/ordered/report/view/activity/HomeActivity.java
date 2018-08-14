@@ -57,6 +57,11 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
 
     private OrderedService orderedService;
 
+    private static int ORDER_TAB_POS = 1;
+    private static int PACKING_TAB_POS = 2;
+    private static int DELIVERY_TAB_POS = 3;
+    private static int HISTORY_TAB_POS = 4;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +78,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         tabLayout.setupWithViewPager(viewPager);
 
 
-        tabPosition= 0;
+        tabPosition= getIntent().getIntExtra("currentTabPosition",0);
         viewPager.setCurrentItem(tabPosition);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -84,6 +89,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
 
 
         orderedService = new OrderedService(this);
+//currentTabPosition
 
 
     }
@@ -120,9 +126,11 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
 
 
     public void showOrderDetailsList(String totalNoOfCartons,String orderGuid){
+        tabPosition = ORDER_TAB_POS;
         Intent intent = new Intent(this, OrderDetailsActivity.class);
         intent.putExtra("orderGuid",orderGuid);
         intent.putExtra("totalNoOfCartons",totalNoOfCartons);
+        intent.putExtra("currentTabPosition",tabPosition);
         intent.putExtra("view",Constants.VIEW_ORDER);
         startActivity(intent);
 
@@ -135,6 +143,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         if(deliveryId > 0){
             intent.putExtra("deliveryId",deliveryId);
         }
+        tabPosition = DELIVERY_TAB_POS;
         startActivity(intent);
     }
 
@@ -147,7 +156,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         if(newView != null){
             intent.putExtra("newView",newView);
         }
-
+        tabPosition = PACKING_TAB_POS;
         startActivity(intent);
     }
 
@@ -254,6 +263,10 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ORDER_TAB_POS = 0;
+        PACKING_TAB_POS = 1;
+        DELIVERY_TAB_POS = 2;
+        HISTORY_TAB_POS = 3;
 
         adapter.addFragment(new OrderedFragment(), "Order");
         adapter.addFragment(new PackingFragment(), "Packing");

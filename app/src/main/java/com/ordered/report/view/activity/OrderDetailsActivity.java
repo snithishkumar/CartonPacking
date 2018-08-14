@@ -46,6 +46,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
    // private String cartonNumber;
     private OrderedService orderedService;
     private OrderDetailsListViewModel orderDetailsListViewModel;
+    private int currentTabPosition = 0;
 
     List<CartonDetailsJson>  cartonDetailsJsonList = new ArrayList<>();
     private CartonDetailsJson cartonDetailsJson;
@@ -70,6 +71,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
     private void init(){
         try{
             orderGuid = getIntent().getStringExtra("orderGuid");
+            currentTabPosition = getIntent().getIntExtra("currentTabPosition",1);
             totalNoOfCartons = getIntent().getStringExtra("totalNoOfCartons");
             orderedService = new OrderedService(this);
             view = getIntent().getStringExtra("view");
@@ -174,6 +176,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
                     orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList, OrderStatus.PACKING);
                     finish();
                     Intent intent = new Intent(this, HomeActivity.class);
+                    intent.putExtra("currentTabPosition",currentTabPosition);
                     startActivity(intent);
                 }else{
                     showAlert();
@@ -193,6 +196,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
                     orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList, OrderStatus.DELIVERED);
                     finish();
                     Intent intent = new Intent(this, HomeActivity.class);
+                    intent.putExtra("currentTabPosition",currentTabPosition);
                     startActivity(intent);
                 }else{
                     showAlert();
@@ -204,6 +208,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
             case R.id.packing_list_complete_cancel:
                 finish();
                 Intent  intent = new Intent(this, HomeActivity.class);
+                intent.putExtra("currentTabPosition",currentTabPosition);
                 startActivity(intent);
                 break;
 
@@ -264,6 +269,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
         if (count == 0) {
             finish();
             Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("currentTabPosition",currentTabPosition);
             startActivity(intent);
             super.onBackPressed();
         } else {
@@ -271,6 +277,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
             if(count == 1 && fragmentList.get(0) instanceof CartonListFragment){
                 finish();
                 Intent intent = new Intent(this, HomeActivity.class);
+                intent.putExtra("currentTabPosition",currentTabPosition);
                 startActivity(intent);
                 super.onBackPressed();
             }else{
@@ -392,6 +399,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
     public boolean onOptionsItemSelected(MenuItem item) {
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public int getCurrentTabPosition() {
+        return currentTabPosition;
     }
 
     public String getView() {

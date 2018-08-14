@@ -93,11 +93,7 @@ public class ProductDetailsListFragment extends Fragment {
     }
 
 
-    private void backToHome(){
-        Intent intent = new Intent(orderDetailsActivity, HomeActivity.class);
-        startActivity(intent);
-        orderDetailsActivity.finish();
-    }
+
 
     private void showAlert(){
         AlertDialog alertDialog = new AlertDialog.Builder(

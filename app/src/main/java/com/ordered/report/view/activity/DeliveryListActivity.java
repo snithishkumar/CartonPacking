@@ -28,6 +28,7 @@ public class DeliveryListActivity extends AppCompatActivity implements DeliveryO
     private String currentView = null;
     private OrderEntity orderEntity = null;
     private List<Integer> selectedCartonList = new ArrayList<>();
+    private int currentTabPosition = 0;
 
     public final String LOG_TAG = DeliveryListActivity.class.getSimpleName();
 
@@ -51,6 +52,7 @@ public class DeliveryListActivity extends AppCompatActivity implements DeliveryO
         try{
             orderedService = new OrderedService(this);
             currentView = getIntent().getStringExtra("view");
+            currentTabPosition = getIntent().getIntExtra("currentTabPosition",1);
             deliveryId = getIntent().getIntExtra("deliveryId",0);
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in init",e);
@@ -99,6 +101,9 @@ public class DeliveryListActivity extends AppCompatActivity implements DeliveryO
         }
     }
 
+    public int getCurrentTabPosition() {
+        return currentTabPosition;
+    }
 
     private void showShippingDetailsFragment(){
         ShippingDetailsFragment shippingDetailsFragment = new ShippingDetailsFragment();
