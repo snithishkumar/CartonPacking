@@ -103,7 +103,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         View promptsView = li.inflate(R.layout.prompts, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                homeActivity);
+                homeActivity,R.style.AlertDialogTheme   );
 
         // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);
@@ -125,7 +125,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         });
         // create alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
-
+        alertDialog.setTitle("Total Cartons");
         // show it
         alertDialog.show();
         //end
