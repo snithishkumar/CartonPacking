@@ -209,7 +209,7 @@ public class OrderedService {
     }
 
 
-    public boolean saveProductDetails(String orderGuid,List<CartonDetailsJson> cartonDetailsJsonList,OrderStatus orderStatus){
+    public boolean saveProductDetails(String orderGuid,List<CartonDetailsJson> cartonDetailsJsonList,OrderStatus orderStatus, String totalCartonCount){
         OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
         boolean isEdited = false;
        for(CartonDetailsJson cartonDetailsJson : cartonDetailsJsonList){
@@ -244,7 +244,7 @@ public class OrderedService {
 
         if(isEdited){
             orderEntity.setSync(false);
-            orderEntity.setCartonCounts(cartonDetailsJsonList.size()+"");
+            orderEntity.setCartonCounts(String.valueOf(totalCartonCount));
             orderEntity.setLastModifiedDate(System.currentTimeMillis());
             orderEntity.setOrderStatus(OrderStatus.PACKING);
 
@@ -327,7 +327,7 @@ public class OrderedService {
         int xxl = 0;
         int xxxl = 0;
 
-        for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList){
+       /* for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList){
             oneSize = oneSize + intValueOf(productDetailsEntity.getOneSize());
             xs = xs + intValueOf(productDetailsEntity.getXs());
             s = s + intValueOf(productDetailsEntity.getS());
@@ -336,7 +336,7 @@ public class OrderedService {
             xl = xl + intValueOf(productDetailsEntity.getXl());
             xxl = xxl + intValueOf(productDetailsEntity.getXxl());
             xxxl = xxxl + intValueOf(productDetailsEntity.getXxxl());
-        }
+        }*/
 
         for(CartonDetailsJson cartonDetailsJson : cartonDetailsJsonsList){
             List<OrderDetailsListViewModel> orderDetailsListViewModelList =  cartonDetailsJson.getOrderDetailsListViewModels();

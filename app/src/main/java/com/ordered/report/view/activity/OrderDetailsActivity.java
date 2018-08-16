@@ -173,7 +173,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
 
             case R.id.carton_footer_done:
                 if(cartonDetailsJsonList.size() > 0){
-                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList, OrderStatus.PACKING);
+                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList, OrderStatus.PACKING,totalNoOfCartons);
                     finish();
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra("currentTabPosition",currentTabPosition);
@@ -193,7 +193,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
                             return;
                         }
                     }
-                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList, OrderStatus.DELIVERED);
+                    orderedService.saveProductDetails(orderGuid,cartonDetailsJsonList, OrderStatus.DELIVERED,totalNoOfCartons);
                     finish();
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra("currentTabPosition",currentTabPosition);
