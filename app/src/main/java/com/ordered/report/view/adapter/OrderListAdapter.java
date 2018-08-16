@@ -109,7 +109,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         alertDialogBuilder.setView(promptsView);
 
         final EditText userInput = (EditText) promptsView
-                .findViewById(R.id.editTextDialogUserInput);
+                .findViewById(R.id.no_of_cartons_text);
 
         // set dialog message
         alertDialogBuilder

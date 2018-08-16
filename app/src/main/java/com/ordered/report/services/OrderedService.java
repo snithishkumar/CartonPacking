@@ -312,7 +312,7 @@ public class OrderedService {
         }
 
         int totalCaptured = oneSizeCaptured + xsCaptured + sCaptured + mCaptured + lCaptured + xlCaptured +xxlCaptured + xxxlCaptured;
-        return  totalCaptured  != totalOrder;
+        return  totalCaptured  < totalOrder;
     }
 
 
@@ -377,6 +377,11 @@ public class OrderedService {
 
                cartonDetailsEntity.getOrderEntity().setLastModifiedDate(cartonDetailsEntity.getLastModifiedTime());
                cartonDetailsEntity.getOrderEntity().setSync(false);
+
+               boolean isAvailable = checkAvailability(cartonDetailsEntity.getOrderEntity());
+               if(!isAvailable){
+                   cartonDetailsEntity.getOrderEntity().setOrderStatus(OrderStatus.DELIVERED);
+               }
                cartonbookDao.updateCortonbookEntity(cartonDetailsEntity.getOrderEntity());
                orderGuids.add(cartonDetailsEntity.getOrderEntity().getOrderGuid());
 
@@ -444,5 +449,58 @@ public class OrderedService {
 
     public List<CartonDetailsEntity> getUnDeliveryCartonDetailsEntity(OrderEntity orderEntity){
        return cartonbookDao.getUnDeliveredCartonDetailsList(orderEntity);
+    }
+
+
+
+    public boolean checkAvailability(OrderEntity orderEntity){
+        String orderItems = orderEntity.getOrderedItems();
+        List<OrderCreationDetailsJson> creationDetailsJsonList =  getOrderedItems(orderItems);
+         List<ProductDetailsEntity> productDetailsEntityList = cartonbookDao.getProductEntityList(orderEntity);
+        int oneSizeOrder = 0;
+        int xsOrder = 0;
+        int sOrder = 0;
+        int mOrder = 0;
+        int lOrder = 0;
+        int xlOrder = 0;
+        int xxlOrder = 0;
+        int xxxlOrder = 0;
+        for(OrderCreationDetailsJson orderCreationDetailsJson : creationDetailsJsonList){
+            oneSizeOrder = oneSizeOrder + intValueOf(orderCreationDetailsJson.getOneSize());
+            xsOrder = xsOrder + intValueOf(orderCreationDetailsJson.getXs());
+            sOrder = sOrder + intValueOf(orderCreationDetailsJson.getS());
+            mOrder = mOrder + intValueOf(orderCreationDetailsJson.getM());
+            lOrder = lOrder + intValueOf(orderCreationDetailsJson.getL());
+            xlOrder = xlOrder + intValueOf(orderCreationDetailsJson.getXl());
+            xxlOrder = xxlOrder + intValueOf(orderCreationDetailsJson.getXxl());
+            xxxlOrder = xxxlOrder + intValueOf(orderCreationDetailsJson.getXxxl());
+        }
+        int totalOrder = oneSizeOrder + xsOrder + sOrder + mOrder + lOrder + xlOrder +xxlOrder + xxxlOrder;
+
+        int oneSizeCaptured = 0;
+        int xsCaptured = 0;
+        int sCaptured = 0;
+        int mCaptured = 0;
+        int lCaptured = 0;
+        int xlCaptured = 0;
+        int xxlCaptured = 0;
+        int xxxlCaptured = 0;
+
+
+
+
+        for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList) {
+            oneSizeCaptured = oneSizeCaptured + intValueOf(productDetailsEntity.getOneSize());
+            xsCaptured = xsCaptured + intValueOf(productDetailsEntity.getXs());
+            sCaptured = sCaptured + intValueOf(productDetailsEntity.getS());
+            mCaptured = mCaptured + intValueOf(productDetailsEntity.getM());
+            lCaptured = lCaptured + intValueOf(productDetailsEntity.getL());
+            xlCaptured = xlCaptured + intValueOf(productDetailsEntity.getXl());
+            xxlCaptured = xxlCaptured + intValueOf(productDetailsEntity.getXxl());
+            xxxlCaptured = xxxlCaptured + intValueOf(productDetailsEntity.getXxxl());
+        }
+
+        int totalCaptured = oneSizeCaptured + xsCaptured + sCaptured + mCaptured + lCaptured + xlCaptured +xxlCaptured + xxxlCaptured;
+        return  totalCaptured  < totalOrder;
     }
 }

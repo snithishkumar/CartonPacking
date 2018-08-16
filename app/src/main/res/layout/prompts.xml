@@ -1,40 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp" >
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/editTextDialogUserInput"
-            android:layout_width="match_parent"
-            android:inputType="number"
-            android:hint="Enter the Number of Carton"
-            android:layout_height="wrap_content">
-            <requestFocus />
-        </EditText>
 
-    </android.support.design.widget.TextInputLayout>
-<!--
-    <TextView
-        android:id="@+id/textView1"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter the Number of Carton : "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginTop="15dp"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/editTextDialogUserInput"
-        android:layout_width="match_parent"
-        android:inputType="number"
-        android:layout_height="wrap_content" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="No of Cartons:" />
 
-        <requestFocus />
+        <EditText
+            android:id="@+id/no_of_cartons_text"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/rectangle_box"
+            android:gravity="center"
+            android:text="" />
+    </LinearLayout>
 
-    </EditText>-->
 
-</LinearLayout>
+
+</RelativeLayout>

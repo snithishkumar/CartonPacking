@@ -82,10 +82,10 @@
             <Button
                 android:id="@+id/sign_in_button"
                 android:layout_width="300dp"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:text="@string/login_now"
                 android:textAllCaps="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorWhite"

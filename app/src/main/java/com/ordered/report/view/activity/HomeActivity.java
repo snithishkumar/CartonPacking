@@ -133,6 +133,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         intent.putExtra("currentTabPosition",tabPosition);
         intent.putExtra("view",Constants.VIEW_ORDER);
         startActivity(intent);
+        finish();
 
     }
 
@@ -147,6 +148,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         }
 
         startActivity(intent);
+       // finish();
     }
 
 
@@ -160,6 +162,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         }
         tabPosition = PACKING_TAB_POS;
         startActivity(intent);
+        finish();
     }
 
     public void showProductList(int cartonNo, String order) {

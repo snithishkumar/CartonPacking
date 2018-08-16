@@ -184,39 +184,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-    private void showAlertDialog(final String order) {
-        //test
-        LayoutInflater li = LayoutInflater.from(context);
-        View promptsView = li.inflate(R.layout.prompts, null);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                context);
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        final EditText userInput = (EditText) promptsView
-                .findViewById(R.id.editTextDialogUserInput);
-
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                if (userInput.getText().toString() != null && !userInput.getText().toString().isEmpty()) {
-                                    homeActivity.showProductList(Integer.parseInt(userInput.getText().toString()), order);
-                                }
-
-                            }
-                        });
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
-        alertDialog.show();
-        //end
-    }
 
     private Intent getEmailIntent(ArrayList<Uri> urls) {
         String[] TO = {""};
