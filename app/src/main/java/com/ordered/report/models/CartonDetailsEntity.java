@@ -43,20 +43,19 @@ public class CartonDetailsEntity {
     private DeliveryDetailsEntity deliveryDetails;
 
 
-
-    public CartonDetailsEntity(){
+    public CartonDetailsEntity() {
 
     }
 
 
-    public CartonDetailsEntity(CartonDetailsJson cartonDetailsJson){
-this.cartonGuid = cartonDetailsJson.getCartonGuid();
-this.cartonNumber = cartonDetailsJson.getCartonNumber();
-this.createdDateTime = cartonDetailsJson.getCreatedDateTime();
-this.lastModifiedTime = cartonDetailsJson.getLastModifiedTime();
-this.createdBy = cartonDetailsJson.getCreatedBy();
-this.lastModifiedBy = cartonDetailsJson.getLastModifiedBy();
-this.totalWeight = cartonDetailsJson.getTotalWeight();
+    public CartonDetailsEntity(CartonDetailsJson cartonDetailsJson) {
+        this.cartonGuid = cartonDetailsJson.getCartonGuid();
+        this.cartonNumber = cartonDetailsJson.getCartonNumber();
+        this.createdDateTime = cartonDetailsJson.getCreatedDateTime();
+        this.lastModifiedTime = cartonDetailsJson.getLastModifiedTime();
+        this.createdBy = cartonDetailsJson.getCreatedBy();
+        this.lastModifiedBy = cartonDetailsJson.getLastModifiedBy();
+        this.totalWeight = cartonDetailsJson.getTotalWeight();
     }
 
 
