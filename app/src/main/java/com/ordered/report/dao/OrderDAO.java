@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Admin on 1/1/2018.
  */
 
-public class CartonbookDao {
+public class OrderDAO {
     DatabaseHelper databaseHelper = null;
     Dao<OrderEntity, String> orderDao = null;
     Dao<CartonDetailsEntity, String> cartonItemDao = null;
@@ -30,7 +30,7 @@ public class CartonbookDao {
     Dao<ClientDetailsEntity,String> clientDetailsDao = null;
     Dao<DeliveryDetailsEntity,String> deliveryDetailsDao = null;
 
-    public CartonbookDao(Context context) throws Exception {
+    public OrderDAO(Context context) throws Exception {
         this.databaseHelper = DatabaseHelper.getInstance(context);
         initDaos();
     }

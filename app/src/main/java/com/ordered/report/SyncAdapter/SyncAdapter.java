@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-import com.ordered.report.dao.CartonbookDao;
+import com.ordered.report.dao.OrderDAO;
 import com.ordered.report.eventBus.AppBus;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.json.models.OrderDetailsJson;
@@ -26,8 +24,6 @@ import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,7 +39,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private Context context;
     private Gson gson = null;
     private SyncServiceApi syncServiceApi;
-    private CartonbookDao cartonbookDao = null;
+    private OrderDAO orderDAO = null;
     private JsonParser jsonParser = null;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
@@ -60,7 +56,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     private void init(Context context) {
         try {
-            cartonbookDao = new CartonbookDao(context);
+            orderDAO = new OrderDAO(context);
             gson = new Gson();
             syncServiceApi = ServiceAPI.INSTANCE.getSyncServiceApi();
             jsonParser = new JsonParser();
@@ -120,45 +116,45 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             orderEntity.setCreatedBy(orderDetailsJson.getCreatedBy());
             orderEntity.setCartonCounts(orderDetailsJson.getCartonCounts());
             orderEntity.setOrderedItems(gson.toJson(orderDetailsJson.getOrderedItems()));
-            cartonbookDao.updateCortonbookEntity(orderEntity);
+            orderDAO.updateCortonbookEntity(orderEntity);
         }
     }
 
 
 
     private void processOrderDetails(OrderDetailsJson orderDetailsJson) {
-        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderDetailsJson.getOrderGuid());
+        OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(orderDetailsJson.getOrderGuid());
         if (orderEntity == null) {
             orderEntity = new OrderEntity(orderDetailsJson);
             orderEntity.setSync(true);
             orderEntity.setOrderedItems(gson.toJson(orderDetailsJson.getOrderedItems()));
-            cartonbookDao.savCartonbookEntity(orderEntity);
+            orderDAO.savCartonbookEntity(orderEntity);
             if (orderDetailsJson.getProductDetails() != null && orderDetailsJson.getProductDetails().size() > 0) {
                 for (CartonDetailsJson cartonDetailsJson : orderDetailsJson.getProductDetails()) {
-                    CartonDetailsEntity cartonDetailsEntity = cartonbookDao.getCartonDetailsEntity(cartonDetailsJson.getCartonGuid());
+                    CartonDetailsEntity cartonDetailsEntity = orderDAO.getCartonDetailsEntity(cartonDetailsJson.getCartonGuid());
                     if (cartonDetailsEntity == null) {
                         cartonDetailsEntity = new CartonDetailsEntity(cartonDetailsJson);
                         cartonDetailsEntity.setOrderEntity(orderEntity);
                         if(cartonDetailsJson.getDeliverDetailsGuid() != null){
-                            DeliveryDetailsEntity deliveryDetailsEntity =  cartonbookDao.getDeliveryDetailsEntity(cartonDetailsJson.getDeliverDetailsGuid());
+                            DeliveryDetailsEntity deliveryDetailsEntity =  orderDAO.getDeliveryDetailsEntity(cartonDetailsJson.getDeliverDetailsGuid());
                             cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
                         }
-                        cartonbookDao.createCartonDetailsEntity(cartonDetailsEntity);
+                        orderDAO.createCartonDetailsEntity(cartonDetailsEntity);
                     }else{
                         if(cartonDetailsJson.getDeliverDetailsGuid() != null){
-                            DeliveryDetailsEntity deliveryDetailsEntity =  cartonbookDao.getDeliveryDetailsEntity(cartonDetailsJson.getDeliverDetailsGuid());
+                            DeliveryDetailsEntity deliveryDetailsEntity =  orderDAO.getDeliveryDetailsEntity(cartonDetailsJson.getDeliverDetailsGuid());
                             cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
-                            cartonbookDao.updateCartonDetailsEntity(cartonDetailsEntity);
+                            orderDAO.updateCartonDetailsEntity(cartonDetailsEntity);
                         }
                     }
 
                     for (ProductDetailsJson productDetailsJson : cartonDetailsJson.getProductDetailsJsonList()) {
-                        ProductDetailsEntity productDetailsEntity = cartonbookDao.getProductDetails(productDetailsJson.getProductGuid());
+                        ProductDetailsEntity productDetailsEntity = orderDAO.getProductDetails(productDetailsJson.getProductGuid());
                         if (productDetailsEntity == null) {
                             productDetailsEntity = new ProductDetailsEntity(productDetailsJson);
                             productDetailsEntity.setCartonNumber(cartonDetailsEntity);
                             productDetailsEntity.setOrderEntity(orderEntity);
-                            cartonbookDao.saveProductEntity(productDetailsEntity);
+                            orderDAO.saveProductEntity(productDetailsEntity);
                         }
 
                     }
@@ -176,9 +172,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void processDeliveryDetails(List<DeliveryDetailsEntity> deliveryDetailsEntityList){
         for(DeliveryDetailsEntity deliveryDetailsEntity : deliveryDetailsEntityList){
             try{
-                DeliveryDetailsEntity dbDeliveryDetailsEntity =   cartonbookDao.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
+                DeliveryDetailsEntity dbDeliveryDetailsEntity =   orderDAO.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
                 if(dbDeliveryDetailsEntity == null){
-                    cartonbookDao.createDeliveryDetailsEntity(deliveryDetailsEntity);
+                    orderDAO.createDeliveryDetailsEntity(deliveryDetailsEntity);
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -193,10 +189,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void processClientDetails(OrderDetailsJson orderDetailsJson, OrderEntity orderEntity ){
         if(orderDetailsJson.getClientDetails() != null){
             ClientDetailsEntity clientDetailsEntity =  orderDetailsJson.getClientDetails();
-            ClientDetailsEntity dbClientDetailsEntity =  cartonbookDao.getClientDetailsEntity(clientDetailsEntity.getClientDetailsUUID());
+            ClientDetailsEntity dbClientDetailsEntity =  orderDAO.getClientDetailsEntity(clientDetailsEntity.getClientDetailsUUID());
             if(dbClientDetailsEntity == null){
                 clientDetailsEntity.setOrderEntity(orderEntity);
-                cartonbookDao.createClientDetails(clientDetailsEntity);
+                orderDAO.createClientDetails(clientDetailsEntity);
             }
         }
     }
@@ -204,8 +200,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void uploadDataToServer() {
         try {
-            List<OrderEntity> orderEntityList = cartonbookDao.getUnSyncedOrderDetails();
-            List<DeliveryDetailsEntity> deliveryDetailsEntityList = cartonbookDao.getUnSyncedDeliveryDetailsEntity();
+            List<OrderEntity> orderEntityList = orderDAO.getUnSyncedOrderDetails();
+            List<DeliveryDetailsEntity> deliveryDetailsEntityList = orderDAO.getUnSyncedDeliveryDetailsEntity();
             if (orderEntityList.size() == 0 && deliveryDetailsEntityList.size() == 0) {
                 return;
             }
@@ -214,18 +210,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 OrderDetailsJson orderDetailsJson = new OrderDetailsJson(orderEntity);
                 orderDetailsJson.setOrderStatus(orderEntity.getOrderStatus());
                 serverSyncModel.getOrderDetailsJsonList().add(orderDetailsJson);
-                List<CartonDetailsEntity> cartonDetailsEntityList = cartonbookDao.getCartonDetailsList(orderEntity);
+                List<CartonDetailsEntity> cartonDetailsEntityList = orderDAO.getCartonDetailsList(orderEntity);
                 for (CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList) {
                     CartonDetailsJson cartonDetailsJson = new CartonDetailsJson(cartonDetailsEntity);
                     orderDetailsJson.getProductDetails().add(cartonDetailsJson);
-                    List<ProductDetailsEntity> productDetailsEntities = cartonbookDao.getProductDetailsEntityList(orderEntity, cartonDetailsEntity);
+                    List<ProductDetailsEntity> productDetailsEntities = orderDAO.getProductDetailsEntityList(orderEntity, cartonDetailsEntity);
                     for (ProductDetailsEntity productDetailsEntity : productDetailsEntities) {
                         ProductDetailsJson productDetailsJson = new ProductDetailsJson(productDetailsEntity);
                         cartonDetailsJson.getProductDetailsJsonList().add(productDetailsJson);
                     }
                 }
 
-                ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
+                ClientDetailsEntity clientDetailsEntity = orderDAO.getClientDetailsEntity(orderEntity);
                 clientDetailsEntity.setOrderEntity(null);
                 orderDetailsJson.setClientDetails(clientDetailsEntity);
             }
@@ -245,7 +241,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 for (int i = 0; i < size; i++) {
                     try{
                         ProcessedDetails processedDetails = orderGuids.get(i);
-                        cartonbookDao.updateSyncStatus(processedDetails.getUuid(),processedDetails.getDateTime());
+                        orderDAO.updateSyncStatus(processedDetails.getUuid(),processedDetails.getDateTime());
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -255,7 +251,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 List<ProcessedDetails> deliveryGuids  = responseModel.getDeliveryGuids();
                 for(ProcessedDetails processedDetails : deliveryGuids){
                     try{
-                        cartonbookDao.updateDeliverySyncStatus(processedDetails.getUuid(),processedDetails.getDateTime());
+                        orderDAO.updateDeliverySyncStatus(processedDetails.getUuid(),processedDetails.getDateTime());
                     }catch (Exception e){
                         e.printStackTrace();
                     }

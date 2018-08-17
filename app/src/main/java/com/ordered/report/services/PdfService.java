@@ -26,7 +26,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
-import com.ordered.report.dao.CartonbookDao;
+import com.ordered.report.dao.OrderDAO;
 import com.ordered.report.json.models.CartonInvoiceSummary;
 import com.ordered.report.json.models.InvoiceReportCategoryDetailsJson;
 import com.ordered.report.json.models.InvoiceReportJson;
@@ -47,12 +47,9 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.lang.Double.valueOf;
-import static java.lang.System.out;
 
 /**
  * Created by Admin on 3/2/2018.
@@ -67,11 +64,11 @@ public class PdfService {
     };
 
     Gson gson;
-    CartonbookDao cartonbookDao;
+    OrderDAO orderDAO;
     public  PdfService(Context context){
         try{
             gson = new Gson();
-            cartonbookDao = new CartonbookDao(context);
+            orderDAO = new OrderDAO(context);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -92,21 +89,21 @@ public class PdfService {
         int size = orderGuidsList.size();
         for(int i =0; i< size; i++){
             String orderGuid =  orderGuidsList.get(0).getAsString();
-            OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+            OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(orderGuid);
 
             String orderDetails = orderEntity.getOrderedItems();
             Type listType = new TypeToken<List<OrderCreationDetailsJson>>() {
             }.getType();
             List<OrderCreationDetailsJson> cottonItemEntities = gson.fromJson(orderDetails, listType);
             InvoiceReportJson invoiceReportJson = new InvoiceReportJson();
-            List<CartonDetailsEntity> cartonDetailsEntities = cartonbookDao.getCartonDetailsList(orderEntity,deliveryDetailsEntity);
-            List<ProductDetailsEntity> categoryNamesList = cartonbookDao.getCategoryList(cartonDetailsEntities);
+            List<CartonDetailsEntity> cartonDetailsEntities = orderDAO.getCartonDetailsList(orderEntity,deliveryDetailsEntity);
+            List<ProductDetailsEntity> categoryNamesList = orderDAO.getCategoryList(cartonDetailsEntities);
 
             for(ProductDetailsEntity categoryName : categoryNamesList){
                 InvoiceReportCategoryDetailsJson invoiceReportCategoryDetailsJson = new InvoiceReportCategoryDetailsJson();
                 invoiceReportCategoryDetailsJson.setCategoryName(categoryName.getProductCategory());
                 invoiceReportJson.getInvoiceReportCategoryDetailsJsons().add(invoiceReportCategoryDetailsJson);
-                List<ProductDetailsEntity> productDetailsEntityList =  cartonbookDao.getProductDetailsByCategory(categoryName.getProductCategory(),cartonDetailsEntities);
+                List<ProductDetailsEntity> productDetailsEntityList =  orderDAO.getProductDetailsByCategory(categoryName.getProductCategory(),cartonDetailsEntities);
                 for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList) {
                     InvoiceReportOrderDetailsJson invoiceReportOrderDetailsJson = new InvoiceReportOrderDetailsJson();
                     invoiceReportCategoryDetailsJson.getInvoiceReportOrder().add(invoiceReportOrderDetailsJson);
@@ -135,7 +132,7 @@ public class PdfService {
 
             }
 
-            ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
+            ClientDetailsEntity clientDetailsEntity = orderDAO.getClientDetailsEntity(orderEntity);
 
             String clientAddress = clientDetailsEntity.getExporterDetails();
             CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();

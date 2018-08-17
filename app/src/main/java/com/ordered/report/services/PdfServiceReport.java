@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 
 import com.google.gson.Gson;
@@ -26,28 +25,23 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
-import com.ordered.report.dao.CartonbookDao;
+import com.ordered.report.dao.OrderDAO;
 import com.ordered.report.json.models.CartonInvoiceSummary;
 import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.ClientDetailsEntity;
 import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
-import com.ordered.report.utils.Constants;
 import com.ordered.report.utils.DeviceConfig;
 import com.ordered.report.utils.UtilService;
 import com.ordered.report.view.activity.HomeActivity;
-import com.ordered.report.view.activity.OrderDetailsActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Admin on 3/2/2018.
@@ -64,7 +58,7 @@ public class PdfServiceReport {
     private HomeActivity homeActivity;
 
     Gson gson;
-    CartonbookDao cartonbookDao;
+    OrderDAO orderDAO;
     Font bf12;
     private ClientDetailsEntity clientDetailsEntity;
     private DeliveryDetailsEntity deliveryDetailsEntity;
@@ -72,7 +66,7 @@ public class PdfServiceReport {
     public  PdfServiceReport(Context context,DeliveryDetailsEntity deliveryDetailsEntity){
         try{
             gson = new Gson();
-            cartonbookDao = new CartonbookDao(context);
+            orderDAO = new OrderDAO(context);
             this.homeActivity = (HomeActivity)context;
             this.deliveryDetailsEntity = deliveryDetailsEntity;
         }catch (Exception e){
@@ -91,9 +85,9 @@ public class PdfServiceReport {
         int size = orderGuidsList.size();
         for(int i =0; i< size; i++) {
             String orderGuid = orderGuidsList.get(0).getAsString();
-            OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+            OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(orderGuid);
 
-            clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
+            clientDetailsEntity = orderDAO.getClientDetailsEntity(orderEntity);
 
 
             String clientAddress = clientDetailsEntity.getExporterDetails();
@@ -259,14 +253,14 @@ return cartonInvoiceSummaryList;
         int noOfOrders = orderGuidsList.size();
         for(int i =0; i< noOfOrders; i++){
             String orderGuid =  orderGuidsList.get(0).getAsString();
-            OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+            OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(orderGuid);
 
-            List<CartonDetailsEntity> cartonDetailsEntityList =  cartonbookDao.getCartonDetailsList(orderEntity,deliveryDetailsEntity);
+            List<CartonDetailsEntity> cartonDetailsEntityList =  orderDAO.getCartonDetailsList(orderEntity,deliveryDetailsEntity);
 
             for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList){
                 int pos = 0;
                 String cartonNumber = cartonDetailsEntity.getCartonNumber();
-                List<ProductDetailsEntity> productDetailsEntityList =  cartonbookDao.getProductDetailsEntityList(orderEntity,cartonDetailsEntity);
+                List<ProductDetailsEntity> productDetailsEntityList =  orderDAO.getProductDetailsEntityList(orderEntity,cartonDetailsEntity);
                 int size = productDetailsEntityList.size();
                 int totalItemsCount = 0;
                 for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList){

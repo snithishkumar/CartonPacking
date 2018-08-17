@@ -7,7 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.ordered.report.SyncAdapter.SyncServiceApi;
-import com.ordered.report.dao.CartonbookDao;
+import com.ordered.report.dao.OrderDAO;
 import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.enumeration.OrderType;
 import com.ordered.report.enumeration.Status;
@@ -35,7 +35,7 @@ public class OrderedService {
     private Context context = null;
     private SyncServiceApi syncServiceApi = null;
     public final String LOG_TAG = LoginService.class.getSimpleName();
-    private CartonbookDao cartonbookDao = null;
+    private OrderDAO orderDAO = null;
     private LoginEvent loginEvent = null;
     public static final String AUTHORITY = "com.ordered.report.SyncAdapter";
     private Gson gson;
@@ -43,7 +43,7 @@ public class OrderedService {
     public OrderedService(Context context) {
         try {
             this.context = context;
-            cartonbookDao = new CartonbookDao(context);
+            orderDAO = new OrderDAO(context);
             gson = new Gson();
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class OrderedService {
 
     public List<OrderEntity> getCartonBookEntityList(String userName) {
         try {
-            return cartonbookDao.getAllCartonbokEntityList(userName);
+            return orderDAO.getAllCartonbokEntityList(userName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,39 +60,39 @@ public class OrderedService {
     }
 
     public OrderEntity getOrderEntityByGuid(String orderGuid) {
-        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+        OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(orderGuid);
         return orderEntity;
     }
 
     public void createProductEntity(ProductDetailsEntity productDetailsEntity) {
         try {
-            cartonbookDao.saveProductEntity(productDetailsEntity);
+            orderDAO.saveProductEntity(productDetailsEntity);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public List<ProductDetailsEntity> getProductEntityList(OrderEntity orderEntity) {
-        List<ProductDetailsEntity> productEntities = cartonbookDao.getProductEntityList(orderEntity);
+        List<ProductDetailsEntity> productEntities = orderDAO.getProductEntityList(orderEntity);
         return productEntities;
     }
 
 
     public List<OrderEntity> getOrdersList(){
-        return cartonbookDao.getOrders();
+        return orderDAO.getOrders();
     }
 
 
     public List<OrderEntity> getPackingOrdersList(){
-        return cartonbookDao.getPackingOrders();
+        return orderDAO.getPackingOrders();
     }
 
 
     public List<OrderEntity> getDeliveryOrdersList(){
         List<OrderEntity> orderList = new ArrayList<>();
-        List<OrderEntity> orderEntityList = cartonbookDao.getPackingOrders();
+        List<OrderEntity> orderEntityList = orderDAO.getPackingOrders();
         for(OrderEntity orderEntity : orderEntityList){
-            List<CartonDetailsEntity> detailsEntities =  cartonbookDao.getUnDeliveredCartonDetailsList(orderEntity);
+            List<CartonDetailsEntity> detailsEntities =  orderDAO.getUnDeliveredCartonDetailsList(orderEntity);
             if(detailsEntities.size() > 0){
                 orderList.add(orderEntity);
             }
@@ -102,32 +102,32 @@ public class OrderedService {
 
 
     public List<DeliveryDetailsEntity> getDeliveredOrdersList(){
-        return cartonbookDao.getDeliveryDetailsEntity();
+        return orderDAO.getDeliveryDetailsEntity();
     }
 
 
     public List<DeliveryDetailsEntity> getCompletedDeliveryDetailsEntity(){
-        return cartonbookDao.getCompletedDeliveryDetailsEntity();
+        return orderDAO.getCompletedDeliveryDetailsEntity();
     }
 
 
     public List<CartonDetailsEntity> getCartonDetailsEntities(int deliveryId){
-        DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(deliveryId);
-        return  cartonbookDao.getCartonDetailsList(deliveryDetailsEntity);
+        DeliveryDetailsEntity deliveryDetailsEntity = orderDAO.getDeliveryDetailsEntity(deliveryId);
+        return  orderDAO.getCartonDetailsList(deliveryDetailsEntity);
     }
 
     public DeliveryDetailsEntity getDeliveryDetailsEntity(int deliveryId){
-        DeliveryDetailsEntity deliveryDetailsEntity = cartonbookDao.getDeliveryDetailsEntity(deliveryId);
+        DeliveryDetailsEntity deliveryDetailsEntity = orderDAO.getDeliveryDetailsEntity(deliveryId);
         return deliveryDetailsEntity;
     }
 
     public List<OrderEntity> getCartonBookEntityByType(OrderStatus orderType) {
         if (orderType.toString().equals(OrderStatus.ORDERED.toString())) {
-            return cartonbookDao.getCartonBookByOrderType(orderType);
+            return orderDAO.getCartonBookByOrderType(orderType);
         } else if (orderType.toString().equals(OrderStatus.PACKING.toString())) {
-            return cartonbookDao.getCartonBookByOrderType(orderType);
+            return orderDAO.getCartonBookByOrderType(orderType);
         } else if (orderType.toString().equals(OrderType.DELIVERED.toString())) {
-            return cartonbookDao.getCartonBookByOrderType(orderType);
+            return orderDAO.getCartonBookByOrderType(orderType);
         }
         return new ArrayList<>();
     }
@@ -137,7 +137,7 @@ public class OrderedService {
 
 
     public Map<String,List> getOrderItems(String orderGuid){
-        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+        OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(orderGuid);
        String orderedItems = orderEntity.getOrderedItems();
         Type listType = new TypeToken<ArrayList<OrderCreationDetailsJson>>() {
         }.getType();
@@ -156,7 +156,7 @@ public class OrderedService {
 
 
     public List<OrderDetailsListViewModel> getOrderDetailsListViewModels(String cartonbookGuid) {
-        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(cartonbookGuid);
+        OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(cartonbookGuid);
         String orderedItems = orderEntity.getOrderedItems();
         Type listType = new TypeToken<ArrayList<OrderCreationDetailsJson>>() {
         }.getType();
@@ -172,14 +172,14 @@ public class OrderedService {
 
 
     public List<CartonDetailsJson> getCartonDetailsJson(String cartonbookGuid){
-        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(cartonbookGuid);
+        OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(cartonbookGuid);
        String orderItems =  orderEntity.getOrderedItems();
         List<OrderCreationDetailsJson>  orderCreationDetailsJsons =  getOrderedItems(orderItems);
-        List<CartonDetailsEntity> cartonDetailsEntityList =  cartonbookDao.getCartonDetailsList(orderEntity);
+        List<CartonDetailsEntity> cartonDetailsEntityList =  orderDAO.getCartonDetailsList(orderEntity);
         List<CartonDetailsJson> cartonDetailsJsonList = new ArrayList<>();
         for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList){
             CartonDetailsJson cartonDetailsJson = new CartonDetailsJson(cartonDetailsEntity);
-            List<ProductDetailsEntity> productDetailsEntities =  cartonbookDao.getProductDetailsEntityList(orderEntity,cartonDetailsEntity);
+            List<ProductDetailsEntity> productDetailsEntities =  orderDAO.getProductDetailsEntityList(orderEntity,cartonDetailsEntity);
             for(ProductDetailsEntity productDetailsEntity : productDetailsEntities){
                 OrderDetailsListViewModel  orderDetailsListViewModel = new OrderDetailsListViewModel();
 
@@ -210,24 +210,24 @@ public class OrderedService {
 
 
     public boolean saveProductDetails(String orderGuid,List<CartonDetailsJson> cartonDetailsJsonList,OrderStatus orderStatus, String totalCartonCount){
-        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+        OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(orderGuid);
         boolean isEdited = false;
        for(CartonDetailsJson cartonDetailsJson : cartonDetailsJsonList){
-           CartonDetailsEntity cartonDetailsEntity =  cartonbookDao.getCartonDetailsEntity(cartonDetailsJson.getCartonGuid());
+           CartonDetailsEntity cartonDetailsEntity =  orderDAO.getCartonDetailsEntity(cartonDetailsJson.getCartonGuid());
            if(cartonDetailsEntity == null){
                cartonDetailsEntity = new CartonDetailsEntity(cartonDetailsJson);
                cartonDetailsEntity.setOrderEntity(orderEntity);
-               cartonbookDao.createCartonDetailsEntity(cartonDetailsEntity);
+               orderDAO.createCartonDetailsEntity(cartonDetailsEntity);
            }else{
                cartonDetailsEntity.setLastModifiedBy(cartonDetailsJson.getLastModifiedBy());
                cartonDetailsEntity.setLastModifiedTime(cartonDetailsJson.getLastModifiedTime());
                cartonDetailsEntity.setTotalWeight(cartonDetailsJson.getTotalWeight());
-               cartonbookDao.updateCartonDetailsEntity(cartonDetailsEntity);
+               orderDAO.updateCartonDetailsEntity(cartonDetailsEntity);
            }
            List<OrderDetailsListViewModel> orderDetailsListViewModels = cartonDetailsJson.getOrderDetailsListViewModels();
            for(OrderDetailsListViewModel orderDetailsListViewModel : orderDetailsListViewModels){
                isEdited = true;
-               ProductDetailsEntity productDetailsEntity =  cartonbookDao.getProductDetails(orderDetailsListViewModel.getProductGuid());
+               ProductDetailsEntity productDetailsEntity =  orderDAO.getProductDetails(orderDetailsListViewModel.getProductGuid());
                if(productDetailsEntity == null){
                    productDetailsEntity = new ProductDetailsEntity(orderDetailsListViewModel);
                    productDetailsEntity.setCartonNumber(cartonDetailsEntity);
@@ -235,7 +235,7 @@ public class OrderedService {
                    productDetailsEntity.setCreatedBy(Constants.getLoginUser());
                    productDetailsEntity.setModifiedBy(Constants.getLoginUser());
                    productDetailsEntity.setLastModifiedDateTime(productDetailsEntity.getCreatedDateTime());
-                   cartonbookDao.createProductDetailsEntity(productDetailsEntity);
+                   orderDAO.createProductDetailsEntity(productDetailsEntity);
                }
            }
 
@@ -248,7 +248,7 @@ public class OrderedService {
             orderEntity.setLastModifiedDate(System.currentTimeMillis());
             orderEntity.setOrderStatus(OrderStatus.PACKING);
 
-            cartonbookDao.updateCortonbookEntity(orderEntity);
+            orderDAO.updateCortonbookEntity(orderEntity);
         }
         return isEdited;
 
@@ -261,10 +261,10 @@ public class OrderedService {
     }
 
     public boolean checkAvailability(List<CartonDetailsJson> cartonDetailsJsonsList,String orderGuid){
-        OrderEntity orderEntity = cartonbookDao.getOrderEntityByGuid(orderGuid);
+        OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(orderGuid);
         String orderItems = orderEntity.getOrderedItems();
         List<OrderCreationDetailsJson> creationDetailsJsonList =  getOrderedItems(orderItems);
-       // List<ProductDetailsEntity> productDetailsEntityList = cartonbookDao.getProductEntityList(orderEntity);
+       // List<ProductDetailsEntity> productDetailsEntityList = orderDAO.getProductEntityList(orderEntity);
         int oneSizeOrder = 0;
         int xsOrder = 0;
         int sOrder = 0;
@@ -317,7 +317,7 @@ public class OrderedService {
 
 
     public void calcAvailableCount(OrderDetailsListViewModel orderDetailsListViewModel,List<CartonDetailsJson> cartonDetailsJsonsList){
-        List<ProductDetailsEntity> productDetailsEntityList = cartonbookDao.getOrderItem(orderDetailsListViewModel.getOrderItemGuid());
+        List<ProductDetailsEntity> productDetailsEntityList = orderDAO.getOrderItem(orderDetailsListViewModel.getOrderItemGuid());
         int oneSize = 0;
         int xs = 0;
         int s = 0;
@@ -367,13 +367,13 @@ public class OrderedService {
 
     public void addDelivery(List<Integer> cartonsIds, int deliveryId, Status status){
         try{
-           DeliveryDetailsEntity deliveryDetailsEntity =  cartonbookDao.getDeliveryDetailsEntity(deliveryId);
+           DeliveryDetailsEntity deliveryDetailsEntity =  orderDAO.getDeliveryDetailsEntity(deliveryId);
             JsonArray orderGuids = new JsonArray();
            for(Integer cartonsId : cartonsIds){
-               CartonDetailsEntity cartonDetailsEntity = cartonbookDao.getCartonDetailsEntity(cartonsId);
+               CartonDetailsEntity cartonDetailsEntity = orderDAO.getCartonDetailsEntity(cartonsId);
                cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
                cartonDetailsEntity.setLastModifiedTime(System.currentTimeMillis());
-               cartonbookDao.updateCartonDetailsEntity(cartonDetailsEntity);
+               orderDAO.updateCartonDetailsEntity(cartonDetailsEntity);
 
                cartonDetailsEntity.getOrderEntity().setLastModifiedDate(cartonDetailsEntity.getLastModifiedTime());
                cartonDetailsEntity.getOrderEntity().setSync(false);
@@ -382,7 +382,7 @@ public class OrderedService {
                if(!isAvailable){
                    cartonDetailsEntity.getOrderEntity().setOrderStatus(OrderStatus.DELIVERED);
                }
-               cartonbookDao.updateCortonbookEntity(cartonDetailsEntity.getOrderEntity());
+               orderDAO.updateCortonbookEntity(cartonDetailsEntity.getOrderEntity());
                orderGuids.add(cartonDetailsEntity.getOrderEntity().getOrderGuid());
 
            }
@@ -397,7 +397,7 @@ public class OrderedService {
             deliveryDetailsEntity.setStatus(status);
             deliveryDetailsEntity.setLastModifiedDateTime(System.currentTimeMillis());
             deliveryDetailsEntity.setSync(false);
-            cartonbookDao.updateDeliveryDetailsEntity(deliveryDetailsEntity);
+            orderDAO.updateDeliveryDetailsEntity(deliveryDetailsEntity);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -405,10 +405,10 @@ public class OrderedService {
 
 
     public Map<String,Long> getCartonCount(DeliveryDetailsEntity deliveryDetailsEntity){
-        List<CartonDetailsEntity> cartonDetailsEntities =  cartonbookDao.getCartonDetailsList(deliveryDetailsEntity);
+        List<CartonDetailsEntity> cartonDetailsEntities =  orderDAO.getCartonDetailsList(deliveryDetailsEntity);
         long productCounts = 0;
         for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntities){
-            productCounts = productCounts + cartonbookDao.getProductDetailsCount(cartonDetailsEntity);
+            productCounts = productCounts + orderDAO.getProductDetailsCount(cartonDetailsEntity);
         }
         long cartonCounts= cartonDetailsEntities.size();
         Map<String,Long> countDetails = new HashMap<>();
@@ -433,22 +433,22 @@ public class OrderedService {
 
 
     public void createDelivery(DeliveryDetailsEntity deliveryDetailsEntity){
-        cartonbookDao.createDeliveryDetailsEntity(deliveryDetailsEntity);
+        orderDAO.createDeliveryDetailsEntity(deliveryDetailsEntity);
     }
 
 
     public void updateOrderUpdates(OrderEntity orderEntity){
-        cartonbookDao.updateCortonbookEntity(orderEntity);
+        orderDAO.updateCortonbookEntity(orderEntity);
     }
 
 
     public void updateCartonDetailsEntity(CartonDetailsEntity cartonDetailsEntity){
-        cartonbookDao.updateCartonDetailsEntity(cartonDetailsEntity);
+        orderDAO.updateCartonDetailsEntity(cartonDetailsEntity);
     }
 
 
     public List<CartonDetailsEntity> getUnDeliveryCartonDetailsEntity(OrderEntity orderEntity){
-       return cartonbookDao.getUnDeliveredCartonDetailsList(orderEntity);
+       return orderDAO.getUnDeliveredCartonDetailsList(orderEntity);
     }
 
 
@@ -456,7 +456,7 @@ public class OrderedService {
     public boolean checkAvailability(OrderEntity orderEntity){
         String orderItems = orderEntity.getOrderedItems();
         List<OrderCreationDetailsJson> creationDetailsJsonList =  getOrderedItems(orderItems);
-         List<ProductDetailsEntity> productDetailsEntityList = cartonbookDao.getProductEntityList(orderEntity);
+         List<ProductDetailsEntity> productDetailsEntityList = orderDAO.getProductEntityList(orderEntity);
         int oneSizeOrder = 0;
         int xsOrder = 0;
         int sOrder = 0;
