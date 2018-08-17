@@ -16,8 +16,10 @@ import com.ordered.report.dao.CartonbookDao;
 import com.ordered.report.eventBus.AppBus;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.json.models.OrderDetailsJson;
+import com.ordered.report.json.models.ProcessedDetails;
 import com.ordered.report.json.models.ProductDetailsJson;
 import com.ordered.report.json.models.ResponseData;
+import com.ordered.report.json.models.ServerSyncModel;
 import com.ordered.report.models.CartonDetailsEntity;
 import com.ordered.report.models.ClientDetailsEntity;
 import com.ordered.report.models.DeliveryDetailsEntity;
@@ -88,18 +90,37 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Response<ResponseData> orderDetailsResponse = orderDetailsCall.execute();
             if (orderDetailsResponse != null && orderDetailsResponse.isSuccessful()) {
                 ResponseData orderDetailsData = orderDetailsResponse.body();
-                Type listType = new TypeToken<ArrayList<OrderDetailsJson>>() {
-                }.getType();
-
-                List<OrderDetailsJson> orderDetailsJsonsList = gson.fromJson(gson.toJson(orderDetailsData.getData()), listType);
+                ServerSyncModel serverSyncModel = gson.fromJson(gson.toJson(orderDetailsData.getData()), ServerSyncModel.class);
+                processDeliveryDetails(serverSyncModel.getDeliveryDetailsEntities());
+                List<OrderDetailsJson> orderDetailsJsonsList = serverSyncModel.getOrderDetailsJsonList();
                 for (OrderDetailsJson orderDetailsJson : orderDetailsJsonsList) {
-                    processOrderDetails(orderDetailsJson);
+                    try {
+                        processOrderDetails(orderDetailsJson);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
             }
 
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private void processOrderDetails(OrderDetailsJson orderDetailsJson,OrderEntity orderEntity){
+        if(orderDetailsJson.getLastModifiedDate() >= orderEntity.getLastModifiedDate()){
+            orderEntity.populateData(orderDetailsJson);
+            orderEntity.setSync(true);
+            orderEntity.setOrderStatus(orderDetailsJson.getOrderStatus());
+            orderEntity.setPaymentStatus(orderDetailsJson.getPaymentStatus());
+            orderEntity.setLastModifiedDate(orderDetailsJson.getLastModifiedDate());
+            orderEntity.setCreatedBy(orderDetailsJson.getCreatedBy());
+            orderEntity.setCartonCounts(orderDetailsJson.getCartonCounts());
+            orderEntity.setOrderedItems(gson.toJson(orderDetailsJson.getOrderedItems()));
+            cartonbookDao.updateCortonbookEntity(orderEntity);
         }
     }
 
@@ -112,10 +133,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             orderEntity.setSync(true);
             orderEntity.setOrderedItems(gson.toJson(orderDetailsJson.getOrderedItems()));
             cartonbookDao.savCartonbookEntity(orderEntity);
-            processDeliveryDetails(orderDetailsJson,orderEntity);
             if (orderDetailsJson.getProductDetails() != null && orderDetailsJson.getProductDetails().size() > 0) {
                 for (CartonDetailsJson cartonDetailsJson : orderDetailsJson.getProductDetails()) {
-
                     CartonDetailsEntity cartonDetailsEntity = cartonbookDao.getCartonDetailsEntity(cartonDetailsJson.getCartonGuid());
                     if (cartonDetailsEntity == null) {
                         cartonDetailsEntity = new CartonDetailsEntity(cartonDetailsJson);
@@ -154,14 +173,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
 
-    private void processDeliveryDetails(OrderDetailsJson orderDetailsJson, OrderEntity orderEntity ){
-        List<DeliveryDetailsEntity> deliveryDetailsEntityList = orderDetailsJson.getDeliveryDetailsList();
+    private void processDeliveryDetails(List<DeliveryDetailsEntity> deliveryDetailsEntityList){
         for(DeliveryDetailsEntity deliveryDetailsEntity : deliveryDetailsEntityList){
-            DeliveryDetailsEntity dbDeliveryDetailsEntity =   cartonbookDao.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
-            if(dbDeliveryDetailsEntity == null){
-               // deliveryDetailsEntity.setOrderEntity(orderEntity);
-                cartonbookDao.createDeliveryDetailsEntity(deliveryDetailsEntity);
+            try{
+                DeliveryDetailsEntity dbDeliveryDetailsEntity =   cartonbookDao.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
+                if(dbDeliveryDetailsEntity == null){
+                    cartonbookDao.createDeliveryDetailsEntity(deliveryDetailsEntity);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
         }
 
 
@@ -183,11 +205,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void uploadDataToServer() {
         try {
             List<OrderEntity> orderEntityList = cartonbookDao.getUnSyncedOrderDetails();
-            List<OrderDetailsJson> orderDetailsJsonList = new ArrayList<>();
+            List<DeliveryDetailsEntity> deliveryDetailsEntityList = cartonbookDao.getUnSyncedDeliveryDetailsEntity();
+            if (orderEntityList.size() == 0 && deliveryDetailsEntityList.size() == 0) {
+                return;
+            }
+            ServerSyncModel serverSyncModel = new ServerSyncModel();
             for (OrderEntity orderEntity : orderEntityList) {
                 OrderDetailsJson orderDetailsJson = new OrderDetailsJson(orderEntity);
                 orderDetailsJson.setOrderStatus(orderEntity.getOrderStatus());
-                orderDetailsJsonList.add(orderDetailsJson);
+                serverSyncModel.getOrderDetailsJsonList().add(orderDetailsJson);
                 List<CartonDetailsEntity> cartonDetailsEntityList = cartonbookDao.getCartonDetailsList(orderEntity);
                 for (CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntityList) {
                     CartonDetailsJson cartonDetailsJson = new CartonDetailsJson(cartonDetailsEntity);
@@ -202,26 +228,38 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 ClientDetailsEntity clientDetailsEntity = cartonbookDao.getClientDetailsEntity(orderEntity);
                 clientDetailsEntity.setOrderEntity(null);
                 orderDetailsJson.setClientDetails(clientDetailsEntity);
+            }
 
-                List<DeliveryDetailsEntity> deliveryDetailsEntityList = cartonbookDao.getDeliveryDetailsEntity(orderEntity);
-                for(DeliveryDetailsEntity deliveryDetailsEntity : deliveryDetailsEntityList){
-                    //deliveryDetailsEntity.setOrderEntity(null);
-                    orderDetailsJson.getDeliveryDetailsList().add(deliveryDetailsEntity);
+
+            for (DeliveryDetailsEntity deliveryDetailsEntity : deliveryDetailsEntityList) {
+                serverSyncModel.getDeliveryDetailsEntities().add(deliveryDetailsEntity);
+            }
+
+            Call<String> orderSyncedDetails = syncServiceApi.uploadData(serverSyncModel);
+            Response<String> response = orderSyncedDetails.execute();
+            if (response != null && response.isSuccessful()) {
+                String dataRespond = response.body();
+                ServerSyncModel responseModel = gson.fromJson(dataRespond,ServerSyncModel.class);
+                List<ProcessedDetails> orderGuids  = responseModel.getOrderGuids();
+                int size = orderGuids.size();
+                for (int i = 0; i < size; i++) {
+                    try{
+                        ProcessedDetails processedDetails = orderGuids.get(i);
+                        cartonbookDao.updateSyncStatus(processedDetails.getUuid(),processedDetails.getDateTime());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
                 }
 
-            }
-            if (orderDetailsJsonList.size() > 0) {
-                Call<String> orderSyncedDetails = syncServiceApi.uploadData(orderDetailsJsonList);
-                Response<String> response = orderSyncedDetails.execute();
-                if (response != null && response.isSuccessful()) {
-                    String dataRespond = response.body();
-                    JsonArray orderGuids = (JsonArray) jsonParser.parse(dataRespond);
-                    int size = orderGuids.size();
-                    for (int i = 0; i < size; i++) {
-                        String orderGuid = orderGuids.get(i).getAsString();
-                        cartonbookDao.updateSyncStatus(orderGuid);
+                List<ProcessedDetails> deliveryGuids  = responseModel.getDeliveryGuids();
+                for(ProcessedDetails processedDetails : deliveryGuids){
+                    try{
+                        cartonbookDao.updateDeliverySyncStatus(processedDetails.getUuid(),processedDetails.getDateTime());
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
+
                 }
             }
 

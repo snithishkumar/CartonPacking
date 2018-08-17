@@ -50,9 +50,6 @@ public class DeliveryDetailsEntity {
     @DatabaseField(columnName = "OrderGuids",dataType = DataType.LONG_STRING)
     private String orderGuids;
 
-    private OrderEntity orderEntity;
-
-
 
     public String getOrderGuids() {
         return orderGuids;

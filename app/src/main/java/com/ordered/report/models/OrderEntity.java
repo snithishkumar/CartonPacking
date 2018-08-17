@@ -61,16 +61,21 @@ public class OrderEntity {
     }
 
     public OrderEntity(OrderDetailsJson orderDetailsJson) {
+        this.orderStatus = orderDetailsJson.getOrderStatus();
+        this.paymentStatus = orderDetailsJson.getPaymentStatus();
+        this.lastModifiedDate = orderDetailsJson.getLastModifiedDate();
+        this.createdBy = orderDetailsJson.getCreatedBy();
+        this.cartonCounts = orderDetailsJson.getCartonCounts();
+        populateData(orderDetailsJson);
+    }
+
+
+    public void populateData(OrderDetailsJson orderDetailsJson){
         this.clientName = orderDetailsJson.getClientName();
         this.orderId = orderDetailsJson.getOrderId();
         this.orderGuid = orderDetailsJson.getOrderGuid();
-        this.orderStatus = orderDetailsJson.getOrderStatus();
-        this.paymentStatus = orderDetailsJson.getPaymentStatus();
         this.orderedDate = orderDetailsJson.getOrderedDate();
-        this.lastModifiedDate = orderDetailsJson.getLastModifiedDate();
         this.serverTime = orderDetailsJson.getServerTime();
-        this.cartonCounts = orderDetailsJson.getCartonCounts();
-        this.createdBy = orderDetailsJson.getCreatedBy();
     }
 
     public String getCreatedBy() {

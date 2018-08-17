@@ -27,21 +27,20 @@ public class OrderDetailsJson {
     private List<CartonDetailsJson> productDetails = new ArrayList<>();
     private String cartonCounts;
     private String createdBy;
-    private List<DeliveryDetailsEntity> deliveryDetailsList = new ArrayList<>();
     private ClientDetailsEntity clientDetails;
 
     public OrderDetailsJson(){
 
     }
 
-    public OrderDetailsJson(OrderEntity orderEntity){
-this.orderId = orderEntity.getOrderId();
-this.orderGuid = orderEntity.getOrderGuid();
-this.clientName = orderEntity.getClientName();
+    public OrderDetailsJson(OrderEntity orderEntity) {
+        this.orderId = orderEntity.getOrderId();
+        this.orderGuid = orderEntity.getOrderGuid();
+        this.clientName = orderEntity.getClientName();
 //this.orderStatus = orderEntity.getOrderType();
         this.paymentStatus = orderEntity.getPaymentStatus();
         this.orderedDate = orderEntity.getOrderedDate();
-        this.lastModifiedDate= orderEntity.getLastModifiedDate();
+        this.lastModifiedDate = orderEntity.getLastModifiedDate();
         this.serverTime = orderEntity.getServerTime();
         this.cartonCounts = orderEntity.getCartonCounts();
         this.createdBy = orderEntity.getCreatedBy();
@@ -151,13 +150,6 @@ this.clientName = orderEntity.getClientName();
         this.productDetails = productDetails;
     }
 
-    public List<DeliveryDetailsEntity> getDeliveryDetailsList() {
-        return deliveryDetailsList;
-    }
-
-    public void setDeliveryDetailsList(List<DeliveryDetailsEntity> deliveryDetailsList) {
-        this.deliveryDetailsList = deliveryDetailsList;
-    }
 
     public ClientDetailsEntity getClientDetails() {
         return clientDetails;
@@ -183,7 +175,6 @@ this.clientName = orderEntity.getClientName();
                 ", productDetails=" + productDetails +
                 ", cartonCounts='" + cartonCounts + '\'' +
                 ", createdBy='" + createdBy + '\'' +
-                ", deliveryDetailsList=" + deliveryDetailsList +
                 ", clientDetails=" + clientDetails +
                 '}';
     }

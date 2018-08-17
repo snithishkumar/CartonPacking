@@ -3,6 +3,7 @@ package com.ordered.report.SyncAdapter;
 
 import com.ordered.report.json.models.OrderDetailsJson;
 import com.ordered.report.json.models.ResponseData;
+import com.ordered.report.json.models.ServerSyncModel;
 
 import java.util.List;
 
@@ -28,6 +29,6 @@ public interface SyncServiceApi {
     Call<ResponseData> getDownloadedSyncItems(@Field("lastSyncTime") long lastSyncTime);
 
     @POST(ServiceUrls.UPDATE_ORDER_DETAILS)
-    Call<String> uploadData(@Body List<OrderDetailsJson> orderDetailsJsonList);
+    Call<String> uploadData(@Body ServerSyncModel serverSyncModel);
 
 }

@@ -154,11 +154,26 @@ public class CartonbookDao {
     }
 
 
-    public void updateSyncStatus(String orderGuid) {
+    public void updateSyncStatus(String orderGuid,long dateTime) {
         try {
             UpdateBuilder<OrderEntity, String> updateBuilder = orderDao.updateBuilder();
             updateBuilder.updateColumnValue(OrderEntity.IS_SYNC, true);
             updateBuilder.where().eq(OrderEntity.ORDER_GUID, orderGuid);
+            updateBuilder.where().le(OrderEntity.LAST_MODIFIED_DATE, dateTime);
+            updateBuilder.update();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void updateDeliverySyncStatus(String deliveryGuid,long dateTime) {
+        try {
+            UpdateBuilder<DeliveryDetailsEntity, String> updateBuilder = deliveryDetailsDao.updateBuilder();
+            updateBuilder.updateColumnValue(DeliveryDetailsEntity.IS_SYNC, true);
+            updateBuilder.where().eq(DeliveryDetailsEntity.DELIVERY_UUID, deliveryGuid);
+            updateBuilder.where().le(DeliveryDetailsEntity.LAST_MODIFIED_DATE_TIME, dateTime);
             updateBuilder.update();
 
         } catch (Exception e) {
@@ -352,6 +367,17 @@ public class CartonbookDao {
         try {
            // return deliveryDetailsDao.queryForAll();
             return deliveryDetailsDao.queryBuilder().where().ne(DeliveryDetailsEntity.STATUS, Status.COMPLETED).or().isNull(DeliveryDetailsEntity.STATUS).query();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
+    public List<DeliveryDetailsEntity> getUnSyncedDeliveryDetailsEntity(){
+        try {
+            // return deliveryDetailsDao.queryForAll();
+            return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.IS_SYNC, false).query();
         } catch (Exception e) {
             e.printStackTrace();
         }
