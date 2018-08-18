@@ -9,7 +9,7 @@ public enum PaymentStatus {
     private int paymentStatusId;
     private String paymentStatusName;
 
-    private PaymentStatus(int paymentStatusId, String paymentStatusName) {
+     PaymentStatus(int paymentStatusId, String paymentStatusName) {
         this.paymentStatusId = paymentStatusId;
         this.paymentStatusName = paymentStatusName;
     }

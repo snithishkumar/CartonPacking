@@ -112,10 +112,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
     private void processOrderDetails(OrderDetailsJson orderDetailsJson,OrderEntity orderEntity){
-        if(orderDetailsJson.getLastModifiedDate() >= orderEntity.getLastModifiedDate()){
+        if(orderDetailsJson.getLastModifiedDate() > orderEntity.getLastModifiedDate()){
             orderEntity.populateData(orderDetailsJson);
-            orderEntity.setSync(true);
-            orderEntity.setOrderStatus(orderDetailsJson.getOrderStatus());
+            if(orderEntity.getOrderStatus().getOrderStatusId() <= orderDetailsJson.getOrderStatus().getOrderStatusId()){
+                orderEntity.setOrderStatus(orderDetailsJson.getOrderStatus());
+            }
             orderEntity.setPaymentStatus(orderDetailsJson.getPaymentStatus());
             orderEntity.setLastModifiedDate(orderDetailsJson.getLastModifiedDate());
             orderEntity.setCreatedBy(orderDetailsJson.getCreatedBy());
@@ -129,6 +130,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             }
         }else{
+            if(orderEntity.getOrderStatus().getOrderStatusId() <= orderDetailsJson.getOrderStatus().getOrderStatusId()){
+                orderEntity.setOrderStatus(orderDetailsJson.getOrderStatus());
+                orderDAO.updateCortonbookEntity(orderEntity);
+            }
             if (orderDetailsJson.getProductDetails() != null && orderDetailsJson.getProductDetails().size() > 0) {
                 for (CartonDetailsJson cartonDetailsJson : orderDetailsJson.getProductDetails()) {
                     processCartonDetails(cartonDetailsJson,orderEntity);
