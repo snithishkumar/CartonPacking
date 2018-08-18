@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.ordered.report.dao.OrderDAO;
+import com.ordered.report.enumeration.Status;
 import com.ordered.report.eventBus.AppBus;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.json.models.OrderDetailsJson;
@@ -24,6 +27,8 @@ import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -134,21 +139,45 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
 
+
+    private void setCartonDeliveryDetails(CartonDetailsJson cartonDetailsJson,OrderEntity orderEntity,CartonDetailsEntity cartonDetailsEntity){
+        if(cartonDetailsJson.getDeliverDetailsGuid() != null){
+            DeliveryDetailsEntity deliveryDetailsEntity =  orderDAO.getDeliveryDetailsEntity(cartonDetailsJson.getDeliverDetailsGuid());
+            cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
+
+            String orderGuid = deliveryDetailsEntity.getOrderGuids();
+            if(orderGuid != null){
+                Type orderGuidsType = new TypeToken<ArrayList<String>>() {
+                }.getType();
+                List<String> orderGuidList = gson.fromJson(orderGuid,orderGuidsType);
+                if(!orderGuidList.contains(orderGuid)){
+                    orderGuidList.add(orderGuid);
+                    deliveryDetailsEntity.setOrderGuids(gson.toJson(orderGuidList));
+                    orderDAO.updateDeliveryDetailsEntity(deliveryDetailsEntity);
+                }
+
+            }else{
+                List<String> orderGuidList = new ArrayList<>();
+                orderGuidList.add(orderEntity.getOrderGuid());
+                deliveryDetailsEntity.setOrderGuids(gson.toJson(orderGuidList));
+                orderDAO.updateDeliveryDetailsEntity(deliveryDetailsEntity);
+            }
+
+        }
+    }
+
+
     private void processCartonDetails(CartonDetailsJson cartonDetailsJson,OrderEntity orderEntity){
         CartonDetailsEntity cartonDetailsEntity = orderDAO.getCartonDetailsEntity(cartonDetailsJson.getCartonGuid());
         if (cartonDetailsEntity == null) {
             cartonDetailsEntity = new CartonDetailsEntity(cartonDetailsJson);
             cartonDetailsEntity.setOrderEntity(orderEntity);
-            if(cartonDetailsJson.getDeliverDetailsGuid() != null){
-                DeliveryDetailsEntity deliveryDetailsEntity =  orderDAO.getDeliveryDetailsEntity(cartonDetailsJson.getDeliverDetailsGuid());
-                cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
-            }
+            setCartonDeliveryDetails(cartonDetailsJson,orderEntity,cartonDetailsEntity);
             orderDAO.createCartonDetailsEntity(cartonDetailsEntity);
         }else{
             if(cartonDetailsEntity.getLastModifiedTime() < cartonDetailsJson.getLastModifiedTime()){
                 if(cartonDetailsJson.getDeliverDetailsGuid() != null){
-                    DeliveryDetailsEntity deliveryDetailsEntity =  orderDAO.getDeliveryDetailsEntity(cartonDetailsJson.getDeliverDetailsGuid());
-                    cartonDetailsEntity.setDeliveryDetails(deliveryDetailsEntity);
+                    setCartonDeliveryDetails(cartonDetailsJson,orderEntity,cartonDetailsEntity);
                     cartonDetailsEntity.setLastModifiedBy(cartonDetailsJson.getLastModifiedBy());
                     cartonDetailsEntity.setLastModifiedTime(cartonDetailsJson.getLastModifiedTime());
                     cartonDetailsEntity.setTotalWeight(cartonDetailsJson.getTotalWeight());
@@ -200,6 +229,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 DeliveryDetailsEntity dbDeliveryDetailsEntity =   orderDAO.getDeliveryDetailsEntity(deliveryDetailsEntity.getDeliveryUUID());
                 if(dbDeliveryDetailsEntity == null){
                     orderDAO.createDeliveryDetailsEntity(deliveryDetailsEntity);
+                }else{
+                    if(dbDeliveryDetailsEntity.isSync()){
+                        deliveryDetailsEntity.setDeliveryId(dbDeliveryDetailsEntity.getDeliveryId());
+                        orderDAO.updateDeliveryDetailsEntity(deliveryDetailsEntity);
+                    }else if(deliveryDetailsEntity.getStatus() != null){
+                        if(dbDeliveryDetailsEntity.getStatus() == null || dbDeliveryDetailsEntity.getStatus().toString().equals(Status.IN_PROGRESS.toString())){
+                            dbDeliveryDetailsEntity.setStatus(deliveryDetailsEntity.getStatus());
+                            orderDAO.updateDeliveryDetailsEntity(deliveryDetailsEntity);
+                        }
+                    }
                 }
             }catch (Exception e){
                 e.printStackTrace();

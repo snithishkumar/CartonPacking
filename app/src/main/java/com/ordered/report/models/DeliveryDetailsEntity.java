@@ -55,6 +55,8 @@ public class DeliveryDetailsEntity {
         return orderGuids;
     }
 
+
+
     public void setOrderGuids(String orderGuids) {
         this.orderGuids = orderGuids;
     }
