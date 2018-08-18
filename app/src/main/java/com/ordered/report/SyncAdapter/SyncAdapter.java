@@ -81,7 +81,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             e.printStackTrace();
             Log.e(LOG_TAG, "Error in onPerformSync", e);
         }
-
+        System.out.println("sync Completed");
     }
 
 

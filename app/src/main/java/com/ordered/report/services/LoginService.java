@@ -108,6 +108,7 @@ public class LoginService {
         Account account = createSyncAdapterAccount(context);
         ContentResolver.setIsSyncable(account, AUTHORITY, 1);
         ContentResolver.setSyncAutomatically(account, AUTHORITY, true);
+        ContentResolver.setMasterSyncAutomatically(true);
         ContentResolver.addPeriodicSync(account, AUTHORITY, Bundle.EMPTY, 30);
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);

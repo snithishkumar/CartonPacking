@@ -479,7 +479,7 @@ public class OrderDAO {
 
     public long getOrderMaxSyncTime(){
         try{
-            OrderEntity orderEntity = orderDao.queryBuilder().orderBy(OrderEntity.SERVER_TIME,false).limit(1L).queryForFirst();
+            OrderEntity orderEntity = orderDao.queryBuilder().orderBy(OrderEntity.SERVER_TIME,false).queryForFirst();
             if(orderEntity != null){
                return orderEntity.getServerTime();
             }
@@ -492,7 +492,7 @@ public class OrderDAO {
 
     public long getDeliveryMaxSyncTime(){
         try {
-            DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsDao.queryBuilder().orderBy(DeliveryDetailsEntity.SERVER_SYNC_TIME,false).limit(1L).queryForFirst();
+            DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsDao.queryBuilder().orderBy(DeliveryDetailsEntity.SERVER_SYNC_TIME,false).queryForFirst();
             if(deliveryDetailsEntity != null){
                 return deliveryDetailsEntity.getServerSyncTime();
             }
