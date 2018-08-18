@@ -477,4 +477,30 @@ public class OrderDAO {
     }
 
 
+    public long getOrderMaxSyncTime(){
+        try{
+            OrderEntity orderEntity = orderDao.queryBuilder().orderBy(OrderEntity.SERVER_TIME,false).limit(1L).queryForFirst();
+            if(orderEntity != null){
+               return orderEntity.getServerTime();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+    public long getDeliveryMaxSyncTime(){
+        try {
+            DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsDao.queryBuilder().orderBy(DeliveryDetailsEntity.SERVER_SYNC_TIME,false).limit(1L).queryForFirst();
+            if(deliveryDetailsEntity != null){
+                return deliveryDetailsEntity.getServerSyncTime();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
 }

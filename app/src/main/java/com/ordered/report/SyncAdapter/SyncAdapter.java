@@ -87,7 +87,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void downloadDataFromServer() {
         try {
-            Call<ResponseData> orderDetailsCall = syncServiceApi.getDownloadedSyncItems(-1);
+         long lastOrderSyncTime =   orderDAO.getOrderMaxSyncTime();
+         long lastDeliverySyncTime =   orderDAO.getDeliveryMaxSyncTime();
+            Call<ResponseData> orderDetailsCall = syncServiceApi.getDownloadedSyncItems(lastOrderSyncTime,lastDeliverySyncTime);
             Response<ResponseData> orderDetailsResponse = orderDetailsCall.execute();
             if (orderDetailsResponse != null && orderDetailsResponse.isSuccessful()) {
                 ResponseData orderDetailsData = orderDetailsResponse.body();

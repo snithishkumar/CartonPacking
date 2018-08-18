@@ -18,6 +18,7 @@ public class DeliveryDetailsEntity {
     public static final String ORDER_GUIDS = "OrderGuids";
     public static final String LAST_MODIFIED_DATE_TIME = "LastModifiedDateTime";
     public static final String IS_SYNC = "IsSync";
+    public static final String SERVER_SYNC_TIME = "ServerSyncTime";
 
 
     @DatabaseField(columnName = "DeliveryDetailsId", generatedId = true)
@@ -50,6 +51,17 @@ public class DeliveryDetailsEntity {
     @DatabaseField(columnName = "OrderGuids",dataType = DataType.LONG_STRING)
     private String orderGuids;
 
+    @DatabaseField(columnName = "ServerSyncTime")
+    private long serverSyncTime;
+
+
+    public long getServerSyncTime() {
+        return serverSyncTime;
+    }
+
+    public void setServerSyncTime(long serverSyncTime) {
+        this.serverSyncTime = serverSyncTime;
+    }
 
     public String getOrderGuids() {
         return orderGuids;
