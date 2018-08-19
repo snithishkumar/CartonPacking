@@ -232,7 +232,7 @@ public class OrderDAO {
 
     public List<CartonDetailsEntity> getUnDeliveredCartonDetailsList(OrderEntity orderEntity){
         try{
-            return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.ORDER_ENTITY,orderEntity).and().isNull(CartonDetailsEntity.DELIVERY_DETAILS_ENTITY).and().isNotNull(CartonDetailsEntity.TOTAL_WEIGHT).query();
+            return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.ORDER_ENTITY,orderEntity).and().isNull(CartonDetailsEntity.DELIVERY_DETAILS_ENTITY).and().isNotNull(CartonDetailsEntity.TOTAL_WEIGHT).and().ne(CartonDetailsEntity.TOTAL_WEIGHT,"0").query();
         }catch (Exception e){
             e.printStackTrace();
         }
