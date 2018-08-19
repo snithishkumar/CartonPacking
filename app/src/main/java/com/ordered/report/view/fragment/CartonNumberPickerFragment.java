@@ -52,7 +52,7 @@ public class CartonNumberPickerFragment extends Fragment {
 
         //Populate NumberPicker values from minimum and maximum value range
         //Set the minimum value of NumberPicker
-        np.setMinValue(1);
+        np.setMinValue(0);
         //Specify the maximum value/number of NumberPicker
         np.setMaxValue(Integer.valueOf(orderDetailsActivity.getTotalNoOfCartons()));
 
@@ -65,7 +65,12 @@ public class CartonNumberPickerFragment extends Fragment {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
                 //Display the newly selected number from picker
                 tv.setText("Selected Carton Number : " + newVal);
-                nextButton.setVisibility(View.VISIBLE);
+                if(newVal == 0){
+                    nextButton.setVisibility(View.INVISIBLE);
+                }else{
+                    nextButton.setVisibility(View.VISIBLE);
+                }
+
                 cartonNumberVal = String.valueOf(newVal);
                 populateCartonDetails();
                // orderDetailsActivity.setCartonNumber(String.valueOf(newVal));
