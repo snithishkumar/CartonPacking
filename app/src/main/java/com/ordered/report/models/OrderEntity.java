@@ -57,6 +57,9 @@ public class OrderEntity {
     @DatabaseField(columnName = "CreatedBy")
     private String createdBy;
 
+    @DatabaseField(columnName = "ClientDetailsId", foreign = true, foreignAutoRefresh = true)
+    private ClientDetailsEntity clientDetailsEntity;
+
     public OrderEntity() {
     }
 
@@ -76,6 +79,14 @@ public class OrderEntity {
         this.orderGuid = orderDetailsJson.getOrderGuid();
         this.orderedDate = orderDetailsJson.getOrderedDate();
         this.serverTime = orderDetailsJson.getServerTime();
+    }
+
+    public ClientDetailsEntity getClientDetailsEntity() {
+        return clientDetailsEntity;
+    }
+
+    public void setClientDetailsEntity(ClientDetailsEntity clientDetailsEntity) {
+        this.clientDetailsEntity = clientDetailsEntity;
     }
 
     public String getCreatedBy() {

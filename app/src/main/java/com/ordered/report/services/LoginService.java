@@ -25,7 +25,7 @@ public class LoginService {
     public final String LOG_TAG = LoginService.class.getSimpleName();
     private LoginDao loginDao = null;
     private LoginEvent loginEvent = null;
-    public static final String AUTHORITY = "com.ordered.report.SyncAdapter";
+
 
     public LoginService(Context context) {
         try {
@@ -80,7 +80,8 @@ public class LoginService {
                 if (usersEntity != null) {
                     if (usersEntity.getPassword().equals(password)) {
                         postAuthResult(Constants.SUCCESS);
-                        startSyncAdapterJob();
+                        ServiceUtl.startSyncAdapterJob(context);
+                        ServiceUtl.requestSync(context);
                     } else {
                         postAuthResult(Constants.INVALID_USERNAME);
                     }
@@ -104,23 +105,7 @@ public class LoginService {
         AppBus.getInstance().post(loginEvent);
     }
 
-    public void startSyncAdapterJob() {
-        Account account = createSyncAdapterAccount(context);
-        ContentResolver.setIsSyncable(account, AUTHORITY, 1);
-        ContentResolver.setSyncAutomatically(account, AUTHORITY, true);
-        ContentResolver.setMasterSyncAutomatically(true);
-        ContentResolver.addPeriodicSync(account, AUTHORITY, Bundle.EMPTY, 30);
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
 
-        ContentResolver.requestSync(account, AUTHORITY, settingsBundle);
-    }
 
-    public static Account createSyncAdapterAccount(Context context) {
-        AccountManager accountManager = AccountManager.get(context);
-        Account account = new Account(context.getString(R.string.app_name), AUTHORITY);
-        accountManager.addAccountExplicitly(account, context.getString(R.string.edge_sync_password), null);
-        return account;
-    }
+
 }

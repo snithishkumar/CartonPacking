@@ -5,6 +5,7 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.Context;
 import android.content.SyncResult;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -46,6 +47,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private SyncServiceApi syncServiceApi;
     private OrderDAO orderDAO = null;
     private JsonParser jsonParser = null;
+    private static final Uri URI_BASE = Uri.parse("content://com.ordered.report.SyncAdapter");
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize, false);
@@ -81,6 +83,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             e.printStackTrace();
             Log.e(LOG_TAG, "Error in onPerformSync", e);
         }
+        getContext().getContentResolver().notifyChange(URI_BASE, null, true);
         System.out.println("sync Completed");
     }
 
@@ -213,6 +216,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             orderEntity = new OrderEntity(orderDetailsJson);
             orderEntity.setSync(true);
             orderEntity.setOrderedItems(gson.toJson(orderDetailsJson.getOrderedItems()));
+            processClientDetails(orderDetailsJson,orderEntity);
             orderDAO.savCartonbookEntity(orderEntity);
             if (orderDetailsJson.getProductDetails() != null && orderDetailsJson.getProductDetails().size() > 0) {
                 for (CartonDetailsJson cartonDetailsJson : orderDetailsJson.getProductDetails()) {
@@ -221,10 +225,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             }
 
-            processClientDetails(orderDetailsJson,orderEntity);
+
             ResponseData responseData = new ResponseData();
             AppBus.getInstance().post(responseData);
         }else{
+            processClientDetails(orderDetailsJson,orderEntity);
             processOrderDetails(orderDetailsJson,orderEntity);
         }
     }
@@ -262,8 +267,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             ClientDetailsEntity clientDetailsEntity =  orderDetailsJson.getClientDetails();
             ClientDetailsEntity dbClientDetailsEntity =  orderDAO.getClientDetailsEntity(clientDetailsEntity.getClientDetailsUUID());
             if(dbClientDetailsEntity == null){
-                clientDetailsEntity.setOrderEntity(orderEntity);
                 orderDAO.createClientDetails(clientDetailsEntity);
+                orderEntity.setClientDetailsEntity(clientDetailsEntity);
+            }else{
+                orderEntity.setClientDetailsEntity(dbClientDetailsEntity);
             }
         }
     }
@@ -292,8 +299,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     }
                 }
 
-                ClientDetailsEntity clientDetailsEntity = orderDAO.getClientDetailsEntity(orderEntity);
-                clientDetailsEntity.setOrderEntity(null);
+                ClientDetailsEntity clientDetailsEntity = orderEntity.getClientDetailsEntity();
                 orderDetailsJson.setClientDetails(clientDetailsEntity);
             }
 

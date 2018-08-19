@@ -87,7 +87,7 @@ public class PdfServiceReport {
             String orderGuid = orderGuidsList.get(0).getAsString();
             OrderEntity orderEntity = orderDAO.getOrderEntityByGuid(orderGuid);
 
-            clientDetailsEntity = orderDAO.getClientDetailsEntity(orderEntity);
+            clientDetailsEntity = orderEntity.getClientDetailsEntity();
 
 
             String clientAddress = clientDetailsEntity.getExporterDetails();

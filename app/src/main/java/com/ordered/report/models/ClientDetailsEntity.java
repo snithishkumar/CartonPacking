@@ -11,7 +11,6 @@ public class ClientDetailsEntity {
 
     public static final String CLIENT_DETAILS_ID = "ClientDetailsId";
     public static final String CLIENT_DETAILS_UUID = "clientDetailsUUID";
-    public static final String ORDER_ID = "OrderId";
 
     @DatabaseField(columnName = "ClientDetailsId", generatedId = true)
     private int clientDetailsId;
@@ -31,8 +30,7 @@ public class ClientDetailsEntity {
     private String consigneeCountry;
 
 
-    @DatabaseField(columnName = "OrderId", foreign = true, foreignAutoRefresh = true)
-    private OrderEntity orderEntity;
+
 
 
     public int getClientDetailsId() {
@@ -99,14 +97,6 @@ public class ClientDetailsEntity {
         this.consigneeCountry = consigneeCountry;
     }
 
-    public OrderEntity getOrderEntity() {
-        return orderEntity;
-    }
-
-    public void setOrderEntity(OrderEntity orderEntity) {
-        this.orderEntity = orderEntity;
-    }
-
     @Override
     public String toString() {
         return "ClientDetailsEntity{" +
@@ -118,7 +108,6 @@ public class ClientDetailsEntity {
                 ", tinNumber='" + tinNumber + '\'' +
                 ", exporterCountry='" + exporterCountry + '\'' +
                 ", consigneeCountry='" + consigneeCountry + '\'' +
-                ", orderEntity=" + orderEntity +
                 '}';
     }
 }

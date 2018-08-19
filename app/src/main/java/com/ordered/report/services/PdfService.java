@@ -132,7 +132,7 @@ public class PdfService {
 
             }
 
-            ClientDetailsEntity clientDetailsEntity = orderDAO.getClientDetailsEntity(orderEntity);
+            ClientDetailsEntity clientDetailsEntity = orderEntity.getClientDetailsEntity();
 
             String clientAddress = clientDetailsEntity.getExporterDetails();
             CartonInvoiceSummary cartonInvoiceSummary = new CartonInvoiceSummary();

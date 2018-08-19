@@ -45,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
                 String name = userName.getText().toString();
                 String pass = password.getText().toString();
                 if (name.equals("admin") && pass.equals("admin")) {
-                    loginService.startSyncAdapterJob();
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intent);
                 } else {

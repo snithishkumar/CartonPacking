@@ -21,6 +21,7 @@ import android.view.View;
 
 import com.ordered.report.R;
 import com.ordered.report.services.OrderedService;
+import com.ordered.report.services.ServiceUtl;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.adapter.DeliveryListAdapter;
 import com.ordered.report.view.adapter.PackingListAdapter;
@@ -65,6 +66,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ServiceUtl.requestSync(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 

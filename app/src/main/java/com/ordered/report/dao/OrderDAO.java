@@ -447,15 +447,6 @@ public class OrderDAO {
     }
 
 
-    public ClientDetailsEntity getClientDetailsEntity(OrderEntity orderEntity){
-        try{
-          List<ClientDetailsEntity>  clientDetailsEntities =  clientDetailsDao.queryForAll();
-           return  clientDetailsDao.queryBuilder().where().eq(ClientDetailsEntity.ORDER_ID,orderEntity).queryForFirst();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
     public ClientDetailsEntity getClientDetailsEntity(String clientUUID){
