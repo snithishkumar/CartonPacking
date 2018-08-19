@@ -23,6 +23,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
+            android:inputType="numberDecimal"
             android:background="@drawable/rectangle_box"
             android:gravity="center"
             android:text="" />

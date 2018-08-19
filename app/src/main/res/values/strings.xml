@@ -35,6 +35,8 @@
     <string name="internal_server_error">Internal Server Error</string>
 
     <string name="content_authority">com.ordered.report.SyncAdapter</string>
-    <string name="edge_sync_password">edge123</string>
+    <string name="carton_sync_password">fw560jj96u9</string>
+
+    <string name="invalid_carton_counts">Invalid Carton Counts.</string>
 
 </resources>
