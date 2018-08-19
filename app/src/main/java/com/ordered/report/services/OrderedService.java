@@ -390,7 +390,7 @@ public class OrderedService {
             JsonParser jsonParser = new JsonParser();
             if(orderIds != null){
              JsonArray jsonArray =   (JsonArray)jsonParser.parse(orderIds);
-               orderGuids.addAll(jsonArray);
+             orderGuids.addAll(jsonArray);
             }
             String orderGuidsTemp = orderGuids.toString();
             deliveryDetailsEntity.setOrderGuids(orderGuidsTemp);

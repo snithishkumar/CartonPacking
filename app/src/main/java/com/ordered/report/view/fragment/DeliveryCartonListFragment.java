@@ -33,6 +33,7 @@ public class DeliveryCartonListFragment extends Fragment {
      private DeliveryListActivity deliveryListActivity = null;
 
     FloatingActionButton floatingActionButton = null;
+    FloatingActionButton moveReportButton = null;
 
     private int deliverId;
 
@@ -55,11 +56,17 @@ public class DeliveryCartonListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_delivery_carton_list, container, false);
         listView = view.findViewById(R.id.delivery_carton_list);
         floatingActionButton = view.findViewById(R.id.add_delivery_details);
+        moveReportButton = view.findViewById(R.id.move_report);
+        //
         deliverId = deliveryListActivity.getDeliveryId();
         List<CartonDetailsEntity> cartonDetailsEntities =  getCartonDetailsEntities();
         this.cartonDetailsEntities.clear();
         this.cartonDetailsEntities.addAll(cartonDetailsEntities);
         deliveryCartonListAdapter = new DeliveryCartonListAdapter(deliveryListActivity,cartonDetailsEntities);
+
+        if(cartonDetailsEntities.size() == 0){
+            moveReportButton.setVisibility(View.INVISIBLE);
+        }
         listView.setAdapter(deliveryCartonListAdapter);
         return view;
     }
