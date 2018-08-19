@@ -56,6 +56,7 @@ public class CaptureCartonDetailsFragment extends Fragment {
     private TextView availabilityXl;
     private TextView availabilityXxl;
     private TextView availabilityXxxl;
+    private TextView cartonNumber;
 
     private OrderDetailsListViewModel orderDetailsListViewModel;
 
@@ -77,6 +78,8 @@ public class CaptureCartonDetailsFragment extends Fragment {
         //capture_carton_product_group"
         //
         getActivity().setTitle("CAPTURE DETAILS");
+        //Carton Number: 1
+        cartonNumber = view.findViewById(R.id.text_product_Details);
         vProductName = view.findViewById(R.id.capture_carton_product_name);
         vProductGroup = view.findViewById(R.id.capture_carton_product_group);
         vOneSize = view.findViewById(R.id.capture_oneSize);
@@ -107,6 +110,7 @@ public class CaptureCartonDetailsFragment extends Fragment {
         orderDetailsActivity.getOrderedService().calcAvailableCount(orderDetailsListViewModel,orderDetailsActivity.getCartonDetailsJsonList());
         vProductName.setText(orderDetailsListViewModel.getOrderItemName());
         vProductGroup.setText(orderDetailsListViewModel.getOrderItemGroup());
+        cartonNumber.setText("Carton Number: "+orderDetailsActivity.getCartonDetailsJson().getCartonNumber());
         setAvailability("One Size",orderDetailsListViewModel.getOrderItemOneSize(),availabilityOneSize,orderDetailsListViewModel.getRemainingOneSize(),vOneSize);
 
         setAvailability("XS",orderDetailsListViewModel.getOrderItemXS(),availabilityXs,orderDetailsListViewModel.getRemainingXS(),vXS);
