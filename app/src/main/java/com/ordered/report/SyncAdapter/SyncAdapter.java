@@ -160,8 +160,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Type orderGuidsType = new TypeToken<ArrayList<String>>() {
                 }.getType();
                 List<String> orderGuidList = gson.fromJson(orderGuid,orderGuidsType);
-                if(!orderGuidList.contains(orderGuid)){
-                    orderGuidList.add(orderGuid);
+                if(!orderGuidList.contains(orderEntity.getOrderGuid())){
+                    orderGuidList.add(orderEntity.getOrderGuid());
                     deliveryDetailsEntity.setOrderGuids(gson.toJson(orderGuidList));
                     orderDAO.updateDeliveryDetailsEntity(deliveryDetailsEntity);
                 }
@@ -308,11 +308,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 serverSyncModel.getDeliveryDetailsEntities().add(deliveryDetailsEntity);
             }
 
-            Call<String> orderSyncedDetails = syncServiceApi.uploadData(serverSyncModel);
-            Response<String> response = orderSyncedDetails.execute();
-            if (response != null && response.isSuccessful()) {
-                String dataRespond = response.body();
-                ServerSyncModel responseModel = gson.fromJson(dataRespond,ServerSyncModel.class);
+            Call<ServerSyncModel> orderSyncedDetails = syncServiceApi.uploadData(serverSyncModel);
+            Response<ServerSyncModel> orderSyncedResponse = orderSyncedDetails.execute();
+            if (orderSyncedResponse != null && orderSyncedResponse.isSuccessful()) {
+                ServerSyncModel responseModel = orderSyncedResponse.body();
+               // ServerSyncModel responseModel = gson.fromJson(dataRespond,ServerSyncModel.class);
                 List<ProcessedDetails> orderGuids  = responseModel.getOrderGuids();
                 int size = orderGuids.size();
                 for (int i = 0; i < size; i++) {
