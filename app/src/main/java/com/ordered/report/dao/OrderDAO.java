@@ -387,8 +387,8 @@ public class OrderDAO {
 
     public List<DeliveryDetailsEntity> getCompletedDeliveryDetailsEntity(){
         try {
-             return deliveryDetailsDao.queryForAll();
-           // return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.STATUS, Status.COMPLETED).query();
+            // return deliveryDetailsDao.queryForAll();
+            return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.STATUS, Status.COMPLETED).query();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -396,15 +396,7 @@ public class OrderDAO {
     }
 
 
-    public List<DeliveryDetailsEntity> getDeliveryDetailsEntity(OrderEntity orderEntity){
-        try {
-            //return deliveryDetailsDao.queryBuilder().where().eq(DeliveryDetailsEntity.ORDER_ID, orderEntity).query();
-            //return orderDao.queryBuilder().query();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 
     public DeliveryDetailsEntity getDeliveryDetailsEntity(String  deliveryUUID){
         try {

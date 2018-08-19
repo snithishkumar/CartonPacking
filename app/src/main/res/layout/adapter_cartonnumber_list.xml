@@ -115,6 +115,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:gravity="center"
+                        android:inputType="numberDecimal"
                         android:text="Net Weight:50kg" />
 
                     <ImageView

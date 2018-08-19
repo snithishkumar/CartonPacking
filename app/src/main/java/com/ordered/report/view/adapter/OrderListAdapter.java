@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
@@ -118,7 +119,12 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 if (userInput.getText().toString() != null && !userInput.getText().toString().isEmpty()) {
-                                    homeActivity.showOrderDetailsList(userInput.getText().toString(), order);
+                                    if(Integer.valueOf(userInput.getText().toString()) >= 1){
+                                        homeActivity.showOrderDetailsList(userInput.getText().toString(), order);
+                                    }else{
+                                        Toast.makeText(homeActivity,homeActivity.getString(R.string.invalid_carton_counts),Toast.LENGTH_LONG).show();
+                                    }
+
                                 }
 
                             }

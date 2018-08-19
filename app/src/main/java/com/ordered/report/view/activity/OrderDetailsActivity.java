@@ -19,6 +19,7 @@ import com.ordered.report.enumeration.OrderStatus;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
+import com.ordered.report.services.ServiceUtl;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.adapter.CartonListAdapter;
 import com.ordered.report.view.adapter.OrderDetailsListAdapter;
@@ -70,6 +71,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDeta
      */
     private void init(){
         try{
+            ServiceUtl.requestSync(this);
             orderGuid = getIntent().getStringExtra("orderGuid");
             currentTabPosition = getIntent().getIntExtra("currentTabPosition",1);
             totalNoOfCartons = getIntent().getStringExtra("totalNoOfCartons");

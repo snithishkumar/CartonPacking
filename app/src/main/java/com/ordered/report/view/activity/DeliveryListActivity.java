@@ -12,6 +12,7 @@ import com.ordered.report.R;
 import com.ordered.report.enumeration.Status;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
+import com.ordered.report.services.ServiceUtl;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.adapter.DeliveryOrderListAdapter;
 import com.ordered.report.view.fragment.DeliveryCartonListFragment;
@@ -51,6 +52,7 @@ public class DeliveryListActivity extends AppCompatActivity implements DeliveryO
 
     private void init(){
         try{
+            ServiceUtl.requestSync(this);
             orderedService = new OrderedService(this);
             currentView = getIntent().getStringExtra("view");
             currentTabPosition = getIntent().getIntExtra("currentTabPosition",1);

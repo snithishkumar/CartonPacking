@@ -52,7 +52,7 @@ public class CartonNumberPickerFragment extends Fragment {
 
         //Populate NumberPicker values from minimum and maximum value range
         //Set the minimum value of NumberPicker
-        np.setMinValue(0);
+        np.setMinValue(1);
         //Specify the maximum value/number of NumberPicker
         np.setMaxValue(Integer.valueOf(orderDetailsActivity.getTotalNoOfCartons()));
 

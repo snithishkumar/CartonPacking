@@ -150,6 +150,7 @@ public class CaptureCartonDetailsFragment extends Fragment {
         orderDetailsListViewModel.setProductS(vS.getText().toString());
         orderDetailsListViewModel.setProductCreatedDateTime(System.currentTimeMillis());
         orderDetailsListViewModel.setEdited(true);
+        orderDetailsActivity.getCartonDetailsJson().setTotalWeight("0");
         orderDetailsActivity.getCartonDetailsJson().setLastModifiedTime(System.currentTimeMillis());
         orderDetailsActivity.getCartonDetailsJson().setLastModifiedBy(Constants.getLoginUser());
         orderDetailsActivity.getCartonDetailsJson().getOrderDetailsListViewModels().add(orderDetailsListViewModel);

@@ -209,7 +209,12 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     if(cartonDetailsJson.getDeliverDetailsGuid() != null){
                         Toast.makeText(orderDetailsActivity,"You cannot add or edit. Already delivered.",Toast.LENGTH_LONG).show();
                     }else{
-                        showAlertDialog(getAdapterPosition());
+                        if(cartonDetailsJson.getOrderDetailsListViewModels().size() == 0){
+                            Toast.makeText(orderDetailsActivity,"Carton box is empty. Please fill the box.",Toast.LENGTH_LONG).show();
+                        }else{
+                            showAlertDialog(getAdapterPosition());
+                        }
+
                     }
 
                 }
