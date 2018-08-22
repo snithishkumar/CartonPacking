@@ -339,6 +339,16 @@ public class OrderDAO {
     }
 
 
+    public List<OrderEntity> getOrderList(){
+        try {
+            return orderDao.queryForAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
 
     public List<OrderEntity> getOrders(){
         try {
@@ -458,6 +468,30 @@ public class OrderDAO {
             e.printStackTrace();
         }
     }
+
+
+    public long getCartonsCount(OrderEntity orderEntity){
+        try {
+           return cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.ORDER_ENTITY,orderEntity).countOf();
+
+        }catch (Exception e){
+
+        }
+        return 0L;
+    }
+
+
+    public long getDeliveryCounts(OrderEntity orderEntity){
+        try {
+            return cartonItemDao.queryBuilder().distinct().selectColumns(CartonDetailsEntity.DELIVERY_DETAILS_ENTITY).where().eq(CartonDetailsEntity.ORDER_ENTITY,orderEntity).and().isNotNull(CartonDetailsEntity.DELIVERY_DETAILS_ENTITY).countOf();
+
+        }catch (Exception e){
+
+        }
+        return 0L;
+    }
+
+
 
 
     public long getOrderMaxSyncTime(){

@@ -28,10 +28,26 @@ public class ClientDetailsEntity {
     private String exporterCountry;
     @DatabaseField(columnName = "ConsigneeCountry")
     private String consigneeCountry;
+    @DatabaseField(columnName = "ConsigneeName")
+    private String consigneeName;
+    @DatabaseField(columnName = "ConsigneeAuthorityPerson")
+    private String consigneeAuthorityPerson;
 
+    public String getConsigneeName() {
+        return consigneeName;
+    }
 
+    public void setConsigneeName(String consigneeName) {
+        this.consigneeName = consigneeName;
+    }
 
+    public String getConsigneeAuthorityPerson() {
+        return consigneeAuthorityPerson;
+    }
 
+    public void setConsigneeAuthorityPerson(String consigneeAuthorityPerson) {
+        this.consigneeAuthorityPerson = consigneeAuthorityPerson;
+    }
 
     public int getClientDetailsId() {
         return clientDetailsId;
@@ -108,6 +124,8 @@ public class ClientDetailsEntity {
                 ", tinNumber='" + tinNumber + '\'' +
                 ", exporterCountry='" + exporterCountry + '\'' +
                 ", consigneeCountry='" + consigneeCountry + '\'' +
+                ", consigneeName='" + consigneeName + '\'' +
+                ", consigneeAuthorityPerson='" + consigneeAuthorityPerson + '\'' +
                 '}';
     }
 }

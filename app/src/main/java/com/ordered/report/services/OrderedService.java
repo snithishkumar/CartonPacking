@@ -20,9 +20,12 @@ import com.ordered.report.models.OrderEntity;
 import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
+import com.ordered.report.view.models.OrderViewListModel;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -502,5 +505,34 @@ public class OrderedService {
 
         int totalCaptured = oneSizeCaptured + xsCaptured + sCaptured + mCaptured + lCaptured + xlCaptured +xxlCaptured + xxxlCaptured;
         return  totalCaptured  < totalOrder;
+    }
+
+
+    public List<OrderViewListModel> getOrderViewListModels(){
+        List<OrderEntity> orderEntityList = orderDAO.getOrderList();
+        List<OrderViewListModel> orderViewListModelList = new ArrayList<>();
+        for(OrderEntity orderEntity : orderEntityList){
+
+            OrderViewListModel orderViewListModel = new OrderViewListModel(orderEntity);
+            orderViewListModel.setOrderDateTime(formatDate(orderEntity.getOrderedDate()));
+            long cartonCount = orderDAO.getCartonsCount(orderEntity);
+            orderViewListModel.setCartonCount(String.valueOf(cartonCount));
+            long deliveryCount = orderDAO.getDeliveryCounts(orderEntity);
+            orderViewListModel.setDeliveryCount(String.valueOf(deliveryCount));
+
+            List<OrderCreationDetailsJson> creationDetailsJsons =   getOrderedItems(orderEntity.getOrderedItems());
+            orderViewListModel.setProductCount(String.valueOf(creationDetailsJsons.size()));
+
+            orderViewListModelList.add(orderViewListModel);
+        }
+        return orderViewListModelList;
+    }
+
+
+    private String formatDate(long dateTime) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        Date date = new Date(dateTime);
+        String val = simpleDateFormat.format(date);
+        return val;
     }
 }

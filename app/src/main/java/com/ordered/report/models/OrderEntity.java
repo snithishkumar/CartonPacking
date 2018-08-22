@@ -60,6 +60,7 @@ public class OrderEntity {
     @DatabaseField(columnName = "ClientDetailsId", foreign = true, foreignAutoRefresh = true)
     private ClientDetailsEntity clientDetailsEntity;
 
+
     public OrderEntity() {
     }
 
@@ -80,6 +81,7 @@ public class OrderEntity {
         this.orderedDate = orderDetailsJson.getOrderedDate();
         this.serverTime = orderDetailsJson.getServerTime();
     }
+
 
     public ClientDetailsEntity getClientDetailsEntity() {
         return clientDetailsEntity;
