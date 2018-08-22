@@ -36,7 +36,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/report_list_type"
+            android:id="@+id/adapter_order_view_order_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/adapter_order_view_orderid"
