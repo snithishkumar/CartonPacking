@@ -339,6 +339,29 @@ public class OrderDAO {
     }
 
 
+    public long getCartonCount(String orderItemGuid){
+        try {
+            QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
+            queryBuilder.distinct().selectColumns(ProductDetailsEntity.CARTON_NUMBER).where().eq(ProductDetailsEntity.ORDER_ITEM_GUID, orderItemGuid).and().isNotNull(ProductDetailsEntity.CARTON_NUMBER);
+            return queryBuilder.countOf();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0L;
+    }
+
+
+    public long getDeliveryCount(String orderItemGuid){
+        try {
+            QueryBuilder<ProductDetailsEntity, String> queryBuilder = productDao.queryBuilder();
+            queryBuilder.distinct().selectColumns(ProductDetailsEntity.CARTON_NUMBER).where().eq(ProductDetailsEntity.ORDER_ITEM_GUID, orderItemGuid).and().isNotNull(ProductDetailsEntity.CARTON_NUMBER);
+            return queryBuilder.countOf();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0L;
+    }
+
     public List<OrderEntity> getOrderList(){
         try {
             return orderDao.queryForAll();
@@ -353,7 +376,6 @@ public class OrderDAO {
     public List<OrderEntity> getOrders(){
         try {
             return orderDao.queryBuilder().where().eq(OrderEntity.ORDER_STATUS, OrderStatus.ORDERED).query();
-           // return orderDao.queryBuilder().query();
         } catch (Exception e) {
             e.printStackTrace();
         }

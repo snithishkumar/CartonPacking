@@ -21,6 +21,7 @@ import com.ordered.report.models.ProductDetailsEntity;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 import com.ordered.report.view.models.OrderViewListModel;
+import com.ordered.report.view.models.OrderViewOrderedItemsListModel;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
@@ -526,6 +527,114 @@ public class OrderedService {
             orderViewListModelList.add(orderViewListModel);
         }
         return orderViewListModelList;
+    }
+
+
+    public List<OrderViewOrderedItemsListModel> getOrderViewOrderedItemsListModels(OrderEntity orderEntity){
+        Type listType = new TypeToken<ArrayList<OrderViewOrderedItemsListModel>>() {
+        }.getType();
+        List<OrderViewOrderedItemsListModel> orderViewOrderedItemsListModels =  gson.fromJson(orderEntity.getOrderedItems(), listType);
+
+       for(OrderViewOrderedItemsListModel orderViewOrderedItemsListModel : orderViewOrderedItemsListModels){
+           String orderItemGuid = orderViewOrderedItemsListModel.getOrderItemGuid();
+
+           long cartonCount =  orderDAO.getCartonCount(orderItemGuid);
+           long deliveryCount = orderDAO.getDeliveryCount(orderItemGuid);
+           orderViewOrderedItemsListModel.setCartonCounts(String.valueOf(cartonCount));
+           orderViewOrderedItemsListModel.setDeliveryCounts(String.valueOf(deliveryCount));
+
+           int totalOneSize = Integer.valueOf(orderViewOrderedItemsListModel.getOneSize());
+           int totalXS = Integer.valueOf(orderViewOrderedItemsListModel.getXs());
+           int totalS = Integer.valueOf(orderViewOrderedItemsListModel.getS());
+
+           int totalM = Integer.valueOf(orderViewOrderedItemsListModel.getM());
+           int totalL = Integer.valueOf(orderViewOrderedItemsListModel.getL());
+           int totalXL = Integer.valueOf(orderViewOrderedItemsListModel.getXl());
+
+           int totalXXL = Integer.valueOf(orderViewOrderedItemsListModel.getXxl());
+           int totalXXXL = Integer.valueOf(orderViewOrderedItemsListModel.getXxl());
+
+
+           int processedOneSize = 0;
+           int processedXS = 0;
+           int processedS = 0;
+
+           int processedM = 0;
+           int processedL = 0;
+           int processedXL = 0;
+
+           int processedXXL = 0;
+           int processedXXXL = 0;
+
+
+           int deliveredOneSize = 0;
+           int deliveredXS = 0;
+           int deliveredS = 0;
+
+           int deliveredM = 0;
+           int deliveredL = 0;
+           int deliveredXL = 0;
+
+           int deliveredXXL = 0;
+           int deliveredXXXL = 0;
+
+
+           List<ProductDetailsEntity> productDetailsEntityList = orderDAO.getOrderItem(orderItemGuid);
+           for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList){
+               if(productDetailsEntity.getCartonNumber().getDeliveryDetails() != null){
+                   deliveredOneSize = deliveredOneSize + Integer.valueOf(productDetailsEntity.getOneSize());
+                   deliveredXS = deliveredXS + Integer.valueOf(productDetailsEntity.getXs());
+                   deliveredS = deliveredS + Integer.valueOf(productDetailsEntity.getS());
+
+                   deliveredM = deliveredM + Integer.valueOf(productDetailsEntity.getM());
+                   deliveredL = deliveredL + Integer.valueOf(productDetailsEntity.getL());
+                   deliveredXL = deliveredXL + Integer.valueOf(productDetailsEntity.getXl());
+
+                   deliveredXXL = deliveredXXL + Integer.valueOf(productDetailsEntity.getXxl());
+                   deliveredXXXL = deliveredXXXL + Integer.valueOf(productDetailsEntity.getXxxl());
+               }
+               processedOneSize = processedOneSize + Integer.valueOf(productDetailsEntity.getOneSize());
+               processedXS = processedXS + Integer.valueOf(productDetailsEntity.getXs());
+               processedS = processedS + Integer.valueOf(productDetailsEntity.getS());
+
+               processedM = processedM + Integer.valueOf(productDetailsEntity.getM());
+               processedL = processedL + Integer.valueOf(productDetailsEntity.getL());
+               processedXL = processedXL + Integer.valueOf(productDetailsEntity.getXl());
+
+               processedXXL = processedXXL + Integer.valueOf(productDetailsEntity.getXxl());
+               processedXXXL = processedXXXL + Integer.valueOf(productDetailsEntity.getXxxl());
+
+           }
+           orderViewOrderedItemsListModel.setDeliveryL(String.valueOf(deliveredL));
+           orderViewOrderedItemsListModel.setDeliveryM(String.valueOf(deliveredM));
+           orderViewOrderedItemsListModel.setDeliveryOneSize(String.valueOf(deliveredOneSize));
+           orderViewOrderedItemsListModel.setDeliveryS(String.valueOf(deliveredS));
+           orderViewOrderedItemsListModel.setDeliveryXL(String.valueOf(deliveredXL));
+           orderViewOrderedItemsListModel.setDeliveryXS(String.valueOf(deliveredXS));
+           orderViewOrderedItemsListModel.setDeliveryXXL(String.valueOf(deliveredXXL));
+           orderViewOrderedItemsListModel.setDeliveryXXXL(String.valueOf(deliveredXXXL));
+
+           orderViewOrderedItemsListModel.setProcessedL(String.valueOf(processedL));
+           orderViewOrderedItemsListModel.setProcessedM(String.valueOf(processedM));
+           orderViewOrderedItemsListModel.setProcessedOneSize(String.valueOf(processedOneSize));
+           orderViewOrderedItemsListModel.setProcessedS(String.valueOf(processedS));
+           orderViewOrderedItemsListModel.setProcessedXL(String.valueOf(processedXL));
+           orderViewOrderedItemsListModel.setProcessedXS(String.valueOf(processedXS));
+           orderViewOrderedItemsListModel.setProcessedXXL(String.valueOf(processedXXL));
+           orderViewOrderedItemsListModel.setProcessedXXXL(String.valueOf(processedXXXL));
+
+           orderViewOrderedItemsListModel.setUnProcessedL(String.valueOf(totalL - processedL));
+           orderViewOrderedItemsListModel.setUnProcessedM(String.valueOf(totalM - processedM));
+           orderViewOrderedItemsListModel.setUnProcessedOneSize(String.valueOf(totalOneSize - processedOneSize));
+           orderViewOrderedItemsListModel.setUnProcessedS(String.valueOf(totalS - processedS));
+           orderViewOrderedItemsListModel.setUnProcessedXL(String.valueOf(totalXL - processedXL));
+           orderViewOrderedItemsListModel.setUnProcessedXXL(String.valueOf(totalXXL - processedXXL));
+           orderViewOrderedItemsListModel.setUnProcessedXXXL(String.valueOf(totalXXXL - processedXXXL));
+           orderViewOrderedItemsListModel.setUnProcessedXS(String.valueOf(totalXS - processedXS));
+       }
+
+return orderViewOrderedItemsListModels;
+
     }
 
 

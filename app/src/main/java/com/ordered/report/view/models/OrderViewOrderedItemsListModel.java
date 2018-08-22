@@ -2,7 +2,7 @@ package com.ordered.report.view.models;
 
 import com.ordered.report.json.models.OrderCreationDetailsJson;
 
-public class OrderViewOrderedItemsListModel extends OrderCreationDetailsJson{
+public class OrderViewOrderedItemsListModel extends OrderCreationDetailsJson {
 
     private String cartonCounts = "0";
     private String deliveryCounts ="0";
