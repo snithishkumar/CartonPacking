@@ -132,32 +132,32 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/order_view_order_items_one_size_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:id="@+id/ordered_one_size_count"
-                        android:text="One Size -> 10" />
+                        android:text="One Size -> 10"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/order_view_order_items_m_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:id="@+id/ordered_m_count"
-                        android:text="M -> 10" />
+                        android:text="M -> 10"
+                        android:textStyle="bold" />
 
 
                     <TextView
+                        android:id="@+id/order_view_order_items_xxl_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:id="@+id/ordered_xxl_count"
-                        android:text="XXL -> 10" />
+                        android:text="XXL -> 10"
+                        android:textStyle="bold" />
 
 
 
@@ -173,32 +173,32 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/order_view_order_items_xs_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:id="@+id/ordered_xs_count"
-                        android:text="XS -> 10" />
+                        android:text="XS -> 10"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/order_view_order_items_l_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:id="@+id/ordered_l_count"
-                        android:text="L -> 10" />
+                        android:text="L -> 10"
+                        android:textStyle="bold" />
 
 
                     <TextView
+                        android:id="@+id/order_view_order_items_xxxl_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
-                        android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_xxxl_count"
-                        android:text="XXXL -> 10" />
+                        android:text="XXXL -> 10"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -211,22 +211,22 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/order_view_order_items_s_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
-                        android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/ordered_s_count"
-                        android:text="S -> 10" />
+                        android:text="S -> 10"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/order_view_order_items_xl_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:id="@+id/ordered_xl_count"
-                        android:text="XL -> 10" />
+                        android:text="XL -> 10"
+                        android:textStyle="bold" />
 
 
                 </LinearLayout>
@@ -276,7 +276,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:layout_marginTop="10dp"
-                    android:text="Carton & Delivery Count:"
+                    android:text="Carton and Delivery Count:"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -574,14 +574,14 @@
                         android:layout_height="wrap_content">
 
                         <Button
-                            android:id="@+id/order_details_one_size"
+                            android:id="@+id/delivered_one_size"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:background="@drawable/round"
-                            android:textColor="@color/colorBlack"
-                            android:clickable="false"
                             android:layout_gravity="center"
-                            android:text="4222" />
+                            android:background="@drawable/round"
+                            android:clickable="false"
+                            android:text="4222"
+                            android:textColor="@color/colorBlack" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -599,14 +599,14 @@
                         android:layout_height="wrap_content">
 
                         <Button
-                            android:id="@+id/order_details_xs"
+                            android:id="@+id/delivered_details_xs"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
+                            android:layout_gravity="center"
                             android:background="@drawable/round"
                             android:clickable="false"
-                            android:textColor="@color/colorBlack"
-                            android:layout_gravity="center"
-                            android:text="4222" />
+                            android:text="4222"
+                            android:textColor="@color/colorBlack" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -627,14 +627,14 @@
                         android:layout_height="wrap_content">
 
                         <Button
-                            android:id="@+id/order_details_s"
+                            android:id="@+id/delivered_details_s"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:textColor="@color/colorBlack"
                             android:layout_gravity="center"
                             android:background="@drawable/round"
                             android:clickable="false"
-                            android:text="4222" />
+                            android:text="4222"
+                            android:textColor="@color/colorBlack" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -653,14 +653,14 @@
                         android:layout_height="wrap_content">
 
                         <Button
-                            android:id="@+id/order_details_m"
+                            android:id="@+id/delivered_details_m"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="center"
-                            android:textColor="@color/colorBlack"
                             android:background="@drawable/round"
                             android:clickable="false"
-                            android:text="4222" />
+                            android:text="4222"
+                            android:textColor="@color/colorBlack" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -689,14 +689,14 @@
                         android:orientation="vertical">
 
                         <Button
-                            android:id="@+id/order_details_l"
+                            android:id="@+id/delivered_details_l"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:textColor="@color/colorBlack"
                             android:layout_gravity="center"
                             android:background="@drawable/round"
                             android:clickable="false"
-                            android:text="4222" />
+                            android:text="4222"
+                            android:textColor="@color/colorBlack" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -715,14 +715,14 @@
                         android:layout_height="wrap_content">
 
                         <Button
-                            android:id="@+id/order_details_xl"
+                            android:id="@+id/delivered_xl"
                             android:layout_width="40dp"
-                            android:textColor="@color/colorBlack"
                             android:layout_height="40dp"
                             android:layout_gravity="center"
                             android:background="@drawable/round"
                             android:clickable="false"
-                            android:text="4222" />
+                            android:text="4222"
+                            android:textColor="@color/colorBlack" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -742,14 +742,14 @@
                         android:layout_height="wrap_content">
 
                         <Button
-                            android:id="@+id/order_details_xxl"
+                            android:id="@+id/delivered_xxl"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:textColor="@color/colorBlack"
                             android:layout_gravity="center"
                             android:background="@drawable/round"
                             android:clickable="false"
-                            android:text="4222" />
+                            android:text="4222"
+                            android:textColor="@color/colorBlack" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -767,14 +767,14 @@
                         android:layout_height="wrap_content">
 
                         <Button
-                            android:id="@+id/order_details_xxxl"
+                            android:id="@+id/delivered_xxxl"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:textColor="@color/colorBlack"
                             android:layout_gravity="center"
                             android:background="@drawable/round"
                             android:clickable="false"
-                            android:text="4222" />
+                            android:text="4222"
+                            android:textColor="@color/colorBlack" />
 
                         <TextView
                             android:layout_width="wrap_content"
