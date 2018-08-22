@@ -118,13 +118,15 @@
 
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:weightSum="3"
                 android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:id="@+id/ordered_size_count_layout_1"
                     android:layout_height="wrap_content">
@@ -163,7 +165,8 @@
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:id="@+id/ordered_size_count_layout_2"
                     android:layout_toRightOf="@+id/ordered_size_count_layout_1"
@@ -200,7 +203,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:id="@+id/ordered_size_count_layout_3"
                     android:layout_toRightOf="@+id/ordered_size_count_layout_2"
@@ -227,7 +231,7 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -265,14 +269,14 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/order_icon_48" />
+                    android:src="@drawable/count_icon_48" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:layout_marginTop="10dp"
-                    android:text="Order Details:"
+                    android:text="Carton & Delivery Count:"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -354,6 +358,7 @@
             android:layout_below="@+id/adpt_order_view_order_items_divider_2"
             android:id="@+id/adpt_order_view_order_items_processed_layout"
             android:orientation="vertical"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -363,7 +368,7 @@
 
                 <ImageView
                     android:layout_width="20dp"
-                    android:src="@drawable/order_icon_96"
+                    android:src="@drawable/inprogress_icon_48"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
@@ -383,13 +388,15 @@
 
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
+                android:weightSum="3"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:id="@+id/processed_size_count_layout_1"
                     android:layout_height="wrap_content">
@@ -428,7 +435,8 @@
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:id="@+id/processed_size_count_layout_2"
                     android:layout_toRightOf="@+id/processed_size_count_layout_1"
@@ -465,7 +473,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:id="@+id/processed_size_count_layout_3"
                     android:layout_toRightOf="@+id/processed_size_count_layout_2"
@@ -492,10 +501,9 @@
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
-
 
         <View
             android:id="@+id/adpt_order_view_order_items_divider_3"
@@ -507,11 +515,10 @@
             android:layout_marginRight="16dp"
             android:background="@color/line_color" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_below="@+id/adpt_order_view_order_items_divider_3"
-            android:id="@+id/adpt_order_view_order_items_delivered_layout"
+            android:id="@+id/adpt_order_view_order_items_delivered_layout_test"
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
@@ -522,7 +529,7 @@
 
                 <ImageView
                     android:layout_width="20dp"
-                    android:src="@drawable/order_icon_96"
+                    android:src="@drawable/sucess_icon_48"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
@@ -533,7 +540,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:textStyle="bold"
-                    android:text="Order Details:"
+                    android:text="Delivered Order:"
                     android:id="@+id/delivered_details"
                     android:layout_marginLeft="5dp"
                     />
@@ -542,15 +549,302 @@
 
 
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/itemlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/capture_carton_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:weightSum="4">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/order_details_one_size"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/round"
+                            android:textColor="@color/colorBlack"
+                            android:clickable="false"
+                            android:layout_gravity="center"
+                            android:text="4222" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="One Size" />
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/order_details_xs"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/round"
+                            android:clickable="false"
+                            android:textColor="@color/colorBlack"
+                            android:layout_gravity="center"
+                            android:text="4222" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="XS" />
+                    </LinearLayout>
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/order_details_s"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:textColor="@color/colorBlack"
+                            android:layout_gravity="center"
+                            android:background="@drawable/round"
+                            android:clickable="false"
+                            android:text="4222" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="S" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginRight="20dp"
+
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/order_details_m"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorBlack"
+                            android:background="@drawable/round"
+                            android:clickable="false"
+                            android:text="4222" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="M" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:weightSum="4">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/order_details_l"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:textColor="@color/colorBlack"
+                            android:layout_gravity="center"
+                            android:background="@drawable/round"
+                            android:clickable="false"
+                            android:text="4222" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="L" />
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginRight="20dp"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/order_details_xl"
+                            android:layout_width="40dp"
+                            android:textColor="@color/colorBlack"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/round"
+                            android:clickable="false"
+                            android:text="4222" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="XL" />
+                    </LinearLayout>
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginRight="20dp"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/order_details_xxl"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:textColor="@color/colorBlack"
+                            android:layout_gravity="center"
+                            android:background="@drawable/round"
+                            android:clickable="false"
+                            android:text="4222" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="XXL" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginRight="20dp"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/order_details_xxxl"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:textColor="@color/colorBlack"
+                            android:layout_gravity="center"
+                            android:background="@drawable/round"
+                            android:clickable="false"
+                            android:text="4222" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="XXL" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/adpt_order_view_order_items_divider_4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/adpt_order_view_order_items_delivered_layout_test"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/line_color" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/adpt_order_view_order_items_divider_4"
+            android:id="@+id/adpt_order_view_order_items_unprocessed_layout"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:src="@drawable/not_processed_icon_48"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Un Processed Order Details:"
+                    android:id="@+id/unprocessed_details"
+                    android:layout_marginLeft="5dp"
+                    />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
+                android:weightSum="3"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:id="@+id/delivered_size_count_layout_1"
+                    android:id="@+id/unprocessed_size_count_layout_1"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -559,7 +853,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
                         android:textStyle="bold"
-                        android:id="@+id/delivered_one_size_count"
+                        android:id="@+id/unprocessed_one_size_count"
                         android:text="One Size -> 10" />
 
                     <TextView
@@ -568,7 +862,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
                         android:textStyle="bold"
-                        android:id="@+id/delivered_m_count"
+                        android:id="@+id/unprocessed_m_count"
                         android:text="M -> 10" />
 
 
@@ -578,7 +872,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
                         android:textStyle="bold"
-                        android:id="@+id/delivered_xxl_count"
+                        android:id="@+id/unprocessed_xxl_count"
                         android:text="XXL -> 10" />
 
 
@@ -587,10 +881,11 @@
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:id="@+id/delivered_size_count_layout_2"
-                    android:layout_toRightOf="@+id/delivered_size_count_layout_1"
+                    android:id="@+id/unprocessed_size_count_layout_2"
+                    android:layout_toRightOf="@+id/unprocessed_size_count_layout_1"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -599,7 +894,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
                         android:textStyle="bold"
-                        android:id="@+id/delivered_xs_count"
+                        android:id="@+id/unprocessed_xs_count"
                         android:text="XS -> 10" />
 
                     <TextView
@@ -608,7 +903,7 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
                         android:textStyle="bold"
-                        android:id="@+id/delivered_l_count"
+                        android:id="@+id/unprocessed_l_count"
                         android:text="L -> 10" />
 
 
@@ -618,16 +913,17 @@
                         android:layout_marginStart="25dp"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/delivered_xxxl_count"
+                        android:id="@+id/unprocessed_xxxl_count"
                         android:text="XXXL -> 10" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:id="@+id/delivered_size_count_layout_3"
-                    android:layout_toRightOf="@+id/delivered_size_count_layout_2"
+                    android:id="@+id/unprocessed_size_count_layout_3"
+                    android:layout_toRightOf="@+id/unprocessed_size_count_layout_2"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -636,7 +932,7 @@
                         android:layout_marginStart="25dp"
                         android:textStyle="bold"
                         android:layout_marginTop="10dp"
-                        android:id="@+id/delivered_s_count"
+                        android:id="@+id/unprocessed_s_count"
                         android:text="S -> 10" />
 
                     <TextView
@@ -645,15 +941,17 @@
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="10dp"
                         android:textStyle="bold"
-                        android:id="@+id/delivered_xl_count"
+                        android:id="@+id/unprocessed_xl_count"
                         android:text="XL -> 10" />
 
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
+
+
     </RelativeLayout>
 
 
