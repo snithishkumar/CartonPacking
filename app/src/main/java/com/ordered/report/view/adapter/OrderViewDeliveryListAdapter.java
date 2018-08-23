@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ordered.report.R;
 import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.view.activity.HomeActivity;
+import com.ordered.report.view.activity.OrderViewActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,24 +20,21 @@ public class OrderViewDeliveryListAdapter extends RecyclerView.Adapter<RecyclerV
 
     private Context context;
     private List<DeliveryDetailsEntity> deliveryDetailsEntities;
-    private HomeActivity homeActivity;
-    private DeliveryListAdapter.DeliveryListAdapterCallBack deliveryListAdapterCallBack;
-    private boolean isPopupShow = false;
+    private OrderViewActivity orderViewActivity;
     private static final int EMPTY_VIEW = -1;
 
     public OrderViewDeliveryListAdapter(Context context, List<DeliveryDetailsEntity> deliveryDetailsEntities) {
         this.context = context;
         this.deliveryDetailsEntities = deliveryDetailsEntities;
 
-        homeActivity = (HomeActivity) context;
-        deliveryListAdapterCallBack = (DeliveryListAdapter.DeliveryListAdapterCallBack)homeActivity;
+        orderViewActivity = (OrderViewActivity) context;
 
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == EMPTY_VIEW){
-            View view = LayoutInflater.from(homeActivity).inflate(R.layout.adpt_delivery_list_empty, parent, false);
+            View view = LayoutInflater.from(orderViewActivity).inflate(R.layout.adpt_delivery_list_empty, parent, false);
 
             return new OrderViewDeliveryListAdapter.EmptyViewHolder(view);
         }else {
@@ -48,7 +46,7 @@ public class OrderViewDeliveryListAdapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        if(viewHolder instanceof DeliveryListAdapter.DeliveredListViewHolder){
+        if(viewHolder instanceof OrderViewDeliveryListAdapter.DeliveredListViewHolder){
             DeliveryListAdapter.DeliveredListViewHolder holder = (DeliveryListAdapter.DeliveredListViewHolder)viewHolder;
 
             final DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsEntities.get(position);

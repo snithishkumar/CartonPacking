@@ -16,11 +16,13 @@ import java.util.List;
 public class OrderViewOrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int EMPTY_VIEW = -1;
     private HomeActivity homeActivity;
+    OrderViewListAdapterCallBack orderViewListAdapterCallBack;
 
     private List<OrderViewListModel> orderViewListModels = new ArrayList<>();
 
     public OrderViewOrderListAdapter(List<OrderViewListModel> orderViewListModels, HomeActivity homeActivity) {
         this.homeActivity = homeActivity;
+        orderViewListAdapterCallBack = (OrderViewListAdapterCallBack)homeActivity;
         this.orderViewListModels = orderViewListModels;
     }
 
@@ -101,7 +103,8 @@ public class OrderViewOrderListAdapter extends RecyclerView.Adapter<RecyclerView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    getAdapterPosition();
+                    orderViewListAdapterCallBack.showDetailsList(orderViewListModels.get(getAdapterPosition()).getOrderGuid());
+                    return;
                 }
             });
         }

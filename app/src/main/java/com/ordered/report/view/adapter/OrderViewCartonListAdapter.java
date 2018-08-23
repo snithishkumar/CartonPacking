@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.ordered.report.R;
 import com.ordered.report.json.models.CartonDetailsJson;
 import com.ordered.report.utils.Constants;
-import com.ordered.report.view.activity.OrderDetailsActivity;
+import com.ordered.report.view.activity.OrderViewActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,21 +25,21 @@ import java.util.List;
 public class OrderViewCartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<CartonDetailsJson> cartonItemModels;
-    private OrderDetailsActivity orderDetailsActivity;
+    private OrderViewActivity orderViewActivity;
     private static final int EMPTY_VIEW = -1;
 
     public OrderViewCartonListAdapter(Context context, List<CartonDetailsJson> cartonItemModels) {
-        orderDetailsActivity = (OrderDetailsActivity) context;
+        orderViewActivity = (OrderViewActivity) context;
         this.cartonItemModels = cartonItemModels;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == EMPTY_VIEW){
-            View view = LayoutInflater.from(orderDetailsActivity).inflate(R.layout.adapter_cartonnumber_list_empty, parent, false);
+            View view = LayoutInflater.from(orderViewActivity).inflate(R.layout.adapter_cartonnumber_list_empty, parent, false);
             return new OrderViewCartonListAdapter.EmptyViewHolder(view);
         }else {
-            View view = LayoutInflater.from(orderDetailsActivity).inflate(R.layout.adapter_cartonnumber_list, parent, false);
+            View view = LayoutInflater.from(orderViewActivity).inflate(R.layout.adapter_cartonnumber_list, parent, false);
             return new OrderViewCartonListAdapter.CartonListViewHolder(view);
         }
 
@@ -62,21 +62,17 @@ public class OrderViewCartonListAdapter extends RecyclerView.Adapter<RecyclerVie
             holder.cartonCreatedBy.setText(cartonItemModel.getCreatedBy());
             holder.cartonCreatedDate.setText(formatDate(cartonItemModel.getCreatedDateTime()));
             holder.cartonShippingStatus.setVisibility(View.INVISIBLE);
-            if(orderDetailsActivity.getView().equals(Constants.VIEW_PACKING)){
-                holder.packingLayout.setVisibility(View.VISIBLE);
-                if(cartonItemModel.getTotalWeight() == null || cartonItemModel.getTotalWeight().trim().isEmpty() || cartonItemModel.getTotalWeight().equals("0")){
-                    holder.cartonTotalWeight.setText("Net Weight: 0kg");
-                    holder.cartonShippingStatus.setVisibility(View.INVISIBLE);
-                    holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.redDark));
-                }else{
-                    holder.cartonTotalWeight.setText("Net Weight: "+cartonItemModel.getTotalWeight());
-                    holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.colorBlack));
+            if(cartonItemModel.getTotalWeight() == null || cartonItemModel.getTotalWeight().trim().isEmpty() || cartonItemModel.getTotalWeight().equals("0")){
+                holder.cartonTotalWeight.setText("Net Weight: 0kg");
+                holder.cartonShippingStatus.setVisibility(View.INVISIBLE);
+                holder.cartonTotalWeight.setTextColor(orderViewActivity.getResources().getColor(R.color.redDark));
+            }else{
+                holder.cartonTotalWeight.setText("Net Weight: "+cartonItemModel.getTotalWeight());
+                holder.cartonTotalWeight.setTextColor(orderViewActivity.getResources().getColor(R.color.colorBlack));
 
-                    if(cartonItemModel.getDeliverDetailsGuid() != null){
-                        holder.cartonShippingStatus.setVisibility(View.VISIBLE);
-                    }
+                if(cartonItemModel.getDeliverDetailsGuid() != null){
+                    holder.cartonShippingStatus.setVisibility(View.VISIBLE);
                 }
-
             }
 
         }
@@ -104,11 +100,11 @@ public class OrderViewCartonListAdapter extends RecyclerView.Adapter<RecyclerVie
     AlertDialog alertDialog = null;
     private void showAlertDialog(final int pos) {
         //test
-        LayoutInflater li = LayoutInflater.from(orderDetailsActivity);
+        LayoutInflater li = LayoutInflater.from(orderViewActivity);
         View promptsView = li.inflate(R.layout.catron_weight_view, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                orderDetailsActivity);
+                orderViewActivity);
 
         // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);
