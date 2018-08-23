@@ -109,6 +109,11 @@ public class OrderViewActivity extends AppCompatActivity {
         }
     }
 
+
+    public OrderEntity getOrderEntity() {
+        return orderEntity;
+    }
+
     public OrderedService getOrderedService() {
         return orderedService;
     }

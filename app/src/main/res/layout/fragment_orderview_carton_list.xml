@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/backgroundColor"
+    tools:context=".view.activity.OrderDetailsActivity"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/noOfCartonsId"
+        android:layout_height="50dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Cartons Count:"
+            android:id="@+id/total_carton_count"
+            android:gravity="bottom|right"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/colorWhite"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/carton_list"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/noOfCartonsId"
+        tools:listitem="@layout/adapter_cartonnumber_list"
+        android:layout_height="match_parent"/>
+
+
+</RelativeLayout>
