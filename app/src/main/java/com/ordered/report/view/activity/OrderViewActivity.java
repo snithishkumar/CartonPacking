@@ -1,5 +1,6 @@
 package com.ordered.report.view.activity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -33,7 +34,14 @@ public class OrderViewActivity extends AppCompatActivity {
     private OrderEntity orderEntity;
     @Override
     public void onBackPressed() {
+
+        finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("currentTabPosition",homeActivityTabPos);
+        startActivity(intent);
+
         super.onBackPressed();
+
     }
 
 
