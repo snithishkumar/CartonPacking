@@ -15,6 +15,9 @@ import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.services.ServiceUtl;
 import com.ordered.report.view.fragment.HistoryFragment;
+import com.ordered.report.view.fragment.OrderViewCartonListFragment;
+import com.ordered.report.view.fragment.OrderViewDeliveryListFragment;
+import com.ordered.report.view.fragment.OrderViewOrderItemsFragment;
 import com.ordered.report.view.fragment.OrderedFragment;
 import com.ordered.report.view.fragment.PackingFragment;
 
@@ -72,9 +75,9 @@ public class OrderViewActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         OrderViewActivity.ViewPagerAdapter adapter = new OrderViewActivity.ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new OrderedFragment(), "Order");
-        adapter.addFragment(new PackingFragment(), "Packing");
-        adapter.addFragment(new HistoryFragment(), "History");
+        adapter.addFragment(new OrderViewOrderItemsFragment(), "Order Details");
+        adapter.addFragment(new OrderViewCartonListFragment(), "Carton List");
+        adapter.addFragment(new OrderViewDeliveryListFragment(), "Delivery List");
 
         viewPager.setAdapter(adapter);
     }

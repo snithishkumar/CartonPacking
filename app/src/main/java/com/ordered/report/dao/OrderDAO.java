@@ -542,4 +542,19 @@ public class OrderDAO {
     }
 
 
+
+    public List<DeliveryDetailsEntity> getDeliveryList(OrderEntity orderEntity){
+        try {
+           List<CartonDetailsEntity> cartonDetailsEntities = cartonItemDao.queryBuilder().distinct().selectColumns(CartonDetailsEntity.DELIVERY_DETAILS_ENTITY).where().eq(CartonDetailsEntity.ORDER_ENTITY,orderEntity).and().isNotNull(CartonDetailsEntity.DELIVERY_DETAILS_ENTITY).query();
+           List<DeliveryDetailsEntity> detailsEntityList = new ArrayList<>();
+            for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntities){
+                detailsEntityList.add(cartonDetailsEntity.getDeliveryDetails());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
 }

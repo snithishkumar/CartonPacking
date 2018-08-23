@@ -72,6 +72,11 @@
             android:name=".view.activity.DeliveryListActivity"
             android:label="@string/title_activity_music"
             android:theme="@style/AppTheme.ActionBar"></activity>
+
+
+        <activity
+            android:name=".view.activity.OrderViewActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

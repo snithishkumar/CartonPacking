@@ -110,6 +110,10 @@ public class OrderedService {
     }
 
 
+    public List<DeliveryDetailsEntity> getDeliveredOrdersList(OrderEntity orderEntity){
+        return orderDAO.getDeliveryList(orderEntity);
+    }
+
     public List<DeliveryDetailsEntity> getCompletedDeliveryDetailsEntity(){
         return orderDAO.getCompletedDeliveryDetailsEntity();
     }
