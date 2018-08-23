@@ -28,7 +28,7 @@ import java.util.List;
 public class OrderViewActivity extends AppCompatActivity {
     private TabLayout tabLayout = null;
     private ViewPager viewPager = null;
-    private int tabPosition = 1;
+    private int tabPosition = 0;
     private OrderedService orderedService;
     private int homeActivityTabPos = 4;
     private OrderEntity orderEntity;
@@ -64,7 +64,7 @@ public class OrderViewActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-        tabPosition= getIntent().getIntExtra("currentTabPosition",0);
+        homeActivityTabPos= getIntent().getIntExtra("currentTabPosition",0);
         viewPager.setCurrentItem(tabPosition);
 
         Toolbar toolbar = findViewById(R.id.order_view_toolbar);
