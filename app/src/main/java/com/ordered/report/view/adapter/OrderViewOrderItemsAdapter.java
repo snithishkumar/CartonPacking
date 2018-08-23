@@ -135,85 +135,85 @@ public class OrderViewOrderItemsAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public class OrderViewOrderItemsViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.adpt_order_view_order_items_prod_name)
-        private TextView productName;
+         TextView productName;
         @BindView(R.id.product_color_sel_value)
-        private TextView productColor;
+         TextView productColor;
         @BindView(R.id.adpt_order_view_order_items_prod_group)
-        private TextView productGroup;
+         TextView productGroup;
 
         @BindView(R.id.order_view_order_items_one_size_count)
-        private TextView orderedOneSize;
+         TextView orderedOneSize;
         @BindView(R.id.order_view_order_items_xs_count)
-        private TextView orderedXS;
+         TextView orderedXS;
         @BindView(R.id.order_view_order_items_s_count)
-        private TextView orderedS;
+         TextView orderedS;
         @BindView(R.id.order_view_order_items_m_count)
-        private TextView orderedM;
+         TextView orderedM;
         @BindView(R.id.order_view_order_items_l_count)
-        private TextView orderedL;
+         TextView orderedL;
         @BindView(R.id.order_view_order_items_xl_count)
-        private TextView orderedXL;
+         TextView orderedXL;
         @BindView(R.id.order_view_order_items_xxl_count)
-        private TextView orderedXXL;
+         TextView orderedXXL;
         @BindView(R.id.order_view_order_items_xxxl_count)
-        private TextView orderedXXXL;
+         TextView orderedXXXL;
 
         @BindView(R.id.adapter_order_view_carton_count)
-        private TextView deliveryCount;
+         TextView deliveryCount;
         @BindView(R.id.adapter_order_view_delivery_count)
-        private TextView cartonCount;
+         TextView cartonCount;
 
         @BindView(R.id.processed_one_size_count)
-        private TextView processedOneSize;
+         TextView processedOneSize;
         @BindView(R.id.processed_xs_count)
-        private TextView processedXS;
+         TextView processedXS;
         @BindView(R.id.processed_s_count)
-        private TextView processedS;
+         TextView processedS;
         @BindView(R.id.processed_m_count)
-        private TextView processedM;
+         TextView processedM;
         @BindView(R.id.processed_l_count)
-        private TextView processedL;
+         TextView processedL;
         @BindView(R.id.processed_xl_count)
-        private TextView processedXL;
+         TextView processedXL;
         @BindView(R.id.processed_xxl_count)
-        private TextView processedXXL;
+         TextView processedXXL;
         @BindView(R.id.processed_xxxl_count)
-        private TextView processedXXXL;
+         TextView processedXXXL;
 
         @BindView(R.id.delivered_one_size)
-        private TextView deliveredOneSize;
+         TextView deliveredOneSize;
         @BindView(R.id.delivered_details_xs)
-        private TextView deliveredXS;
+         TextView deliveredXS;
         @BindView(R.id.delivered_details_s)
-        private TextView deliveredS;
+         TextView deliveredS;
         @BindView(R.id.delivered_details_m)
-        private TextView deliveredM;
+         TextView deliveredM;
         @BindView(R.id.delivered_details_l)
-        private TextView deliveredL;
+         TextView deliveredL;
         @BindView(R.id.delivered_xl)
-        private TextView deliveredXL;
+         TextView deliveredXL;
         @BindView(R.id.delivered_xxl)
-        private TextView deliveredXXL;
+         TextView deliveredXXL;
         @BindView(R.id.delivered_xxxl)
-        private TextView deliveredXXXL;
+         TextView deliveredXXXL;
 
 
         @BindView(R.id.unprocessed_one_size_count)
-        private TextView unProcessedOneSize;
+         TextView unProcessedOneSize;
         @BindView(R.id.unprocessed_xs_count)
-        private TextView unProcessedXS;
+         TextView unProcessedXS;
         @BindView(R.id.unprocessed_s_count)
-        private TextView unProcessedS;
+         TextView unProcessedS;
         @BindView(R.id.unprocessed_m_count)
-        private TextView unProcessedM;
+         TextView unProcessedM;
         @BindView(R.id.unprocessed_l_count)
-        private TextView unProcessedL;
+         TextView unProcessedL;
         @BindView(R.id.unprocessed_xl_count)
-        private TextView unProcessedXL;
+         TextView unProcessedXL;
         @BindView(R.id.unprocessed_xxl_count)
-        private TextView unProcessedXXL;
+         TextView unProcessedXXL;
         @BindView(R.id.unprocessed_xxxl_count)
-        private TextView unProcessedXXXL;
+         TextView unProcessedXXXL;
 
 
         public OrderViewOrderItemsViewHolder(View view) {
