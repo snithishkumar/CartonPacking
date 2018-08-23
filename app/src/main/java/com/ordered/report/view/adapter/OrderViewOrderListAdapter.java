@@ -98,6 +98,12 @@ public class OrderViewOrderListAdapter extends RecyclerView.Adapter<RecyclerView
             orderBy = itemView.findViewById(R.id.adapter_order_view_order_by);
             orderFrom = itemView.findViewById(R.id.adapter_order_view_order_from);
             orderDateTime = itemView.findViewById(R.id.adapter_order_view_order_date);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getAdapterPosition();
+                }
+            });
         }
 
     }
@@ -108,5 +114,10 @@ public class OrderViewOrderListAdapter extends RecyclerView.Adapter<RecyclerView
             super(view);
 
         }
+    }
+
+
+    public interface OrderViewListAdapterCallBack{
+        void showDetailsList(String orderGuid);
     }
 }

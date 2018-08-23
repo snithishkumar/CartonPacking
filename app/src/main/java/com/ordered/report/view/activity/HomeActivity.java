@@ -24,10 +24,12 @@ import com.ordered.report.services.OrderedService;
 import com.ordered.report.services.ServiceUtl;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.adapter.DeliveryListAdapter;
+import com.ordered.report.view.adapter.OrderViewOrderListAdapter;
 import com.ordered.report.view.adapter.PackingListAdapter;
 import com.ordered.report.view.fragment.AddProductFragment;
 import com.ordered.report.view.fragment.DeliveryListFragment;
 import com.ordered.report.view.fragment.HistoryFragment;
+import com.ordered.report.view.fragment.OrderViewFragment;
 import com.ordered.report.view.fragment.OrderedFragment;
 import com.ordered.report.view.fragment.PackingFragment;
 import com.ordered.report.view.fragment.PackingProductDetailsListFragment;
@@ -38,7 +40,7 @@ import com.ordered.report.view.models.OrderDetailsListViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterCallBack, DeliveryListAdapter.DeliveryListAdapterCallBack{
+public class HomeActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterCallBack, DeliveryListAdapter.DeliveryListAdapterCallBack, OrderViewOrderListAdapter.OrderViewListAdapterCallBack{
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -62,6 +64,7 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
     private static int PACKING_TAB_POS = 2;
     private static int DELIVERY_TAB_POS = 3;
     private static int HISTORY_TAB_POS = 4;
+    private static int ORDER_VIEW_TAB_POS = 5;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -256,6 +259,17 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         }
     }
 
+
+    @Override
+    public void showDetailsList(String orderGuid) {
+        Intent intent = new Intent(this, OrderViewActivity.class);
+        tabPosition = ORDER_VIEW_TAB_POS;
+        intent.putExtra("orderGuid",orderGuid);
+        intent.putExtra("currentTabPosition",tabPosition);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public void showPackingDetails(String orderGuid,String nextView) {
         showPackingDetailsList(orderGuid,nextView);
@@ -275,10 +289,13 @@ public class HomeActivity extends AppCompatActivity implements PackingListAdapte
         DELIVERY_TAB_POS = 2;
         HISTORY_TAB_POS = 3;
 
+        ORDER_VIEW_TAB_POS = 4;
+
         adapter.addFragment(new OrderedFragment(), "Order");
         adapter.addFragment(new PackingFragment(), "Packing");
         adapter.addFragment(new DeliveryListFragment(), "Delivery");
         adapter.addFragment(new HistoryFragment(), "History");
+        adapter.addFragment(new OrderViewFragment(), "Order Details");
 
         viewPager.setAdapter(adapter);
     }
