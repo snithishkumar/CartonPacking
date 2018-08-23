@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.ordered.report.R;
+import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.services.ServiceUtl;
 import com.ordered.report.view.fragment.HistoryFragment;
@@ -25,7 +26,8 @@ public class OrderViewActivity extends AppCompatActivity {
     private ViewPager viewPager = null;
     private int tabPosition;
     private OrderedService orderedService;
-
+    private int homeActivityTabPos = 4;
+    private OrderEntity orderEntity;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -37,6 +39,10 @@ public class OrderViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_view);
 
+
+        homeActivityTabPos = getIntent().getIntExtra("currentTabPosition",4);
+        String orderGuid = getIntent().getStringExtra("orderGuid");
+        orderEntity = orderedService.getOrderEntityByGuid(orderGuid);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
