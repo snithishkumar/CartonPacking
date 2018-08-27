@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ordered.report.R;
+import com.ordered.report.eventBus.AppBus;
+import com.ordered.report.json.models.ResponseData;
 import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.view.activity.HomeActivity;
 import com.ordered.report.view.activity.OrderViewActivity;
@@ -47,7 +49,7 @@ public class OrderViewDeliveryListAdapter extends RecyclerView.Adapter<RecyclerV
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if(viewHolder instanceof OrderViewDeliveryListAdapter.DeliveredListViewHolder){
-            DeliveryListAdapter.DeliveredListViewHolder holder = (DeliveryListAdapter.DeliveredListViewHolder)viewHolder;
+            OrderViewDeliveryListAdapter.DeliveredListViewHolder holder = (OrderViewDeliveryListAdapter.DeliveredListViewHolder)viewHolder;
 
             final DeliveryDetailsEntity deliveryDetailsEntity = deliveryDetailsEntities.get(position);
 
@@ -119,7 +121,15 @@ public class OrderViewDeliveryListAdapter extends RecyclerView.Adapter<RecyclerV
             portOfDischarge = (TextView) itemView.findViewById(R.id.delivery_port_of_discharge);
             createdBy = (TextView) itemView.findViewById(R.id.delivery_list_created_by);
             createdDateTime = (TextView) itemView.findViewById(R.id.delivery_list_lastmodified_val);
-
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DeliveryDetailsEntity deliveryDetailsEntity =  deliveryDetailsEntities.get(getAdapterPosition());
+                    ResponseData responseData = new ResponseData();
+                    responseData.setData(deliveryDetailsEntity);
+                    AppBus.getInstance().post(responseData);
+                }
+            });
 
         }
     }

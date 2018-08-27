@@ -77,6 +77,10 @@
         <activity
             android:name=".view.activity.OrderViewActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".view.activity.OrderViewDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

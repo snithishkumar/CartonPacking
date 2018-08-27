@@ -14,7 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ordered.report.R;
+import com.ordered.report.eventBus.AppBus;
 import com.ordered.report.json.models.CartonDetailsJson;
+import com.ordered.report.json.models.ResponseData;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.view.activity.OrderViewActivity;
 
@@ -49,8 +51,8 @@ public class OrderViewCartonListAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        if(viewHolder instanceof CartonListAdapter.CartonListViewHolder){
-            CartonListAdapter.CartonListViewHolder holder = (CartonListAdapter.CartonListViewHolder)viewHolder;
+        if(viewHolder instanceof OrderViewCartonListAdapter.CartonListViewHolder){
+            OrderViewCartonListAdapter.CartonListViewHolder holder = (OrderViewCartonListAdapter.CartonListViewHolder)viewHolder;
 
             final CartonDetailsJson cartonItemModel = cartonItemModels.get(position);
 
@@ -62,6 +64,7 @@ public class OrderViewCartonListAdapter extends RecyclerView.Adapter<RecyclerVie
             holder.cartonCreatedBy.setText(cartonItemModel.getCreatedBy());
             holder.cartonCreatedDate.setText(formatDate(cartonItemModel.getCreatedDateTime()));
             holder.cartonShippingStatus.setVisibility(View.INVISIBLE);
+            holder.weightStatus.setVisibility(View.GONE);
             if(cartonItemModel.getTotalWeight() == null || cartonItemModel.getTotalWeight().trim().isEmpty() || cartonItemModel.getTotalWeight().equals("0")){
                 holder.cartonTotalWeight.setText("Net Weight: 0kg");
                 holder.cartonShippingStatus.setVisibility(View.INVISIBLE);
@@ -97,43 +100,6 @@ public class OrderViewCartonListAdapter extends RecyclerView.Adapter<RecyclerVie
         return val;
     }
 
-    AlertDialog alertDialog = null;
-    private void showAlertDialog(final int pos) {
-        //test
-        LayoutInflater li = LayoutInflater.from(orderViewActivity);
-        View promptsView = li.inflate(R.layout.catron_weight_view, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                orderViewActivity);
-
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
-
-        final EditText userInput = (EditText) promptsView
-                .findViewById(R.id.carton_weight_text);
-
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                if (userInput.getText().toString() != null && !userInput.getText().toString().isEmpty()) {
-                                    cartonItemModels.get(pos).setTotalWeight(userInput.getText().toString()+"kg");
-
-                                    alertDialog.dismiss();
-                                    notifyDataSetChanged();
-                                }
-
-                            }
-                        });
-        // create alert dialog
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.setTitle("Carton Weight");
-        // show it
-        alertDialog.show();
-        //end
-    }
 
 
 
@@ -171,10 +137,22 @@ public class OrderViewCartonListAdapter extends RecyclerView.Adapter<RecyclerVie
             //
             cartonTotalWeight =  itemView.findViewById(R.id.carton_net_weight_text);
             cartonShippingStatus =  itemView.findViewById(R.id.carton_net_shipping_status);
+            //carton_net_weight_status
 
             weightLayout = itemView.findViewById(R.id.weight_layout);
             packingLayout = itemView.findViewById(R.id.packing_layout);
             mainLayout = itemView.findViewById(R.id.carton_main_layout);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CartonDetailsJson cartonItemModel = cartonItemModels.get(getAdapterPosition());
+                    ResponseData responseData = new ResponseData();
+                    responseData.setData(cartonItemModel);
+                    AppBus.getInstance().post(responseData);
+
+                }
+            });
 
         }
     }

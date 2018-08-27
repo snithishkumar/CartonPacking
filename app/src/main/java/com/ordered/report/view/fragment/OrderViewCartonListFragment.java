@@ -46,9 +46,12 @@ public class OrderViewCartonListFragment extends Fragment {
         getActivity().setTitle("CARTON LIST");
 
         List<CartonDetailsJson>  cartonDetailsJsonList =  orderViewActivity.getOrderedService().getCartonDetailsJson(orderViewActivity.getOrderEntity().getOrderGuid());
-
         int totalNoOfCartons = Integer.valueOf(cartonDetailsJsonList.size());
-        totalCartonCount.setText("Cartons:"+totalNoOfCartons);
+        if(orderViewActivity.getOrderEntity().getCartonCounts()!= null){
+            totalNoOfCartons =  (Integer.valueOf(orderViewActivity.getOrderEntity().getCartonCounts()) - totalNoOfCartons);
+        }
+
+        totalCartonCount.setText("Remaining Cartons Count:"+totalNoOfCartons);
         OrderViewCartonListAdapter orderViewCartonListAdapter = new OrderViewCartonListAdapter(orderViewActivity,cartonDetailsJsonList);
         recyclerView.setAdapter(orderViewCartonListAdapter);
         return view;

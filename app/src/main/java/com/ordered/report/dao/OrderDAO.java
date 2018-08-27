@@ -94,6 +94,18 @@ public class OrderDAO {
         return new ArrayList<>();
     }
 
+
+    public List<ProductDetailsEntity> getProductEntityList(String cartonGuid) {
+        try {
+            CartonDetailsEntity cartonDetailsEntity = cartonItemDao.queryBuilder().where().eq(CartonDetailsEntity.CARTON_GUID,cartonGuid).queryForFirst();
+            return productDao.queryBuilder().where().eq(ProductDetailsEntity.CARTON_NUMBER,cartonDetailsEntity).query();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
     public OrderEntity getOrderEntityByGuid(String cartonbookGuid) {
         try {
             return orderDao.queryBuilder().where().eq(OrderEntity.ORDER_GUID, cartonbookGuid).queryForFirst();
@@ -550,6 +562,7 @@ public class OrderDAO {
             for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntities){
                 detailsEntityList.add(cartonDetailsEntity.getDeliveryDetails());
             }
+            return detailsEntityList;
         }catch (Exception e){
             e.printStackTrace();
         }

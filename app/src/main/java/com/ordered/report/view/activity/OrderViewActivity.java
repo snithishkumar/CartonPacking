@@ -12,15 +12,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.ordered.report.R;
+import com.ordered.report.eventBus.AppBus;
+import com.ordered.report.json.models.CartonDetailsJson;
+import com.ordered.report.json.models.ResponseData;
+import com.ordered.report.models.DeliveryDetailsEntity;
 import com.ordered.report.models.OrderEntity;
 import com.ordered.report.services.OrderedService;
 import com.ordered.report.services.ServiceUtl;
+import com.ordered.report.utils.Constants;
 import com.ordered.report.view.fragment.HistoryFragment;
 import com.ordered.report.view.fragment.OrderViewCartonListFragment;
 import com.ordered.report.view.fragment.OrderViewDeliveryListFragment;
 import com.ordered.report.view.fragment.OrderViewOrderItemsFragment;
 import com.ordered.report.view.fragment.OrderedFragment;
 import com.ordered.report.view.fragment.PackingFragment;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +58,7 @@ public class OrderViewActivity extends AppCompatActivity {
 
         orderedService = new OrderedService(this);
         homeActivityTabPos = getIntent().getIntExtra("currentTabPosition",4);
+        tabPosition = getIntent().getIntExtra("tabPosition",0);
         String orderGuid = getIntent().getStringExtra("orderGuid");
         orderEntity = orderedService.getOrderEntityByGuid(orderGuid);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -64,7 +71,6 @@ public class OrderViewActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-        homeActivityTabPos= getIntent().getIntExtra("currentTabPosition",0);
         viewPager.setCurrentItem(tabPosition);
 
         Toolbar toolbar = findViewById(R.id.order_view_toolbar);
@@ -72,11 +78,55 @@ public class OrderViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
-
         orderedService = new OrderedService(this);
 
+    }
 
+    @Override
+    public void onPause() {
+        AppBus.getInstance().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        AppBus.getInstance().register(this);
+        super.onResume();
+    }
+
+    @Subscribe
+    public void packingResponse(ResponseData responseData){
+        if(responseData.getData() instanceof CartonDetailsJson){
+            CartonDetailsJson cartonDetailsJson = (CartonDetailsJson)responseData.getData();
+            String cartonGuid = cartonDetailsJson.getCartonGuid();
+            showOrderViewDetailsActivity(cartonGuid);
+        }else{
+            DeliveryDetailsEntity deliveryDetailsEntity = (DeliveryDetailsEntity)responseData.getData();
+            showDeliveryOrderViewActivity(deliveryDetailsEntity.getDeliveryUUID());
+        }
+
+
+    }
+
+    private void showOrderViewDetailsActivity(String cartonGuid){
+        Intent intent = new Intent(this, OrderViewDetailsActivity.class);
+        intent.putExtra("orderGuid",orderEntity.getOrderGuid());
+        intent.putExtra("cartonGuid",cartonGuid);
+        intent.putExtra("currentTabPosition",homeActivityTabPos);
+        intent.putExtra("tabPosition",1);
+        startActivity(intent);
+        finish();
+    }
+
+
+    private void showDeliveryOrderViewActivity(String deliveryGuid){
+        Intent intent = new Intent(this, OrderViewDetailsActivity.class);
+        intent.putExtra("orderGuid",orderEntity.getOrderGuid());
+        intent.putExtra("deliveryGuid",deliveryGuid);
+        intent.putExtra("currentTabPosition",homeActivityTabPos);
+        intent.putExtra("tabPosition",2);
+        startActivity(intent);
+        finish();
     }
 
 

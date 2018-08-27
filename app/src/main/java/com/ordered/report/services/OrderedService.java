@@ -82,6 +82,25 @@ public class OrderedService {
     }
 
 
+    public List<ProductDetailsEntity> getProductEntityList(String cartonGuid) {
+        List<ProductDetailsEntity> productEntities = orderDAO.getProductEntityList(cartonGuid);
+        return productEntities;
+    }
+
+
+    public List<ProductDetailsEntity> getDeliveredProduct(String deliveryGuid) {
+        List<ProductDetailsEntity> productList = new ArrayList<>();
+        DeliveryDetailsEntity deliveryDetailsEntity = orderDAO.getDeliveryDetailsEntity(deliveryGuid);
+        List<CartonDetailsEntity> cartonDetailsEntities = orderDAO.getCartonDetailsList(deliveryDetailsEntity);
+        for(CartonDetailsEntity cartonDetailsEntity : cartonDetailsEntities){
+            List<ProductDetailsEntity> productEntities = orderDAO.getProductEntityList(cartonDetailsEntity.getCartonGuid());
+            productList.addAll(productEntities);
+        }
+
+        return productList;
+    }
+
+
     public List<OrderEntity> getOrdersList(){
         return orderDAO.getOrders();
     }
