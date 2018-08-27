@@ -158,9 +158,9 @@ public class OrderViewOrderItemsAdapter extends RecyclerView.Adapter<RecyclerVie
         @BindView(R.id.order_view_order_items_xxxl_count)
          TextView orderedXXXL;
 
-        @BindView(R.id.adapter_order_view_carton_count)
-         TextView deliveryCount;
         @BindView(R.id.adapter_order_view_delivery_count)
+         TextView deliveryCount;
+        @BindView(R.id.adapter_order_view_carton_count)
          TextView cartonCount;
 
         @BindView(R.id.processed_one_size_count)

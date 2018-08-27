@@ -50,21 +50,21 @@ public class ProductDetailsEntity {
     private String productGroup;
 
     @DatabaseField(columnName = "oneSize")
-    private String oneSize;
+    private String oneSize = "0";
     @DatabaseField(columnName = "xs")
-    private String xs;
+    private String xs = "0";
     @DatabaseField(columnName = "s")
-    private String s;
+    private String s = "0";
     @DatabaseField(columnName = "m")
-    private String m;
+    private String m = "0";
     @DatabaseField(columnName = "l")
-    private String l;
+    private String l = "0";
     @DatabaseField(columnName = "xl")
-    private String xl;
+    private String xl = "0";
     @DatabaseField(columnName = "xxl")
-    private String xxl;
+    private String xxl = "0";
     @DatabaseField(columnName = "xxxl")
-    private String xxxl;
+    private String xxxl = "0";
     @DatabaseField(columnName = "cartonNumber", foreign = true, foreignAutoRefresh = true)
     private CartonDetailsEntity cartonNumber;
     @DatabaseField(columnName = "createdDateTime")

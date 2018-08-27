@@ -83,7 +83,7 @@ public class OrderViewProductNameListAdapter extends RecyclerView.Adapter<Recycl
     }
 
     private void setVal(String val, TextView textView,String key) {
-        if (val != null) {
+        if (val != null && !val.trim().isEmpty()) {
             textView.setText(key +" -> "+val);
         }else{
             textView.setText(key +" -> 0");

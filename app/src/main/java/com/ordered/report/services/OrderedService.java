@@ -28,8 +28,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Admin on 1/1/2018.
@@ -562,9 +564,8 @@ public class OrderedService {
            String orderItemGuid = orderViewOrderedItemsListModel.getOrderItemGuid();
 
            long cartonCount =  orderDAO.getCartonCount(orderItemGuid);
-           long deliveryCount = orderDAO.getDeliveryCount(orderItemGuid);
            orderViewOrderedItemsListModel.setCartonCounts(String.valueOf(cartonCount));
-           orderViewOrderedItemsListModel.setDeliveryCounts(String.valueOf(deliveryCount));
+
 
            int totalOneSize = Integer.valueOf(orderViewOrderedItemsListModel.getOneSize());
            int totalXS = Integer.valueOf(orderViewOrderedItemsListModel.getXs());
@@ -601,33 +602,39 @@ public class OrderedService {
            int deliveredXXL = 0;
            int deliveredXXXL = 0;
 
+           Set<String> deliveryList = new HashSet<>();
 
            List<ProductDetailsEntity> productDetailsEntityList = orderDAO.getOrderItem(orderItemGuid);
            for(ProductDetailsEntity productDetailsEntity : productDetailsEntityList){
                if(productDetailsEntity.getCartonNumber().getDeliveryDetails() != null){
-                   deliveredOneSize = deliveredOneSize + Integer.valueOf(productDetailsEntity.getOneSize());
-                   deliveredXS = deliveredXS + Integer.valueOf(productDetailsEntity.getXs());
-                   deliveredS = deliveredS + Integer.valueOf(productDetailsEntity.getS());
+                   deliveryList.add(productDetailsEntity.getCartonNumber().getDeliveryDetails().getDeliveryUUID());
+                   deliveredOneSize = deliveredOneSize + valueOf(productDetailsEntity.getOneSize());
+                   deliveredXS = deliveredXS + valueOf(productDetailsEntity.getXs());
+                   deliveredS = deliveredS + valueOf(productDetailsEntity.getS());
 
-                   deliveredM = deliveredM + Integer.valueOf(productDetailsEntity.getM());
-                   deliveredL = deliveredL + Integer.valueOf(productDetailsEntity.getL());
-                   deliveredXL = deliveredXL + Integer.valueOf(productDetailsEntity.getXl());
+                   deliveredM = deliveredM + valueOf(productDetailsEntity.getM());
+                   deliveredL = deliveredL + valueOf(productDetailsEntity.getL());
+                   deliveredXL = deliveredXL + valueOf(productDetailsEntity.getXl());
 
-                   deliveredXXL = deliveredXXL + Integer.valueOf(productDetailsEntity.getXxl());
-                   deliveredXXXL = deliveredXXXL + Integer.valueOf(productDetailsEntity.getXxxl());
+                   deliveredXXL = deliveredXXL + valueOf(productDetailsEntity.getXxl());
+                   deliveredXXXL = deliveredXXXL + valueOf(productDetailsEntity.getXxxl());
                }
-               processedOneSize = processedOneSize + Integer.valueOf(productDetailsEntity.getOneSize());
-               processedXS = processedXS + Integer.valueOf(productDetailsEntity.getXs());
-               processedS = processedS + Integer.valueOf(productDetailsEntity.getS());
+               processedOneSize = processedOneSize + valueOf(productDetailsEntity.getOneSize());
+               processedXS = processedXS + valueOf(productDetailsEntity.getXs());
+               processedS = processedS + valueOf(productDetailsEntity.getS());
 
-               processedM = processedM + Integer.valueOf(productDetailsEntity.getM());
-               processedL = processedL + Integer.valueOf(productDetailsEntity.getL());
-               processedXL = processedXL + Integer.valueOf(productDetailsEntity.getXl());
+               processedM = processedM + valueOf(productDetailsEntity.getM());
+               processedL = processedL + valueOf(productDetailsEntity.getL());
+               processedXL = processedXL + valueOf(productDetailsEntity.getXl());
 
-               processedXXL = processedXXL + Integer.valueOf(productDetailsEntity.getXxl());
-               processedXXXL = processedXXXL + Integer.valueOf(productDetailsEntity.getXxxl());
+               processedXXL = processedXXL + valueOf(productDetailsEntity.getXxl());
+               processedXXXL = processedXXXL + valueOf(productDetailsEntity.getXxxl());
 
            }
+
+           int deliveryCount = deliveryList.size();
+           orderViewOrderedItemsListModel.setDeliveryCounts(String.valueOf(deliveryCount));
+
            orderViewOrderedItemsListModel.setDeliveryL(String.valueOf(deliveredL));
            orderViewOrderedItemsListModel.setDeliveryM(String.valueOf(deliveredM));
            orderViewOrderedItemsListModel.setDeliveryOneSize(String.valueOf(deliveredOneSize));
@@ -658,6 +665,10 @@ public class OrderedService {
 
 return orderViewOrderedItemsListModels;
 
+    }
+
+    private int valueOf(String val){
+      return   val != null && !val.trim().isEmpty() ? Integer.valueOf(val) : 0;
     }
 
 
