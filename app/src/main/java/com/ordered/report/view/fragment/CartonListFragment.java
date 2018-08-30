@@ -19,6 +19,7 @@ import com.ordered.report.view.adapter.CartonListAdapter;
 import com.ordered.report.view.adapter.ProductNameListAdapter;
 import com.ordered.report.view.models.OrderDetailsListViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,9 +59,10 @@ public class CartonListFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         getActivity().setTitle("CARTON LIST");
+        cleanCartonDetailsJson();
         int totalNoOfCartons = Integer.valueOf(orderDetailsActivity.getTotalNoOfCartons());
         totalNoOfCartons =  totalNoOfCartons - orderDetailsActivity.getCartonDetailsJsonList().size();
-        remaningCartonCount.setText("Remaning Cartons:"+totalNoOfCartons);
+        remaningCartonCount.setText("Remaining Cartons:"+totalNoOfCartons);
         CartonListAdapter  cartonListAdapter = new CartonListAdapter(orderDetailsActivity,orderDetailsActivity.getCartonDetailsJsonList());
         //ProductNameListAdapter productNameListAdapter = new ProductNameListAdapter(orderDetailsActivity,orderDetailsListViewModels);
         recyclerView.setAdapter(cartonListAdapter);
@@ -69,6 +71,26 @@ public class CartonListFragment extends Fragment {
         }
 
         return view;
+    }
+
+
+    private void cleanCartonDetailsJson(){
+        List<CartonDetailsJson> cartonDetailsJsonList = orderDetailsActivity.getCartonDetailsJsonList();
+        orderDetailsActivity.setCartonDetailsJson(null);
+        List<Integer> pos = new ArrayList<>();
+        int i = -1;
+        for(CartonDetailsJson cartonDetailsJson : cartonDetailsJsonList){
+            i = i + 1;
+            if(cartonDetailsJson.getProductDetailsJsonList().size() == 0 && cartonDetailsJson.getOrderDetailsListViewModels().size() == 0){
+                pos.add(i);
+            }
+        }
+
+        if(pos.size() > 0){
+            for(int x : pos){
+                cartonDetailsJsonList.remove(x);
+            }
+        }
     }
 
 
