@@ -1,5 +1,6 @@
 package com.ordered.report.view.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.DexterError;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.PermissionRequestErrorListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.ordered.report.R;
 import com.ordered.report.eventBus.AppBus;
 import com.ordered.report.json.models.LoginEvent;
@@ -20,6 +29,8 @@ import com.ordered.report.services.LoginService;
 import com.ordered.report.utils.Constants;
 import com.ordered.report.utils.Utils;
 import com.squareup.otto.Subscribe;
+
+import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -39,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = (Button) findViewById(R.id.sign_in_button);
         userName = (EditText) findViewById(R.id.input_email);
         password = (EditText) findViewById(R.id.input_password);
+        getPermission();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +65,37 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    private void showErrorMsg(){
+        Toast.makeText(this,"Please enable Read and Write Permission and continue.",Toast.LENGTH_LONG).show();
+        finishAndRemoveTask();
+    }
+
+
+    private void getPermission(){
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                ).withListener(new MultiplePermissionsListener() {
+            @Override public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if(report.isAnyPermissionPermanentlyDenied()){
+                    showErrorMsg();
+
+                }else if(!report.areAllPermissionsGranted()){
+                    showErrorMsg();
+                }
+            }
+            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).withErrorListener(new PermissionRequestErrorListener() {
+            @Override public void onError(DexterError error) {
+                Log.e("Dexter", "There was an error: " + error.toString());
+            }
+        }).check();
     }
 
     public void initService() {
