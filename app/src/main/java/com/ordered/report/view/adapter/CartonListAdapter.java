@@ -74,7 +74,8 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if(cartonItemModel.getTotalWeight() == null || cartonItemModel.getTotalWeight().trim().isEmpty() || cartonItemModel.getTotalWeight().equals("0")){
                     holder.weightStatus.setImageDrawable(orderDetailsActivity.getDrawable(R.drawable.add_weight_48x));
                     holder.cartonTotalWeight.setText("Net Weight: 0kg");
-                    holder.cartonShippingStatus.setVisibility(View.INVISIBLE);
+                    holder.cartonShippingStatus.setVisibility(View.GONE);
+                    holder.cartonDelete.setVisibility(View.VISIBLE);
                     holder.cartonTotalWeight.setTextColor(orderDetailsActivity.getResources().getColor(R.color.redDark));
                 }else{
                     holder.cartonTotalWeight.setText("Net Weight: "+cartonItemModel.getTotalWeight());
@@ -83,6 +84,10 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                     if(cartonItemModel.getDeliverDetailsGuid() != null){
                         holder.cartonShippingStatus.setVisibility(View.VISIBLE);
+                        holder.cartonDelete.setVisibility(View.GONE);
+                    }else{
+                        holder.cartonShippingStatus.setVisibility(View.GONE);
+                        holder.cartonDelete.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -167,6 +172,7 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public RelativeLayout mainLayout;
 
         public ImageView weightStatus;
+        public ImageView cartonDelete;
 
         public TextView cartonTotalWeight;
         public TextView cartonShippingStatus;
@@ -174,13 +180,13 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public CartonListViewHolder(View itemView) {
             super(itemView);
-
+//
             cartonNumber =  itemView.findViewById(R.id.carton_number);
             noOfProducts =  itemView.findViewById(R.id.products_count_carton_number);
             cartonCreatedBy =  itemView.findViewById(R.id.carton_created_date);
             cartonCreatedDate =  itemView.findViewById(R.id.carton_created_date);
             weightStatus = itemView.findViewById(R.id.carton_net_weight_status);
-
+            cartonDelete = itemView.findViewById(R.id.carton_net_delete);
             //
             cartonTotalWeight =  itemView.findViewById(R.id.carton_net_weight_text);
             cartonShippingStatus =  itemView.findViewById(R.id.carton_net_shipping_status);
@@ -216,6 +222,13 @@ public class CartonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         }
 
                     }
+
+                }
+            });
+
+            cartonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
                 }
             });
